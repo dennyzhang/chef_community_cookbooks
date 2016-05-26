@@ -1,0 +1,23 @@
+# A simple configuration file for monitoring the local host
+# This can serve as an example for configuring other servers;
+# Custom services specific to this host are added here, but services
+# defined in nagios2-common_services.cfg may also apply.
+# 
+
+define host{
+        use                     generic-host            ; Name of host template to use
+        host_name               <%= @nagios_hostname %>
+        alias                   <%= @nagios_hostname %>
+        address                 <%= @nagios_hostname %>
+        max_check_attempts              10
+        }
+
+<% for @service_check in @service_check_list %>
+define service{
+        use                             generic-service,graphed-service         ; Name of service template to use
+        host_name                       <%= @nagios_hostname %>
+        service_description             <%= @service_check.split(":")[0] %>
+        check_command                   <%= @service_check.split(":")[1] %>
+        }
+
+<% end -%>

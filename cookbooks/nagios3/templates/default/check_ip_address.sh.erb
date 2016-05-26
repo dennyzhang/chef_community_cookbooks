@@ -1,0 +1,22 @@
+#!/bin/bash -e
+##-------------------------------------------------------------------
+## File - check_ip_address.sh
+## Author : Denny <denny@dennyzhang.com>
+## Description :
+## --
+## Created : <2014-11-09>
+## Updated: Time-stamp: <2016-04-05 09:45:01>
+##-------------------------------------------------------------------
+ip=$(hostname -i)
+if [[ $ip = *\ * ]]; then
+    echo "CRITICAL: More than one ip is found by hostname -i | status=1"
+    exit 1
+else
+    if [[ $ip = 127.* ]]; then
+        echo "CRITICAL: IP returned by hostname -i should not start with 127.* | status=2"
+        exit 2
+    else
+        echo "OK: IP returned by hostname -i is good | status=0"
+    fi
+fi
+## File - check_ip_address.sh ends

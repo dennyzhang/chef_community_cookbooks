@@ -1,0 +1,45 @@
+AlignParameters:
+  Enabled: false
+
+Encoding:
+  Enabled: false
+
+LineLength:
+  Max: 200
+
+HashSyntax:
+  EnforcedStyle: hash_rockets
+
+CyclomaticComplexity:
+  Max: 20
+
+AbcSize:
+  Max: 150
+
+ClassLength:
+  Max: 200
+
+LineLength:
+  Max: 250
+
+MethodLength:
+  Max: 50
+
+PerceivedComplexity:
+  Max: 50
+
+Style/Documentation:
+  Enabled: false
+
+Style/ClassAndModuleChildren:
+  Enabled: false
+
+Style/RegexpLiteral:
+  Enabled: false
+
+AllCops:
+  Include:
+    - '**/metadata.rb'
+    - '**/*.rb'
+  Exclude:
+    - 'libraries/z_provider_mapping.rb'

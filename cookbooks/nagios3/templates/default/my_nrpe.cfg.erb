@@ -1,0 +1,17 @@
+##-------------------------------------------------------------------
+# Copyright 2015, DennyZhang.com
+## File : my_nrpe.cfg.erb
+## Author : <denny@dennyzhang.com>
+## Description : NRPE Nagios Checks configuration
+## --
+## Created : <2014-9-11>
+## Updated: Time-stamp: <2016-04-09 11:08:35>
+##-------------------------------------------------------------------
+# NRPE configurations#
+
+command[check_cdn]=<%= @nagios_plugins %>/check_nfs_mount.sh -f /etc/fstab /shared
+
+# Check memory
+command[check_apache_mem]=<%= @nagios_plugins %>/check_proc_mem.sh -w 2048 -c 3072 --pidfile <%= @apache_pid_file %>
+command[check_apache_fd]=<%= @nagios_plugins %>/check_proc_fd.sh -w 1024 -c 2048 --pidfile <%= @apache_pid_file %>
+command[check_apache_cpu]=<%= @nagios_plugins %>/check_proc_cpu.sh -w 100 -c 200 --pidfile <%= @apache_pid_file %>
