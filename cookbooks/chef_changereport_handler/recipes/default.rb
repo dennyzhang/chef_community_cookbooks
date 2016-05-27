@@ -14,8 +14,7 @@ directory working_dir do
   action :create
 end
 
-
-template "#{node["chef_handler"]["handler_path"]}/changereport_handler.rb" do
+template "#{node['chef_handler']['handler_path']}/changereport_handler.rb" do
   source 'changereport_handler.rb.erb'
   action :create
 end
@@ -23,7 +22,7 @@ end
 include_recipe 'chef_handler::default'
 
 chef_handler 'MyChefReport::ChangReportHandler' do
-  source "#{node["chef_handler"]["handler_path"]}/changereport_handler.rb"
+  source "#{node['chef_handler']['handler_path']}/changereport_handler.rb"
   action :enable
 end
 
