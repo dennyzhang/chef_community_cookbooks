@@ -1,0 +1,23 @@
+##-------------------------------------------------------------------
+# Copyright 2015, DennyZhang.com
+## File : nrpe.cfg.erb
+## Author : <denny@dennyzhang.com>
+## Description : NRPE Nagios Checks configuration
+## --
+## Created : <2014-9-11>
+## Updated: Time-stamp: <2016-04-05 09:45:01>
+##-------------------------------------------------------------------
+# NRPE configurations#
+
+log_facility=daemon
+pid_file=/var/run/nagios/nrpe.pid
+server_port=5666
+nrpe_user=nagios
+nrpe_group=nagios
+allowed_hosts=127.0.0.1,<%= @allowed_hosts %>
+dont_blame_nrpe=0
+debug=0
+command_timeout=60
+connection_timeout=300
+
+include_dir=/etc/nagios/nrpe.d

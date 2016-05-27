@@ -1,0 +1,72 @@
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# THIS FILE IS MANAGED BY CHEF, DO NOT EDIT MANUALLY, YOUR CHANGES WILL BE OVERWRITTEN!
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#
+# See the source file for context and more information:
+# <https://github.com/elastic/elasticsearch/blob/master/core/config/elasticsearch.yml>
+#
+# See the documentation for further information on configuration options:
+# <http://www.elastic.co/guide/en/elasticsearch/reference/current/setup-configuration.html>
+#
+# To set configurations not exposed by this template, set the `configuration`
+# parameter in your `elasticsearch_configure` resource, as a hash of dotted keys
+# and string values.
+#
+#     // ...
+#     'threadpool.index.type' => 'fixed',
+#     'threadpool.index.size' => '2'
+#     // ...
+#
+# ---------------------------------- Cluster -----------------------------------
+#
+<%= print_value(@config, 'cluster.name') -%>
+#
+# ------------------------------------ Node ------------------------------------
+#
+<%= print_value(@config, 'node.name') -%>
+<%= print_value(@config, 'node.max_local_storage_nodes') -%>
+#
+# ----------------------------------- Paths ------------------------------------
+#
+<%= print_value(@config, 'path.conf') -%>
+<%= print_value(@config, 'path.data') -%>
+<%= print_value(@config, 'path.logs') -%>
+#
+# ----------------------------------- Memory -----------------------------------
+#
+<%= print_value(@config, 'bootstrap.mlockall') -%>
+#
+# ---------------------------------- Network -----------------------------------
+#
+<%= print_value(@config, 'network.host') -%>
+<%= print_value(@config, 'http.port') -%>
+<%= print_value(@config, 'http.bind_port') -%>
+#
+# ---------------------------------- Gateway -----------------------------------
+#
+<%= print_value(@config, 'gateway.recover_after_nodes') -%>
+#
+# --------------------------------- Discovery ----------------------------------
+#
+<%= print_value(@config, 'discovery.zen.ping.multicast.enabled') -%>
+<%= print_value(@config, 'discovery.zen.ping.unicast.hosts') -%>
+<%= print_value(@config, 'discovery.zen.minimum_master_nodes') -%>
+#
+# ---------------------------------- Various -----------------------------------
+#
+<%= print_value(@config, 'action.auto_create_index') -%>
+<%= print_value(@config, 'plugin.mandatory') -%>
+<%= print_value(@config, 'action.destructive_requires_name') -%>
+<%= print_value(@config, 'cloud.node.auto_attributes') -%>
+#
+# -------------------------- Custom Chef Configuration --------------------------
+#
+<%
+  seen_state = @config['#_seen']
+
+  # ensure all the keys are strings before we call sort
+  @config.keys.map { |k| k.to_s }.sort.each do |key|
+    # skip this config value if we've already seen it
+    next if key.nil? || @config[key].nil? || seen_state[key] || key == '#_seen' %>
+<%= key %>: <%= @config[key] %>
+<% end %>

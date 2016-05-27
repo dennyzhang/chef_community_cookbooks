@@ -1,0 +1,29 @@
+##-------------------------------------------------------------------
+# Copyright 2015, DennyZhang.com
+## File : common_nrpe.cfg.erb
+## Author : <denny@dennyzhang.com>
+## Description : NRPE Nagios Checks configuration
+## --
+## Created : <2014-9-11>
+## Updated: Time-stamp: <2016-04-05 09:45:01>
+##-------------------------------------------------------------------
+# NRPE configurations#
+
+# Frequent Used Common Checks
+command[check_total_procs]=<%= @nagios_plugins %>/check_procs -w 5500 -c 8000
+command[check_cpu_load]=<%= @nagios_plugins %>/check_linux_stats.pl -C -w 200 -c 600 -s 5
+command[check_users]=<%= @nagios_plugins %>/check_users -w 10 -c 15
+command[check_zombie_procs]=<%= @nagios_plugins %>/check_procs -w 5 -c 10 -s Z
+command[check_disk_rootfs]=<%= @nagios_plugins %>/check_linux_stats.pl -D -w 15 -c 5 -u % -p /
+command[check_memory]=<%= @nagios_plugins %>/check_linux_stats.pl -M -w 70,70 -c 90,90
+command[check_network_eth0]=<%= @nagios_plugins %>/check_linux_stats.pl -N -w 100000000 -c 150000000 -p eth0
+command[check_swap_usage]=<%= @nagios_plugins %>/check_swap -w 20% -c 10%
+command[check_ip_address]=<%= @nagios_plugins %>/check_ip_address.sh
+
+# Misc Common Checks
+command[check_certificate]=<%= @nagios_plugins %>/check_http -H localhost -C 30
+command[check_uptime]=<%= @nagios_plugins %>/check_linux_stats.pl -U -w 9
+command[diskspace]=<%= @nagios_plugins %>/check_diskspace.py
+command[check_open_files]=<%= @nagios_plugins %>/check_linux_stats.pl -F -w 600000,500000 -c 900000,10000000
+command[check_paging]=<%= @nagios_plugins %>/check_linux_stats.pl -W -w 1000000000,1500000000 -c 4000000000,5000000000 -s 3 
+command[check_disk]=<%= @nagios_plugins %>/check_linux_stats.pl -D -w 10 -c 5 -p /,/usr,/tmp,/var

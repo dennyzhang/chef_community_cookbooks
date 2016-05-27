@@ -1,0 +1,60 @@
+module MyChefReport
+  class ChangReportHandler < Chef::Handler
+    # This method gets called when the chef run fails and this handler is registered
+    # to act as an exception handler.
+    def report
+      report_dir_path = "<%= node.chef_changereport_handler.working_dir %>"
+      report_extra_info = "<%= node.chef_changereport_handler.report_extra_info %>"
+      command_run_after_failure = "<%= node.chef_changereport_handler.command_run_after_failure %>"
+
+      detail_info = ""
+      indent = "    "
+      start_time = run_status.start_time.strftime('%Y-%m-%d %H:%M:%S')
+      end_time = run_status.end_time.strftime('%Y-%m-%d %H:%M:%S')
+
+      time_duration = run_status.elapsed_time
+      time_duration = time_duration.round(2)
+
+      current_hostname = run_status.node.fqdn
+
+      changed_list = ""
+      num_changed = updated_resources.length()
+      updated_resources.each do |resource|
+        changed_list = "#{changed_list}\n#{indent}- #{resource.to_s}"
+      end
+
+      if success?
+        update_status = "success"
+      else
+        update_status = "fail"
+        detail_info = "#{detail_info}exception: \n#{run_status.formatted_exception}"
+        puts "Run customized commands after failure: #{command_run_after_failure}"
+        if command_run_after_failure != ""
+            system(command_run_after_failure)
+        end
+      end
+
+      if report_extra_info != ""
+        detail_info = "#{detail_info}#{report_extra_info}"
+      end
+
+      content = "========================================================
+Chef Update Run On: #{current_hostname}
+Started: #{start_time}, Ended: #{end_time}, duration: #{time_duration}s
+Update Status: #{update_status}
+Changed List: #{num_changed} resources are changed#{changed_list}
+Detail info:
+#{indent}#{detail_info}"
+
+      File.open("#{report_dir_path}/report.txt", 'w') {
+        |file| file.write(content)
+      }
+
+      File.open("#{report_dir_path}/history.txt", 'a') {
+        |file| file.write(content)
+      }
+
+      puts "Check Report: #{report_dir_path}/report.txt"
+    end
+  end
+end

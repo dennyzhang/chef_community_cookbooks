@@ -1,0 +1,57 @@
+{
+  "name": "monit-ng",
+  "description": "Installs and configures monit",
+  "long_description": "# Chef monit cookbook  [![Build Status](https://travis-ci.org/bbg-cookbooks/monit-ng.svg?branch=master)][travis]\n\nInstalls and configures [Monit][tildeslash], with a resource provider for managing\nadditional monit checks.\n\nSuggested background reading:\n\n* [The Fine Manual][manual]\n* This README, the resource and provider in cookbook libraries directory.\n\n## Recipes\n\n- `monit-ng::default`: loads the other recipes in the order below\n- `monit-ng::install`: installs monit via package or source\n- `monit-ng::configure`: configures global monit template\n- `monit-ng::service`: configures and manages the monit service\n- `monit-ng::reload`: reloads monit service if converge updated a monit_check\n\n## Dependencies\n\n- yum-epel (on rhel hosts)\n- ubuntu (on ubuntu hosts)\n- apt (on debian hosts)\n- build-essential (if installing from source)\n\n\n## Attributes\n\nMost of these are very straight-forward, and pulled directly from the manual.\nSee the inline documentation in attributes/\\*.rb for details.\n\nThe few \"special\" attributes are noted below:\n\n* `default['monit']['config']['alert']` (default: `[]`): this attributes configures *global* `set alert` config option for each `Hash` element with attribute `name` and optional event filters  \n\nDocumentation for event filters can be found [here][filters].\n\n```\n\"default_attributes\": {\n  \"monit\": {\n    \"config\": {\n      \"alert\": [\n        {\n\t\t\t    \"name\": \"root@localhost\",\n\t\t\t    \"but_not_on\": [ \"nonexist\" ]\n\t\t\t  },\n\t\t\t  {\n\t\t\t    \"name\": \"netadmin@localhost\",\n\t\t\t    \"only_on\": [ \"nonexist\", \"timeout\", \"icmp\", \"connection\"]\n\t\t\t  },\n\t\t\t  {\n\t\t\t    \"name\": \"iwantall@localhost\",\n\t\t\t  }\n\t\t\t]\n    }\n  }\n}\n```\n\n* `default['monit']['config']['mail_servers']` (default: `[]`): this attributes configures `set mailserver` config option for each `Hash` element (mail server) with hash like so:\n\n```\n\"default_attributes\": {\n  \"monit\": {\n    \"config\": {\n \t\t\t\"mail_servers\": [\n  \t\t  {\n          \"hostname\": \"localhost\",\n          \"port\": 25,\n          \"username\": null,\n          \"password\": null,\n          \"security\": null,\n          \"timeout\": \"30 seconds\"\n        }\n\t\t\t]\n    }\n  }\n}\n```\n\n\n* `default['monit']['config']['built_in_configs']` (default: `[]`): this defines what built-in configuration files will be included\n\n```\n\"default_attributes\": {\n  \"monit\": {\n    \"config\": {\n      \"built_in_configs\": [\n        \"memcached\",\n        \"nginx\"\n      ]\n    }\n  }\n}\n```\n\n## Resources\n\n### monit_check\n\n|Attribute|Description|Default|\n|---------|-----------|-------|\n|cookbook|cookbook from which to source monit config template|monit-ng|\n|check_type|type of check (e.g. program, process, host)|process|\n|check_id|check identifier (e.g. pid path, hostname, executable path|nil|\n|id_type|type of identifier (e.g. pid, matching, address, path)|determined by check_type|\n|start_as|user to execute start command as|nil|\n|start_as_group|group to start program as|nil|\n|start|start command|nil|\n|stop_as|user to execute stop command as|nil|\n|stop_as_group|group to execute stop command as|nil|\n|stop|stop command|nil|\n|group|check group(s) (e.g. \"hosts\" or [\"hosts\", \"apis\"])|[]|\n|depends|depends on named service (e.g. \"apache\")|nil|\n|tests|array of hashes with 'condition', 'action' keys, maps to monit if, then|[]|\n|every|string for args to \"every\" configuration (e.g. every n cycles, every \"* 8-19 * * 1-5\")|nil|\n|alert|email to alert|nil|\n|but_not_on|alert modifier to filter events for notification|nil|\n|alert_events|alert modifier to filter events for notification|nil|\n\n## Contributing\n\n1. Fork the repository on Github\n2. Create a named feature branch (like `add_component_x`)\n3. Write your change\n4. Write tests for your change (if applicable)\n5. Run the tests (`rake`), ensuring they all pass\n6. Write new resource/attribute description to `README.md`\n7. Write description about changes to PR\n8. Submit a Pull Request using Github\n\n\n## Copyright & License\n\nAuthors:: Nathan Williams and [contributors][contrib]\n\n```\nLicensed under the Apache License, Version 2.0 (the \"License\");\nyou may not use this file except in compliance with the License.\nYou may obtain a copy of the License at\n\n    http://www.apache.org/licenses/LICENSE-2.0\n\nUnless required by applicable law or agreed to in writing, software\ndistributed under the License is distributed on an \"AS IS\" BASIS,\nWITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\nSee the License for the specific language governing permissions and\nlimitations under the License.\n```\n\n[tildeslash]: http://mmonit.com/monit/\n[manual]: https://mmonit.com/monit/documentation/\n[filters]: https://mmonit.com/monit/documentation/monit.html#Setting-an-event-filter\n[contrib]: https://github.com/bbg-cookbooks/monit-ng/graphs/contributors\n[travis]: https://travis-ci.org/bbg-cookbooks/monit-ng\n",
+  "maintainer": "Nathan Williams",
+  "maintainer_email": "nath.e.will@gmail.com",
+  "license": "Apache 2.0",
+  "platforms": {
+    "amazon": ">= 0.0.0",
+    "redhat": ">= 0.0.0",
+    "scientific": ">= 0.0.0",
+    "centos": ">= 0.0.0",
+    "debian": ">= 0.0.0",
+    "ubuntu": ">= 0.0.0"
+  },
+  "dependencies": {
+    "yum-epel": ">= 0.0.0",
+    "ubuntu": ">= 0.0.0",
+    "apt": ">= 0.0.0",
+    "build-essential": ">= 0.0.0",
+    "dpkg_autostart": ">= 0.0.0"
+  },
+  "recommendations": {
+
+  },
+  "suggestions": {
+
+  },
+  "conflicting": {
+
+  },
+  "providing": {
+
+  },
+  "replacing": {
+
+  },
+  "attributes": {
+
+  },
+  "groupings": {
+
+  },
+  "recipes": {
+
+  },
+  "version": "2.3.0",
+  "source_url": "https://github.com/bbg-cookbooks/monit-ng",
+  "issues_url": "https://github.com/bbg-cookbooks/monit-ng/issues",
+  "privacy": false,
+  "chef_versions": [
+
+  ],
+  "ohai_versions": [
+
+  ]
+}

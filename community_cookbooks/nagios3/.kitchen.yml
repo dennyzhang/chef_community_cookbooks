@@ -1,0 +1,35 @@
+---
+driver:
+  name: docker
+driver_config:
+  instance_name: <%= ENV.fetch('INSTANCE_NAME', "nagios3") %>
+  hostname: <%= ENV.fetch('INSTANCE_NAME', "nagios3") %>
+  use_sudo: false
+  privileged: true
+  remove_images: false
+  image: <%= ENV.fetch('IMAGE_NAME', "denny/devubuntu:v1") %>
+  socket: tcp://<%= ENV.fetch('DOCKER_ENDPOINT', "192.168.99.103:2376") %>  
+  tls_verify: true
+  tls_cacert: <%= ENV.fetch('TLS_FOLDER', "../my_tls") %>/ca.pem
+  tls_cert: <%= ENV.fetch('TLS_FOLDER', "../my_tls") %>/cert.pem
+  tls_key: <%= ENV.fetch('TLS_FOLDER', "../my_tls") %>/key.pem
+  provision_command: "curl -L https://raw.githubusercontent.com/DennyZhang/devops_public/master/chef/chef_kitchen_provision.sh | bash -e"
+  <% if ENV.fetch('DOCKER_PORT_FORWARD_PREFIX', "") != "" %>
+  forward:
+  - <%= ENV.fetch('DOCKER_PORT_FORWARD_PREFIX', "21") %>080:80
+  <% end %>
+
+provisioner:
+  name: chef_solo
+  require_chef_omnibus: 12.6.0
+  client_rb:
+      file_cache_path: "/var/chef/cache"
+
+platforms:
+  - name: ubuntu-14.04
+
+suites:
+  - name: default
+    run_list:
+      - recipe[nagios3::default]
+    attributes:

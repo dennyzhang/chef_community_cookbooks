@@ -1,0 +1,48 @@
+{
+  "name": "ssh_authorized_keys",
+  "description": "Creates SSH authorized keys files in user home directories.",
+  "long_description": "[![Cookbook Version](https://img.shields.io/cookbook/v/ssh_authorized_keys.svg?style=flat)](https://supermarket.getchef.com/cookbooks/ssh_authorized_keys)\n[![Code Climate](https://img.shields.io/codeclimate/github/onddo/ssh_authorized_keys-cookbook.svg?style=flat)](https://codeclimate.com/github/onddo/ssh_authorized_keys-cookbook)\n[![Build Status](https://img.shields.io/travis/onddo/ssh_authorized_keys-cookbook/0.1.0.svg?style=flat)](https://travis-ci.org/onddo/ssh_authorized_keys-cookbook)\n[![Coverage Status](https://img.shields.io/coveralls/onddo/ssh_authorized_keys-cookbook/0.1.0.svg?style=flat)](https://coveralls.io/r/onddo/ssh_authorized_keys-cookbook?branch=0.1.0)\n[![Inline docs](https://inch-ci.org/github/onddo/ssh_authorized_keys-cookbook.svg?branch=master&style=flat)](https://inch-ci.org/github/onddo/ssh_authorized_keys-cookbook)\nDescription\n===========\n\nCreates SSH authorized keys files in user home directories.\n\nTries to avoid generating a corrupt file that could render your server inaccessible.\n\nRequirements\n============\n\n## Supported Platforms\n\nThis cookbook has been tested on the following platforms:\n\n* Amazon Linux\n* Debian\n* CentOS\n* Fedora\n* FreeBSD\n* RedHat\n* Suse\n* Ubuntu\n\nPlease, [let us know](https://github.com/onddo/ssh_authorized_keys-cookbook/issues/new?title=I%20have%20used%20it%20successfully%20on%20...) if you use it successfully on any other platform.\n\nDefinitions\n===========\n\n## ssh_authorize_key\n\nAuthorize a key for public key authentication using SSH.\n\n**Warning:** This definition uses the [Accumulator Pattern](http://docs.chef.io/definitions.html#many-recipes-one-definition). This implies that any SSH key added using other methods (such as **keys added by hand**) will be **deleted**.\n\n## ssh_authorize_key Parameters\n\n| Parameter | Default           | Description                              |\n|:----------|:------------------|:-----------------------------------------|\n| user      | `nil`             | System user **(required)**.              |\n| group     | user              | System group.                            |\n| home      | *calculated*      | System user home path.                   |\n| key       | `nil`             | SSH public key in base64 **(required)**. |\n| keytype   | `'ssh-rsa'`       | SSH key type.                            |\n| comment   | *definition name* | SSH key comment.                         |\n| options   | `nil`             | SSH key options as a hash.               |\n\nUsage Examples\n==============\n\nFirst of all, don't forget to include the `ssh_authorized_keys` cookbook as a dependency in the cookbook metadata:\n\n```ruby\n# metadata.rb\n[...]\n\ndepends 'ssh_authorized_keys'\n```\n\nYou can use the `ssh_authorize_key` to authorize SSH public keys to use SSH public key authentication:\n\n```ruby\n# Bob is the admin here.\n\nssh_authorize_key 'bob@acme.com' do\n  key 'AAAAB3NzaC1yc2EAAAADAQABAAABAQCctNyRouVDhzjiP[...]'\n  user 'root'\nend\n\nssh_authorize_key 'alice@acme.com' do\n  key 'AAAAB3NzaC1yc2EAAAADAQABAAABAQCySLKbpFRGCrKU/[...]'\n  user 'alice'\nend\n```\n\n## Setting the SSH Key Options Field\n\nYou can set the options field as follows:\n\n```ruby\n# As the root user by default in ubuntu:\nssh_authorize_key 'bob@acme.com' do\n  key 'AAAAB3NzaC1yc2EAAAADAQABAAABAQCctNyRouVDhzjiP[...]'\n  user 'root'\n  options(\n    'no-port-forwarding' => true,\n    'no-agent-forwarding' => true,\n    'no-X11-forwarding' => true,\n    command:\n      'echo \\'Please login as the user \"bob\" rather than the user \"root\".\\''\\\n      ';echo;sleep 10'\n  )\nend\n```\n\n## Reading the Keys from a Data Bag\n\nFor example, from the following data bag item:\n\n```json\n{\n  \"id\": \"users\",\n  \"bob@acme.com\": {\n    \"key\": \"AAAAB3NzaC1yc2EAAAADAQABAAABAQCctNyRouVDhzjiP[...]\",\n    \"user\": \"root\"\n  },\n  \"alice@acme.com\": {\n    \"key\": \"AAAAB3NzaC1yc2EAAAADAQABAAABAQCySLKbpFRGCrKU/[...]\",\n    \"user\": \"alice\"\n  }\n}\n```\n\nYou can read the data bag item from a recipe as follows:\n\n```ruby\nusers = data_bag_item('ssh', 'users')\nusers.delete('id')\n\nusers.each do |name, ssh_key|\n  ssh_authorize_key name do\n    key ssh_key['key']\n    user ssh_key['user']\n  end\nend\n```\n\nSee [the data bags DSL documentation](http://docs.chef.io/data_bags.html#load-with-dsl-recipe) for a more detailed explanation and [the data bags knife documentation](http://docs.chef.io/data_bags.html#using-knife-title) to learn how to create a data bag.\n\nAttributes\n==========\n\nThese attributes are primarily intended to support the different platforms. Do not touch them unless you know what you are doing.\n\n| Attribute                                 | Default      | Description            |\n|:------------------------------------------|:-------------|:-----------------------|\n| `node['ssh_authorized_keys']['keytypes']` | *calculated* | Allowed SSH key types. |\n\nTesting\n=======\n\nSee [TESTING.md](https://github.com/onddo/ssh_authorized_keys-cookbook/blob/master/TESTING.md).\n\n## ChefSpec Tests\n\nTo create ChefSpec tests for the `ssh_authorize_key` definition, you can use the [`render_file`](http://www.rubydoc.info/github/sethvargo/chefspec#render_file) matcher to check the *authorized_keys* file content:\n\n```ruby\nit 'allows bob to login as root' do\n  expect(chef_run).to render_file('/root/.ssh/authorized_keys')\n    .with_content(/^ssh-rsa [A-Za-z0-9+\\/=]+ bob@acme\\.com$/)\nend\n```\n\nYou can also test against the internal template:\n\n```ruby\nit 'creates ~bob/.ssh/authorized_keys file' do\n  expect(chef_run).to create_template('/home/bob/.ssh/authorized_keys')\nend\n```\n\nContributing\n============\n\nPlease do not hesitate to [open an issue](https://github.com/onddo/ssh_authorized_keys-cookbook/issues/new) with any questions or problems.\n\nSee [CONTRIBUTING.md](https://github.com/onddo/ssh_authorized_keys-cookbook/blob/master/CONTRIBUTING.md).\n\nTODO\n====\n\nSee [TODO.md](https://github.com/onddo/ssh_authorized_keys-cookbook/blob/master/TODO.md).\n\n\nLicense and Author\n=====================\n\n|                      |                                          |\n|:---------------------|:-----------------------------------------|\n| **Author:**          | [Raul Rodriguez](https://github.com/raulr) (<raul@onddo.com>)\n| **Author:**          | [Xabier de Zuazo](https://github.com/zuazo) (<xabier@onddo.com>)\n| **Copyright:**       | Copyright (c) 2015, Onddo Labs, SL. (www.onddo.com)\n| **License:**         | Apache License, Version 2.0\n\n    Licensed under the Apache License, Version 2.0 (the \"License\");\n    you may not use this file except in compliance with the License.\n    You may obtain a copy of the License at\n    \n        http://www.apache.org/licenses/LICENSE-2.0\n    \n    Unless required by applicable law or agreed to in writing, software\n    distributed under the License is distributed on an \"AS IS\" BASIS,\n    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n    See the License for the specific language governing permissions and\n    limitations under the License.\n",
+  "maintainer": "Onddo Labs, Sl.",
+  "maintainer_email": "team@onddo.com",
+  "license": "Apache 2.0",
+  "platforms": {
+    "amazon": ">= 0.0.0",
+    "debian": ">= 0.0.0",
+    "centos": ">= 0.0.0",
+    "fedora": ">= 0.0.0",
+    "freebsd": ">= 0.0.0",
+    "redhat": ">= 0.0.0",
+    "suse": ">= 0.0.0",
+    "ubuntu": ">= 0.0.0"
+  },
+  "dependencies": {
+
+  },
+  "recommendations": {
+
+  },
+  "suggestions": {
+
+  },
+  "conflicting": {
+
+  },
+  "providing": {
+
+  },
+  "replacing": {
+
+  },
+  "attributes": {
+
+  },
+  "groupings": {
+
+  },
+  "recipes": {
+
+  },
+  "version": "0.1.0",
+  "source_url": "",
+  "issues_url": ""
+}

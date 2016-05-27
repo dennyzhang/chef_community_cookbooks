@@ -1,0 +1,142 @@
+{
+  "name": "hadoop_spark",
+  "description": "Installs/Configures Spark",
+  "long_description": "# Apache Spark Chef cookbook\n\n### Install Spark standalone\n\n### Install Spark yarn\n",
+  "maintainer": "Jim Dowling",
+  "maintainer_email": "jdowling@kth.se",
+  "license": "Apache v2",
+  "platforms": {
+
+  },
+  "dependencies": {
+    "kagent": ">= 0.0.0",
+    "hadoop": ">= 0.0.0",
+    "java": ">= 0.0.0",
+    "scala": ">= 0.0.0"
+  },
+  "recommendations": {
+
+  },
+  "suggestions": {
+
+  },
+  "conflicting": {
+
+  },
+  "providing": {
+
+  },
+  "replacing": {
+
+  },
+  "attributes": {
+    "java/jdk_version": {
+      "display_name": "Jdk version",
+      "type": "string",
+      "choice": [
+
+      ],
+      "calculated": false,
+      "required": "optional",
+      "recipes": [
+
+      ]
+    },
+    "hadoop_spark/user": {
+      "display_name": "Username to run spark master/worker as",
+      "type": "string",
+      "choice": [
+
+      ],
+      "calculated": false,
+      "required": "optional",
+      "recipes": [
+
+      ]
+    },
+    "hadoop_spark/group": {
+      "display_name": "Groupname to run spark master/worker as",
+      "type": "string",
+      "choice": [
+
+      ],
+      "calculated": false,
+      "required": "optional",
+      "recipes": [
+
+      ]
+    },
+    "hadoop_spark/executor_memory": {
+      "display_name": "Executor memory (e.g., 512m)",
+      "type": "string",
+      "choice": [
+
+      ],
+      "calculated": false,
+      "required": "optional",
+      "recipes": [
+
+      ]
+    },
+    "hadoop_spark/driver_memory": {
+      "display_name": "Driver memory (e.g., 1g)",
+      "type": "string",
+      "choice": [
+
+      ],
+      "calculated": false,
+      "required": "optional",
+      "recipes": [
+
+      ]
+    },
+    "hadoop_spark/eventlog_enabled": {
+      "display_name": "Eventlog enabled (true|false)",
+      "type": "string",
+      "choice": [
+
+      ],
+      "calculated": false,
+      "required": "optional",
+      "recipes": [
+
+      ]
+    },
+    "hadoop_spark/worker/cleanup/enabled": {
+      "display_name": "Spark standalone worker cleanup enabled (true|false)",
+      "type": "string",
+      "choice": [
+
+      ],
+      "calculated": false,
+      "required": "optional",
+      "recipes": [
+
+      ]
+    },
+    "hadoop_spark/version": {
+      "display_name": "Spark version (e.g., 1.4.1 or 1.5.2)",
+      "type": "string",
+      "choice": [
+
+      ],
+      "calculated": false,
+      "required": "optional",
+      "recipes": [
+
+      ]
+    }
+  },
+  "groupings": {
+
+  },
+  "recipes": {
+    "install": "Installs Spark binaries",
+    "master": "Starts a Spark master",
+    "worker": "Starts a Spark worker",
+    "yarn": "Install for yarn"
+  },
+  "version": "0.1.0",
+  "source_url": "",
+  "issues_url": ""
+}

@@ -1,0 +1,12 @@
+##-------------------------------------------------------------------
+# Copyright 2015, DennyZhang.com
+## File : check_logfile.cfg.erb
+## Author : <denny@dennyzhang.com>
+## Description : NRPE Nagios Checks configuration
+## --
+## Created : <2014-9-11>
+## Updated: Time-stamp: <2016-04-05 09:45:01>
+##-------------------------------------------------------------------
+# NRPE configurations#
+
+command[check_apache_log]=<%= @nagios_plugins %>/check_logfiles -f /etc/nagios/log_cfg/apache_log.cfg
