@@ -4,7 +4,7 @@ maintainer_email 'denny@dennyzhang.com'
 license 'All rights reserved'
 description 'Chef cookbook to install and setup protractor'
 long_description IO.read(File.join(File.dirname(__FILE__), 'README.md'))
-version '0.1.9'
+version '0.2.0'
 
 supports 'arch'
 supports 'centos'
