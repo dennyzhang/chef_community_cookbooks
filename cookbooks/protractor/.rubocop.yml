@@ -1,5 +1,6 @@
 AllCops:
   Excludes:
+    - 'test/integration/default/serverspec/server_spec.rb'
 
 Metrics/LineLength:
   Max: 90

@@ -24,7 +24,6 @@ provisioner:
   require_chef_omnibus: 12.6.0
   client_rb:
       file_cache_path: "/var/chef/cache"
-      audit_mode: :enabled
 
 platforms:
   - name: ubuntu-14.04
