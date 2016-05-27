@@ -1,3 +1,4 @@
+# -*- encoding: utf-8 -*-
 case node['platform_family']
 when 'debian'
   default['nagios']['apache_name'] = 'apache2'

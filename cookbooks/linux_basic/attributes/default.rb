@@ -1,3 +1,4 @@
+# -*- encoding: utf-8 -*-
 default['basic']['download_dir'] = '/root/download'
 default['basic']['security'] = 'enforcing'
 

@@ -1,3 +1,4 @@
+# -*- encoding: utf-8 -*-
 #
 # Cookbook Name:: nagios3
 # Recipe:: default
