@@ -15,6 +15,13 @@ if node['general_security']['ssh_disable_passwd_login'] == 'true'
     action :run
     only_if 'grep "PasswordAuthentication yes" /etc/ssh/sshd_config'
   end
+
+  execute 'SSH explictly disable password login' do
+    command 'sed -i "s/^#PasswordAuthentication no$/PasswordAuthentication no/g" '\
+            '/etc/ssh/sshd_config'
+    action :run
+    only_if 'grep "^#PasswordAuthentication no$" /etc/ssh/sshd_config'
+  end
 end
 
 if node['general_security']['ssh_disable_root_login'] == 'true'
@@ -23,6 +30,13 @@ if node['general_security']['ssh_disable_root_login'] == 'true'
             '/etc/ssh/sshd_config'
     action :run
     only_if 'grep "PermitRootLogin yes" /etc/ssh/sshd_config'
+  end
+
+  execute 'SSH explicty disable root login' do
+    command 'sed -i "s/^#PermitRootLogin without-password$/PermitRootLogin without-password/g" '\
+            '/etc/ssh/sshd_config'
+    action :run
+    only_if 'grep "^#PermitRootLogin without-password$" /etc/ssh/sshd_config'
   end
 end
 
