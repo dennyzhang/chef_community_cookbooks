@@ -36,6 +36,6 @@ suites:
     attributes:
         {general_security:
                 {ssh_disable_passwd_login: 'true',
-                ssh_disable_root_login: 'false'
+                ssh_disable_root_login: 'true'
                 }
         }
