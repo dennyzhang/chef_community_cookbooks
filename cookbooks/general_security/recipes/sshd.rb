@@ -33,8 +33,8 @@ if node['general_security']['ssh_disable_root_login'] == 'true'
   end
 
   execute 'SSH explicty disable root login' do
-    command 'sed -i "s/^#PermitRootLogin without-password$/PermitRootLogin without-password/g" '\
-            '/etc/ssh/sshd_config'
+    command 'sed -i "s/^#PermitRootLogin without-password$/PermitRootLogin ' \
+            'without-password/g" /etc/ssh/sshd_config'
     action :run
     only_if 'grep "^#PermitRootLogin without-password$" /etc/ssh/sshd_config'
   end

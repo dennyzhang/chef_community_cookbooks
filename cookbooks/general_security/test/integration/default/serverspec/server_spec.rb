@@ -6,8 +6,11 @@ require 'json'
 set :backend, :exec
 
 chef_data = JSON.parse(IO.read('/tmp/kitchen/dna.json'))
-ssh_disable_passwd_login = chef_data.fetch('general_security').fetch('ssh_disable_passwd_login')
-ssh_disable_root_login = chef_data.fetch('general_security').fetch('ssh_disable_root_login')
+ssh_disable_passwd_login = \
+chef_data.fetch('general_security').fetch('ssh_disable_passwd_login')
+
+ssh_disable_root_login = \
+chef_data.fetch('general_security').fetch('ssh_disable_root_login')
 
 if ssh_disable_passwd_login == 'true'
   describe file('/etc/ssh/sshd_config') do
