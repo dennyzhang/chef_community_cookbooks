@@ -16,6 +16,8 @@ Usage
 -----
 Use the cookbook by `recipe[chef_changereport_handler]`.
 
+Check report: /root/chef_update/*.txt
+
 Attributes List
 ---------------
 * `node['chef_changereport_handler']['working_dir']` - Working directory for generated report and chef handler
