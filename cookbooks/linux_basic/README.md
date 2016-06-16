@@ -33,7 +33,7 @@ Attributes List
 
 License & Authors
 -----------------
-- Author:: DennyZhang001 <denny@dennyzhang.com>
+- Author:: DennyZhang <denny@dennyzhang.com>
 - Copyright:: 2015, http://DennyZhang.com
 
 ```text

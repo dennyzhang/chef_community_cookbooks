@@ -1,24 +1,20 @@
-general_security Cookbook
+devops_basic Cookbook
 ================
+[![Build Status](https://travis-ci.org/DennyZhang/devops_basic.svg?branch=master)](https://travis-ci.org/DennyZhang/devops_basic)
+Basic DevOps setup:
+- Create directories
+- Download general scripts
+- Install basic packages
+- Check OS hardware resource
+- tc
 
 Requirements
 ------------
 ### Platform
 - Debian/Ubuntu
-- RHEL/CentOS/Scientific
-- Fedora
 
 Recipes
 -------
-* default
-
-Usage
------
-
-Enable by `recipe[general_security]`.
-
-Attributes List
----------------
 
 License & Authors
 -----------------
