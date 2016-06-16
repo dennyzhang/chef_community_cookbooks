@@ -9,14 +9,14 @@
 #
 include_recipe 'apt::default'
 
-%w(lsof inotify-tools telnet tar tree vim).each do |x|
+%w(lsof curl wget inotify-tools bc telnet tar tree vim).each do |x|
   package x do
     action :install
     not_if "dpkg -l #{x} | grep -E '^ii'"
   end
 end
 
-%w(curl git tmux syslinux bc python-pip).each do |x|
+%w(git tmux syslinux python-pip).each do |x|
   package x do
     action :install
     not_if "dpkg -l #{x} | grep -E '^ii'"
