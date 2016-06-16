@@ -39,7 +39,7 @@ remote_file '/opt/devops/bin/enforce_all_nagios_check.sh' do
   retries 3
 end
 
-# TODO: use fixed version and checksum mechansim
+# TODO: use checksum mechansim to avoid re-download
 remote_file '/opt/devops/bin/wait_for.sh' do
   source "#{download_link_prefix}/" \
          'bash/wait_for/wait_for.sh'
