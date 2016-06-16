@@ -17,9 +17,9 @@ free_disk = node['devops_basic']['os_check']['free_disk_gb']
 # Check OS version
 os_version = "#{node['platform']}-#{node['platform_version']}"
 supported_os_list = node['devops_basic']['supported_os_list']
-if ! supported_os_list.include? os_version
+unless supported_os_list.include? os_version
   Chef::Application.fatal!("Current OS version is #{os_version}. " \
-                           "Supported OS versions: #{supported_os_list.join(",")}")
+                           "Supported OS versions: #{supported_os_list.join(',')}")
 end
 
 # Check dns and outbound network

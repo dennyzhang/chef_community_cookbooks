@@ -27,10 +27,13 @@ end
   end
 end
 
+download_link_prefix = \
+'https://raw.githubusercontent.com/DennyZhang/devops_public/2016-06-16'
+
 # TODO: change location to /opt/devops/bin/
 remote_file '/usr/local/bin/enforce_all_nagios_check.sh' do
-  source 'https://raw.githubusercontent.com/DennyZhang/' \
-         'enforce_all_nagios_check/master/enforce_all_nagios_check.sh'
+  source "#{download_link_prefix}/" \
+         'bash/enforce_all_nagios_check/master/enforce_all_nagios_check.sh'
   owner 'root'
   group 'root'
   mode '0755'
@@ -39,8 +42,8 @@ end
 
 # TODO: use fixed version and checksum mechansim
 remote_file '/opt/devops/bin/wait_for.sh' do
-  source 'https://raw.githubusercontent.com/DennyZhang/' \
-         'devops_public/master/bash/wait_for/wait_for.sh'
+  source "#{download_link_prefix}/" \
+         'bash/wait_for/wait_for.sh'
   owner 'root'
   group 'root'
   mode '0755'
