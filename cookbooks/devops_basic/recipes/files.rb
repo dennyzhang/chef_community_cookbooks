@@ -30,8 +30,7 @@ end
 download_link_prefix = \
 'https://raw.githubusercontent.com/DennyZhang/devops_public/2016-06-16'
 
-# TODO: change location to /opt/devops/bin/
-remote_file '/usr/local/bin/enforce_all_nagios_check.sh' do
+remote_file '/opt/devops/bin/enforce_all_nagios_check.sh' do
   source "#{download_link_prefix}/" \
          'bash/enforce_all_nagios_check/master/enforce_all_nagios_check.sh'
   owner 'root'
@@ -50,27 +49,9 @@ remote_file '/opt/devops/bin/wait_for.sh' do
   retries 3
 end
 
-remote_file '/opt/devops/bin/manage_all_services.sh' do
-  source 'https://raw.githubusercontent.com/DennyZhang/' \
-         'devops_public/master/bash/manage_all_services/manage_all_services.sh'
-  owner 'root'
-  group 'root'
-  mode '0755'
-  retries 3
-end
-
-remote_file '/opt/devops/bin/free_cache.sh' do
-  source 'https://raw.githubusercontent.com/DennyZhang/' \
-         'devops_public/master/bash/free_cache.sh'
-  owner 'root'
-  group 'root'
-  mode '0755'
-  retries 3
-end
-
 remote_file '/opt/devops/bin/create_loop_device.sh' do
-  source 'https://raw.githubusercontent.com/DennyZhang/' \
-         'devops_public/master/bash/create_loop_device.sh'
+  source "#{download_link_prefix}/" \
+         'bash/create_loop_device.sh'
   owner 'root'
   group 'root'
   mode '0755'
@@ -78,8 +59,26 @@ remote_file '/opt/devops/bin/create_loop_device.sh' do
 end
 
 remote_file '/opt/devops/bin/disable_oom.sh' do
-  source 'https://raw.githubusercontent.com/DennyZhang/' \
-         'devops_public/master/bash/disable_oom.sh'
+  source "#{download_link_prefix}/" \
+         'bash/disable_oom.sh'
+  owner 'root'
+  group 'root'
+  mode '0755'
+  retries 3
+end
+
+remote_file '/opt/devops/bin/free_cache.sh' do
+  source "#{download_link_prefix}/" \
+         'bash/free_cache.sh'
+  owner 'root'
+  group 'root'
+  mode '0755'
+  retries 3
+end
+
+remote_file '/opt/devops/bin/manage_all_services.sh' do
+  source "#{download_link_prefix}/" \
+         'bash/manage_all_services/manage_all_services.sh'
   owner 'root'
   group 'root'
   mode '0755'
