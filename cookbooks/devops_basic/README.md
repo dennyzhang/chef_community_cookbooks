@@ -6,7 +6,7 @@ Basic DevOps setup:
 - Download general scripts
 - Install basic packages
 - Check OS hardware resource
-- tc
+- etc
 
 Requirements
 ------------

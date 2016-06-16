@@ -4,10 +4,9 @@ require 'serverspec'
 # Required by serverspec
 set :backend, :exec
 
-describe file('/usr/local/bin/devops_backup_file.sh') do
-  it { should be_file }
-end
-
-describe file('/usr/local/bin/devops_backup_dir.sh') do
-  it { should be_file }
+%w(/usr/local/bin/enforce_all_nagios_check.sh 
+  /opt/devops/bin/wait_for.sh).each do |x|
+  describe file(x) do
+    it { should be_file }
+  end
 end
