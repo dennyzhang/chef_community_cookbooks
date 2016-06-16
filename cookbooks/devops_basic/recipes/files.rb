@@ -32,7 +32,7 @@ download_link_prefix = node['devops_basic']['download_link_prefix']
 
 remote_file '/opt/devops/bin/enforce_all_nagios_check.sh' do
   source "#{download_link_prefix}/" \
-         'bash/enforce_all_nagios_check/master/enforce_all_nagios_check.sh'
+         'bash/enforce_all_nagios_check/enforce_all_nagios_check.sh'
   owner 'root'
   group 'root'
   mode '0755'
