@@ -27,13 +27,6 @@ end
   end
 end
 
-%w(disable_oom.sh free_cache.sh create_loop_device.sh).each do |x|
-  cookbook_file "/opt/devops/bin/#{x}" do
-    source x
-    mode 0755
-  end
-end
-
 # TODO: change location to /opt/devops/bin/
 remote_file '/usr/local/bin/enforce_all_nagios_check.sh' do
   source 'https://raw.githubusercontent.com/DennyZhang/' \
@@ -57,6 +50,33 @@ end
 remote_file '/opt/devops/bin/manage_all_services.sh' do
   source 'https://raw.githubusercontent.com/DennyZhang/' \
          'devops_public/master/bash/manage_all_services/manage_all_services.sh'
+  owner 'root'
+  group 'root'
+  mode '0755'
+  retries 3
+end
+
+remote_file '/opt/devops/bin/free_cache.sh' do
+  source 'https://raw.githubusercontent.com/DennyZhang/' \
+         'devops_public/master/bash/free_cache.sh'
+  owner 'root'
+  group 'root'
+  mode '0755'
+  retries 3
+end
+
+remote_file '/opt/devops/bin/create_loop_device.sh' do
+  source 'https://raw.githubusercontent.com/DennyZhang/' \
+         'devops_public/master/bash/create_loop_device.sh'
+  owner 'root'
+  group 'root'
+  mode '0755'
+  retries 3
+end
+
+remote_file '/opt/devops/bin/disable_oom.sh' do
+  source 'https://raw.githubusercontent.com/DennyZhang/' \
+         'devops_public/master/bash/disable_oom.sh'
   owner 'root'
   group 'root'
   mode '0755'

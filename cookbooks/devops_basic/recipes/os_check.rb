@@ -8,29 +8,31 @@
 # Apache License, Version 2.0
 #
 
-min_cpu_count = node['devops_basic']['os_precheck']['all_in_one']['min_cpu_count']
-min_memory_gb = node['devops_basic']['os_precheck']['all_in_one']['min_memory_gb']
-free_disk = node['devops_basic']['os_precheck']['all_in_one']['free_disk_gb']
+min_cpu_count = node['devops_basic']['os_check']['min_cpu_count']
+min_memory_gb = node['devops_basic']['os_check']['min_memory_gb']
+free_disk = node['devops_basic']['os_check']['free_disk_gb']
 
 # TODO: remove code duplication
 
-# TODO: define attribute for the precheck
-if node['platform'] != 'ubuntu' || \
-   node['platform_version'] != '14.04' || \
-   node['kernel']['machine'] != 'x86_64'
-  Chef::Application.fatal!('The only tested and verified OS is Ubuntu 14.04 64bits!')
+# Check OS version
+os_version = "#{node['platform']}-#{node['platform_version']}"
+supported_os_list = node['devops_basic']['supported_os_list']
+if ! supported_os_list.include? os_version
+  Chef::Application.fatal!("Current OS version is #{os_version}. " \
+                           "Supported OS versions: #{supported_os_list.join(",")}")
 end
 
-# TODO: whether to verify network
 # Check dns and outbound network
-ping_server = "www.bing.com"
-ruby_block 'Check network connectivity' do
-  block do
-    Chef::Application.fatal!("ERROR: fail to ping #{ping_server}")
+node['devops_basic']['ping_server_list'].each do |ping_server|
+  ruby_block 'Check network connectivity' do
+    block do
+      Chef::Application.fatal!("ERROR: fail to ping #{ping_server}")
+    end
+    not_if "ping -c2 #{ping_server}"
   end
-  not_if "ping -c2 #{ping_server}"
 end
 
+################################################################################
 # Check enough CPU cores
 if node['cpu']['total'] < min_cpu_count.to_i
   Chef::Application.fatal!('Low cpu: To install mdm, need at least ' + \
