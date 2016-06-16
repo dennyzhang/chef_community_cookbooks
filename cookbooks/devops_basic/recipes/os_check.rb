@@ -7,12 +7,9 @@
 #
 # Apache License, Version 2.0
 #
-
 min_cpu_count = node['devops_basic']['os_check']['min_cpu_count']
 min_memory_gb = node['devops_basic']['os_check']['min_memory_gb']
 free_disk = node['devops_basic']['os_check']['free_disk_gb']
-
-# TODO: remove code duplication
 
 # Check OS version
 os_version = "#{node['platform']}-#{node['platform_version']}"

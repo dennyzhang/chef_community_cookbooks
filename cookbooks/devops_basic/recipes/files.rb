@@ -27,8 +27,8 @@ end
   end
 end
 
-download_link_prefix = \
-'https://raw.githubusercontent.com/DennyZhang/devops_public/2016-06-16'
+# Download bash scripts from http links
+download_link_prefix = default['devops_basic']['download_link_prefix']
 
 remote_file '/opt/devops/bin/enforce_all_nagios_check.sh' do
   source "#{download_link_prefix}/" \

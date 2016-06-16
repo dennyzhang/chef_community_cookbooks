@@ -10,3 +10,7 @@ default['devops_basic']['ping_server_list'] = ['www.bing.com']
 
 # What OS version, current deployment supports
 default['devops_basic']['supported_os_list'] = ['ubuntu-14.04']
+
+# Note: In below, 2016-06-16 is repo's tag name
+default['devops_basic']['download_link_prefix'] = \
+'https://raw.githubusercontent.com/DennyZhang/devops_public/2016-06-16'
