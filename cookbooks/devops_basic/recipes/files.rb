@@ -28,7 +28,7 @@ end
 end
 
 # Download bash scripts from http links
-download_link_prefix = default['devops_basic']['download_link_prefix']
+download_link_prefix = node['devops_basic']['download_link_prefix']
 
 remote_file '/opt/devops/bin/enforce_all_nagios_check.sh' do
   source "#{download_link_prefix}/" \
