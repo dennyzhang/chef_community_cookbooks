@@ -1,6 +1,5 @@
 devops_basic Cookbook
 ================
-[![Build Status](https://travis-ci.org/DennyZhang/devops_basic.svg?branch=master)](https://travis-ci.org/DennyZhang/devops_basic)
 Basic DevOps setup:
 - Create directories
 - Download general scripts

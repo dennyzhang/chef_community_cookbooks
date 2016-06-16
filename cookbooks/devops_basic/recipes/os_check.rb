@@ -14,7 +14,22 @@ free_disk = node['devops_basic']['os_precheck']['all_in_one']['free_disk_gb']
 
 # TODO: remove code duplication
 
-# TODO: check OS version
+# TODO: define attribute for the precheck
+if node['platform'] != 'ubuntu' || \
+   node['platform_version'] != '14.04' || \
+   node['kernel']['machine'] != 'x86_64'
+  Chef::Application.fatal!('The only tested and verified OS is Ubuntu 14.04 64bits!')
+end
+
+# TODO: whether to verify network
+# Check dns and outbound network
+ping_server = "www.baidu.com"
+ruby_block 'Check network connectivity' do
+  block do
+    Chef::Application.fatal!('ERROR: fail to ping #{ping_server}')
+  end
+  not_if "ping -c2 #{ping_server}"
+end
 
 # Check enough CPU cores
 if node['cpu']['total'] < min_cpu_count.to_i

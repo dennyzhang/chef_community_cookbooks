@@ -9,6 +9,11 @@
 #
 include_recipe 'apt::default'
 
+# Locale
+node.default['locale']['lang'] = 'en_US.UTF-8'
+node.default['locale']['lc_all'] = 'en_US.UTF-8'
+include_recipe 'locale'
+
 include_recipe 'devops_basic::files'
 include_recipe 'devops_basic::packages'
 include_recipe 'devops_basic::os_check'

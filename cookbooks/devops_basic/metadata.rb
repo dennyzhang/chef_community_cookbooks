@@ -8,4 +8,5 @@ version '0.1.0'
 
 supports 'ubuntu'
 
+depends 'locale'
 depends 'apt'
