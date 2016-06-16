@@ -23,10 +23,10 @@ end
 
 # TODO: whether to verify network
 # Check dns and outbound network
-ping_server = "www.baidu.com"
+ping_server = "www.bing.com"
 ruby_block 'Check network connectivity' do
   block do
-    Chef::Application.fatal!('ERROR: fail to ping #{ping_server}')
+    Chef::Application.fatal!("ERROR: fail to ping #{ping_server}")
   end
   not_if "ping -c2 #{ping_server}"
 end

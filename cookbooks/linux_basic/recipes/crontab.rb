@@ -23,8 +23,6 @@ cron 'cron_clean_memory' do
   command '/usr/local/bin/chef_daily_clean_memory.sh'
 end
 
-#####################################################
-
 #################### backup cron ####################
 cron 'chef_backup' do
   user 'root'
