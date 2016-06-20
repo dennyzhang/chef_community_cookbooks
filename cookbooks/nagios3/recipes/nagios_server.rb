@@ -53,6 +53,13 @@ when 'debian'
     gid 'www-data'
   end
 
+  directory '/var/cache/nagios3' do
+    mode '0755'
+    owner 'nagios'
+    group 'www-data'
+    action :create
+  end
+
   # In Ubuntu, add url alias for http://$server/nagios to /nagios3
   template "/etc/#{node['nagios']['nagios_name']}/apache2.conf" do
     source 'ubuntu_nagios_apache2.conf.erb'
