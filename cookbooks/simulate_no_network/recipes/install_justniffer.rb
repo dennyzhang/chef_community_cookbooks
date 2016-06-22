@@ -1,7 +1,7 @@
 # -*- encoding: utf-8 -*-
 #
 # Cookbook Name:: simulate_no_network
-# Recipe:: default
+# Recipe:: install_justniffer
 #
 # Copyright 2015, http://DennyZhang.com
 #
