@@ -174,6 +174,7 @@ remote_file 'Download nagiosgraph Tarball' do
   path "#{node['nagios']['download_dir']}/#{nagiosgraph_tar}"
   source node['nagios']['nagiosgraph_url']
   retries 3
+  retry_delay 3
   use_last_modified true
   action :create_if_missing
   notifies :run, 'execute[Unpack nagiosgraph Tarball]', :immediately

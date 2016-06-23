@@ -37,6 +37,7 @@ remote_file '/opt/devops/bin/enforce_all_nagios_check.sh' do
   group 'root'
   mode '0755'
   retries 3
+  retry_delay 3
 end
 
 # TODO: use checksum mechansim to avoid re-download
@@ -47,6 +48,7 @@ remote_file '/opt/devops/bin/wait_for.sh' do
   group 'root'
   mode '0755'
   retries 3
+  retry_delay 3
 end
 
 remote_file '/opt/devops/bin/create_loop_device.sh' do
@@ -56,6 +58,7 @@ remote_file '/opt/devops/bin/create_loop_device.sh' do
   group 'root'
   mode '0755'
   retries 3
+  retry_delay 3
 end
 
 remote_file '/opt/devops/bin/disable_oom.sh' do
@@ -65,6 +68,7 @@ remote_file '/opt/devops/bin/disable_oom.sh' do
   group 'root'
   mode '0755'
   retries 3
+  retry_delay 3
 end
 
 remote_file '/opt/devops/bin/free_cache.sh' do
@@ -74,6 +78,7 @@ remote_file '/opt/devops/bin/free_cache.sh' do
   group 'root'
   mode '0755'
   retries 3
+  retry_delay 3
 end
 
 remote_file '/opt/devops/bin/manage_all_services.sh' do
@@ -83,4 +88,5 @@ remote_file '/opt/devops/bin/manage_all_services.sh' do
   group 'root'
   mode '0755'
   retries 3
+  retry_delay 3
 end

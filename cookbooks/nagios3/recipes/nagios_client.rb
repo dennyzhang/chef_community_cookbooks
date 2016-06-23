@@ -148,6 +148,7 @@ remote_file "#{node['nagios']['plugins_dir']}/#{proc_nagios_plugin}.sh" do
   mode '0755'
   checksum checksum
   retries 3
+  retry_delay 3
 end
 
 proc_nagios_plugin = 'check_proc_cpu'
@@ -159,6 +160,7 @@ remote_file "#{node['nagios']['plugins_dir']}/#{proc_nagios_plugin}.sh" do
   mode '0755'
   checksum checksum
   retries 3
+  retry_delay 3
 end
 
 proc_nagios_plugin = 'check_proc_fd'
@@ -170,6 +172,7 @@ remote_file "#{node['nagios']['plugins_dir']}/#{proc_nagios_plugin}.sh" do
   mode '0755'
   checksum checksum
   retries 3
+  retry_delay 3
 end
 
 %w(check_linux_stats.pl check_ip_address.sh).each do |x|
