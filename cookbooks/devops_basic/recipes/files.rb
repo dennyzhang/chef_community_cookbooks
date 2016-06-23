@@ -90,3 +90,13 @@ remote_file '/opt/devops/bin/manage_all_services.sh' do
   retries 3
   retry_delay 3
 end
+
+remote_file '/opt/devops/bin/docker_destroy.sh' do
+  source "#{download_link_prefix}/" \
+         'bash/docker_facility/docker_destroy.sh'
+  owner 'root'
+  group 'root'
+  mode '0755'
+  retries 3
+  retry_delay 3
+end
