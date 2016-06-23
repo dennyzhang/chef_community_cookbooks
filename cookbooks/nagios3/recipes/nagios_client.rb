@@ -7,8 +7,6 @@
 # Apache License, Version 2.0
 #
 
-include_recipe 'nagios3::apache'
-
 case node['platform_family']
 when 'debian'
   ['nagios-nrpe-server', 'nagios-plugins', \
@@ -20,10 +18,26 @@ when 'debian'
   end
 
   # install nagios-nrpe-plugin will install and start apache2, which is not expected
-  apt_package 'nagios-nrpe-plugin' do
-    action :install
-    notifies :stop, "service[#{node['nagios']['apache_name']}]", :immediately
-    not_if "dpkg -l nagios-nrpe-plugin | grep -E '^ii'"
+  # In nagios server
+  if !node['nagios']['server_ip'].index(node['ipaddress']).nil? || \
+     !node['nagios']['server_ip'].index(node['hostname']).nil? || \
+     !node['nagios']['server_ip'].index('localhost').nil? || \
+     !node['nagios']['server_ip'].index('127.0.0.1').nil?
+    apt_package 'nagios-nrpe-plugin' do
+      action :install
+      not_if "dpkg -l nagios-nrpe-plugin | grep -E '^ii'"
+    end
+  else
+    # in pure nagios client
+    service node['nagios']['apache_name'] do
+      action :nothing
+    end
+
+    apt_package 'nagios-nrpe-plugin' do
+      action :install
+      notifies :stop, "service[#{node['nagios']['apache_name']}]", :immediately
+      not_if "dpkg -l nagios-nrpe-plugin | grep -E '^ii'"
+    end
   end
 when 'fedora', 'rhel', 'suse'
   %w(nagios-plugins-nrpe nagios-plugins-all nrpe perl-Sys-Statistics-Linux).each do |x|
