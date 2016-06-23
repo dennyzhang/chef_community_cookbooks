@@ -7,6 +7,8 @@
 # Apache License, Version 2.0
 #
 
+include_recipe 'nagios3::apache'
+
 case node['platform_family']
 when 'debian'
   ['nagios-nrpe-server', 'nagios-plugins', \
@@ -17,17 +19,11 @@ when 'debian'
     end
   end
 
-  include_recipe 'apache2'
-
-  service node['nagios']['apache_name'] do
-    action :nothing
-  end
-
   # install nagios-nrpe-plugin will install and start apache2, which is not expected
   apt_package 'nagios-nrpe-plugin' do
     action :install
     notifies :stop, "service[#{node['nagios']['apache_name']}]", :immediately
-    not_if "dpkg -l #{x} | grep -E '^ii'"
+    not_if "dpkg -l nagios-nrpe-plugin | grep -E '^ii'"
   end
 when 'fedora', 'rhel', 'suse'
   %w(nagios-plugins-nrpe nagios-plugins-all nrpe perl-Sys-Statistics-Linux).each do |x|
