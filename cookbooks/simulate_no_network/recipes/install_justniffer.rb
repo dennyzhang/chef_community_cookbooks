@@ -8,4 +8,6 @@
 # Apache License, Version 2.0
 #
 
-# TODO
+# TODO: install justniffer
+
+# TODO: enable justniffer to record http requests

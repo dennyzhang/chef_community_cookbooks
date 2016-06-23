@@ -4,7 +4,7 @@ maintainer_email 'denny@dennyzhang.com'
 license 'All rights reserved'
 description 'Setup nagios3 with common checks predefined'
 long_description IO.read(File.join(File.dirname(__FILE__), 'README.md'))
-version '1.7.3'
+version '1.7.4'
 
 supports 'arch'
 supports 'centos'

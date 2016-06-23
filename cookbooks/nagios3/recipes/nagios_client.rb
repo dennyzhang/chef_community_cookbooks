@@ -9,12 +9,25 @@
 
 case node['platform_family']
 when 'debian'
-  ['nagios-nrpe-server', 'nagios-plugins', 'nagios-nrpe-plugin', \
+  ['nagios-nrpe-server', 'nagios-plugins', \
    'nagios-plugins-basic', 'libsys-statistics-linux-perl'].each do |x|
     apt_package x do
       action :install
       not_if "dpkg -l #{x} | grep -E '^ii'"
     end
+  end
+
+  include_recipe 'apache2'
+
+  service node['nagios']['apache_name'] do
+    action :nothing
+  end
+
+  # install nagios-nrpe-plugin will install and start apache2, which is not expected
+  apt_package 'nagios-nrpe-plugin' do
+    action :install
+    notifies :stop, "service[#{node['nagios']['apache_name']}]", :immediately
+    not_if "dpkg -l #{x} | grep -E '^ii'"
   end
 when 'fedora', 'rhel', 'suse'
   %w(nagios-plugins-nrpe nagios-plugins-all nrpe perl-Sys-Statistics-Linux).each do |x|
