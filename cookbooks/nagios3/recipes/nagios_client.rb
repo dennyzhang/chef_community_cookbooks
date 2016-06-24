@@ -141,9 +141,9 @@ end
 download_prefix = 'https://raw.githubusercontent.com/DennyZhang/devops_public/tag_v1'
 
 nagios_plugin_list = \
-['check_proc_mem:588348d310019b4733befc4164ccbb207aefcc6422d4cdce76c4ac681efeb76d',
- 'check_proc_cpu:575dcde8cf3de86ddb6df066aa218fb443d25a858ce4d4171e0d8b21f87e089b',
- 'check_proc_fd:008821b5c31fa15c4ba624580a65e72e0cfab32e273c84cace478dde586db976']
+['check_proc_mem:d9ccd86e1fcd4aee631bdf7a213d5eda93ea1cb3579fc8bb83ad2025f1b59220',
+ 'check_proc_cpu:f874bd1721c38cb191b84998a4feded999ba6830f18e7aa1771ebdc1c398adab',
+ 'check_proc_fd:fb2e8b19094d5b6c609b03fc2c93054b6a213b9074fa9305b71673a36588451c']
 
 nagios_plugin_list.each do |plugin|
   l = plugin.split(':')
