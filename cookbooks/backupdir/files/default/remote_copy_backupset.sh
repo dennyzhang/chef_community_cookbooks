@@ -5,14 +5,16 @@
 ## Description :
 ## --
 ## Created : <2014-12-05>
-## Updated: Time-stamp: <2016-04-05 09:45:02>
+## Updated: Time-stamp: <2016-06-24 20:10:42>
 ##-------------------------------------------------------------------
+# TDOO: move to common library
 function log() {
-    local msg=${1?}
-    echo -ne `date +['%Y-%m-%d %H:%M:%S']`" $msg\n"
-
+    local msg=$*
+    date_timestamp=$(date +['%Y-%m-%d %H:%M:%S'])
+    echo -ne "$date_timestamp $msg\n"
+    
     if [ -n "$LOG_FILE" ]; then
-        echo -ne `date +['%Y-%m-%d %H:%M:%S']`" $msg\n" >> $LOG_FILE
+        echo -ne "$date_timestamp $msg\n" >> "$LOG_FILE"
     fi
 }
 
@@ -41,13 +43,13 @@ function nfs_backup() {
     backup_date=${1:-""}
     dst_dir=$(get_dst_dir)
     log "mkdir $dst_dir, if it's missing"
-    [ -d $dst_dir ] || mkdir -p $dst_dir
+    [ -d "$dst_dir" ] || mkdir -p "$dst_dir"
 
     log "Perform remote copy"
     if [ -n "$backup_date" ]; then
-        find /data/backup -name "*$backup_date*.gz" | xargs -i cp {} $dst_dir/
+        find /data/backup -name "*$backup_date*.gz" | xargs -i cp {} "$dst_dir/"
     else
-        find /data/backup -name '*.gz' -mtime -1 | xargs -i cp {} $dst_dir/
+        find /data/backup -name '*.gz' -mtime -1 | xargs -i cp {} "$dst_dir/"
     fi
 }
 
@@ -61,7 +63,7 @@ function scp_backup() {
     dst_dir=$(get_dst_dir)
 
     log "mkdir $dst_dir, if it's missing"
-    ssh $ssh_user@$ssh_server "[ -d $dst_dir ] || mkdir -p $dst_dir"
+    ssh "$ssh_user@$ssh_server" "[ -d $dst_dir ] || mkdir -p $dst_dir"
 
     log "Perform remote copy"
     if [ -n "$backup_date" ]; then
@@ -90,14 +92,14 @@ if [ -f /data/fluig_state/fluig.rc ]; then
 fi
 
 if [ "$backup_copy_method" = "nfs" ]; then
-    nfs_backup $backup_date
+    nfs_backup "$backup_date"
 else
     if [ "$backup_copy_method" = "scp" ]; then
         if [ -z "$ssh_server" ]; then
             log "ERROR: When backup with scp, ssh_server parameter must be specified"
             exit 1
         fi
-        scp_backup $ssh_server $backup_date
+        scp_backup "$ssh_server" "$backup_date"
     else
         log "ERROR: backup_copy_method should be specified either nfs or scp"
         exit 1

@@ -5,16 +5,16 @@
 ## Description : Backup directory and tar it with timestamp
 ## --
 ## Created : <2015-01-22>
-## Updated: Time-stamp: <2016-04-05 09:45:02>
+## Updated: Time-stamp: <2016-06-24 20:13:21>
 ##-------------------------------------------------------------------
-function log()
-{
-    local msg=${1?}
-
-    echo -ne `date +['%Y-%m-%d %H:%M:%S']`" $msg\n"
-
+# TDOO: move to common library
+function log() {
+    local msg=$*
+    date_timestamp=$(date +['%Y-%m-%d %H:%M:%S'])
+    echo -ne "$date_timestamp $msg\n"
+    
     if [ -n "$LOG_FILE" ]; then
-        echo -ne `date +['%Y-%m-%d %H:%M:%S']`" $msg\n" >> $LOG_FILE
+        echo -ne "$date_timestamp $msg\n" >> "$LOG_FILE"
     fi
 }
 
@@ -22,15 +22,15 @@ function tar_dir()
 {
     local dir=${1?}
     local tar_file=${2?}
-    working_dir=`dirname $dir`
-    cd $working_dir
-    log "tar -zcf $tar_file `basename $dir`"
-    tar -zcf $tar_file `basename $dir`
+    working_dir=$(dirname "$dir")
+    cd "$working_dir"
+    log "tar -zcf $tar_file $working_dir"
+    tar -zcf "$tar_file" "$working_dir"
 }
 
 function current_time()
 {
-    echo `date '+%Y-%m-%d-%H%M%S'`
+    date '+%Y-%m-%d-%H%M%S'
 }
 
 function ensure_is_root() {
@@ -54,8 +54,8 @@ function shell_exit() {
 function get_dst_dir() {
     local service_name=${1?}
     local dir="/data/backup/$service_name/${timestamp}"
-    [ -d $dir ] || mkdir -p $dir
-    echo $dir
+    [ -d "$dir" ] || mkdir -p "$dir"
+    echo "$dir"
 }
 
 function clean_old_backup() {
@@ -84,10 +84,10 @@ function backup_config() {
         "/etc/httpd" "/etc/libapache2-mod-jk"
         "/cloudpass/backend/build/config")
     for config_dir in ${config_dir_list[*]}; do
-        [ ! -d $config_dir ] || /bin/cp -r $config_dir $dst_dir
+        [ ! -d $config_dir ] || /bin/cp -r $config_dir "$dst_dir"
     done
 
-    tar_dir $dst_dir ${dst_dir}_config.tar.gz && rm -rf $dst_dir
+    tar_dir "$dst_dir" "${dst_dir}_config.tar.gz" && rm -rf "$dst_dir"
 }
 
 # Example:

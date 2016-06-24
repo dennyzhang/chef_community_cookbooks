@@ -5,23 +5,23 @@
 ## Description : If given file is changed, do a backup; Otherwise skip
 ## --
 ## Created : <2015-01-22>
-## Updated: Time-stamp: <2016-04-05 09:45:02>
+## Updated: Time-stamp: <2016-06-24 20:15:26>
 ##-------------------------------------------------------------------
-function log()
-{
-    local msg=${1?}
-
-    echo -ne `date +['%Y-%m-%d %H:%M:%S']`" $msg\n"
-
+# TDOO: move to common library
+function log() {
+    local msg=$*
+    date_timestamp=$(date +['%Y-%m-%d %H:%M:%S'])
+    echo -ne "$date_timestamp $msg\n"
+    
     if [ -n "$LOG_FILE" ]; then
-        echo -ne `date +['%Y-%m-%d %H:%M:%S']`" $msg\n" >> $LOG_FILE
+        echo -ne "$date_timestamp $msg\n" >> "$LOG_FILE"
     fi
 }
 
 function backup_file() {
     local src_file=${1?}
-    local base_filename=$(basename $src_file)
-    local src_modify_time=$(stat -c "%Y" $src_file)
+    local base_filename=$(basename "$src_file")
+    # local src_modify_time=$(stat -c "%Y" "$src_file")
 
     local dst_dir="/data/backup/$base_filename"
     local dst_file="$dst_dir/$base_filename"
@@ -32,18 +32,18 @@ function backup_file() {
 
     log "Compare modify time, to see whether need to backup $src_file"
 
-    if [ ! -f $dst_file ]; then
+    if [ ! -f "$dst_file" ]; then
         log "Copy to $dst_file,and compress as $dst_file_gz"
-        /bin/cp $src_file $dst_file
-        echo $new_cksum > $dst_dir/cksum.txt
-        tar_dir $dst_file $dst_file_gz
+        /bin/cp "$src_file" "$dst_file"
+        echo "$new_cksum" > "$dst_dir/cksum.txt"
+        tar_dir "$dst_file" "$dst_file_gz"
     else
         old_cksum=$(cat $dst_dir/cksum.txt)
         if [ $new_cksum != $old_cksum ]; then
             log "Update $dst_file, and compress as $dst_file_gz"
-            /bin/cp $src_file $dst_file
-            echo $new_cksum > $dst_dir/cksum.txt
-            tar_dir $dst_file $dst_file_gz
+            /bin/cp "$src_file" "$dst_file"
+            echo "$new_cksum" > "$dst_dir/cksum.txt"
+            tar_dir "$dst_file" "$dst_file_gz"
         fi
     fi
 }
@@ -57,29 +57,18 @@ function ensure_is_root() {
     fi
 }
 
-function log()
-{
-    local msg=${1?}
-
-    echo -ne `date +['%Y-%m-%d %H:%M:%S']`" $msg\n"
-
-    if [ -n "$LOG_FILE" ]; then
-        echo -ne `date +['%Y-%m-%d %H:%M:%S']`" $msg\n" >> $LOG_FILE
-    fi
-}
-
 function tar_dir()
 {
     local dir=${1?}
     local tar_file=${2?}
-    working_dir=`dirname $dir`
-    cd $working_dir
-    tar -zcf $tar_file `basename $dir`
+    working_dir=$(dirname "$dir")
+    cd "$working_dir"
+    tar -zcf "$tar_file" "$working_dir"
 }
 
 function current_time()
 {
-    echo `date '+%Y-%m-%d-%H%M%S'`
+    date '+%Y-%m-%d-%H%M%S'
 }
 
 ####################################################################
@@ -89,8 +78,8 @@ ensure_is_root
 # /usr/local/bin/backup_file.sh /data/somecritical.dat
 src_file=${1?"which file to monitor and backup"}
 timestamp=$(current_time)
-if [ -f $src_file ]; then
-    backup_file $src_file
+if [ -f "$src_file" ]; then
+    backup_file "$src_file"
 else
     log "Warning: $src_file doesn't exist"
 fi
