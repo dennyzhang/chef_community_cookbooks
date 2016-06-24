@@ -138,7 +138,6 @@ directory node['nagios']['plugins_dir'] do
 end
 
 # specify file checksum to avoid external network request
-nagios_plugin = 'check_proc_mem'
 download_prefix = 'https://raw.githubusercontent.com/DennyZhang/devops_public/2016-06-23'
 
 nagios_plugin_list = \
