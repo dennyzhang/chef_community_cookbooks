@@ -141,33 +141,25 @@ end
 nagios_plugin = 'check_proc_mem'
 download_prefix = 'https://raw.githubusercontent.com/DennyZhang/devops_public/2016-06-23'
 
-remote_file "#{node['nagios']['plugins_dir']}/#{nagios_plugin}.sh" do
-  source "#{download_prefix}/nagios_plugins/#{nagios_plugin}/#{nagios_plugin}.sh"
-  owner 'nagios'
-  group 'nagios'
-  mode '0755'
-  retries 3
-  retry_delay 3
-end
+nagios_plugin_list = \
+['check_proc_mem:588348d310019b4733befc4164ccbb207aefcc6422d4cdce76c4ac681efeb76d',
+ 'check_proc_cpu:575dcde8cf3de86ddb6df066aa218fb443d25a858ce4d4171e0d8b21f87e089b',
+ 'check_proc_fd:008821b5c31fa15c4ba624580a65e72e0cfab32e273c84cace478dde586db976']
 
-nagios_plugin = 'check_proc_cpu'
-remote_file "#{node['nagios']['plugins_dir']}/#{nagios_plugin}.sh" do
-  source "#{download_prefix}/nagios_plugins/#{nagios_plugin}/#{nagios_plugin}.sh"
-  owner 'nagios'
-  group 'nagios'
-  mode '0755'
-  retries 3
-  retry_delay 3
-end
+nagios_plugin_list.each do |plugin|
+  l = plugin.split(':')
+  plugin_name = l[0]
+  file_checksum = l[1]
 
-nagios_plugin = 'check_proc_fd'
-remote_file "#{node['nagios']['plugins_dir']}/#{nagios_plugin}.sh" do
-  source "#{download_prefix}/nagios_plugins/#{nagios_plugin}/#{nagios_plugin}.sh"
-  owner 'nagios'
-  group 'nagios'
-  mode '0755'
-  retries 3
-  retry_delay 3
+  remote_file "#{node['nagios']['plugins_dir']}/#{plugin_name}.sh" do
+    source "#{download_prefix}/nagios_plugins/#{plugin_name}/#{plugin_name}.sh"
+    owner 'nagios'
+    group 'nagios'
+    mode '0755'
+    checksum file_checksum
+    retries 3
+    retry_delay 3
+  end
 end
 
 %w(check_linux_stats.pl check_ip_address.sh).each do |x|
