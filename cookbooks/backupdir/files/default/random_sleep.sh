@@ -5,7 +5,7 @@
 ## Description :
 ## --
 ## Created : <2014-12-05>
-## Updated: Time-stamp: <2016-06-24 20:09:16>
+## Updated: Time-stamp: <2016-06-24 20:46:48>
 ##-------------------------------------------------------------------
 # TDOO: move to common library
 function log() {
@@ -22,7 +22,7 @@ function sleep_random_seconds(){
     # Avoid all crontab from different machines run the same at the same time
     max_seconds=${1?}
     if [ "$max_seconds" -ne 0 ]; then
-        seconds=$((RANDOM % $max_seconds))
+        seconds=$((RANDOM % max_seconds))
         if [ $seconds -ne 0 ]; then
             log "sleep $seconds"
             sleep $seconds

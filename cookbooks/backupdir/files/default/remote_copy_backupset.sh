@@ -5,7 +5,7 @@
 ## Description :
 ## --
 ## Created : <2014-12-05>
-## Updated: Time-stamp: <2016-06-24 20:41:00>
+## Updated: Time-stamp: <2016-06-24 20:48:15>
 ##-------------------------------------------------------------------
 # TDOO: move to common library
 function log() {
@@ -47,9 +47,9 @@ function nfs_backup() {
 
     log "Perform remote copy"
     if [ -n "$backup_date" ]; then
-        find /data/backup -name "*$backup_date*.gz" | xargs -i cp {} "$dst_dir/"
+        find /data/backup -name "*$backup_date*.gz" -print0 | xargs -0 -i cp {} "$dst_dir/"
     else
-        find /data/backup -name '*.gz' -mtime -1 | xargs -i cp {} "$dst_dir/"
+        find /data/backup -name '*.gz' -mtime -1 -print0 | xargs -0 -i cp {} "$dst_dir/"
     fi
 }
 
@@ -67,9 +67,9 @@ function scp_backup() {
 
     log "Perform remote copy"
     if [ -n "$backup_date" ]; then
-        find /data/backup -name "*$backup_date*.gz" | xargs -i scp -i "$ssh_keyfile" {} "$ssh_user@$ssh_server:/$dst_dir/"
+        find /data/backup -name "*$backup_date*.gz" -print0 | xargs -0 -i scp -i "$ssh_keyfile" {} "$ssh_user@$ssh_server:/$dst_dir/"
     else
-        find /data/backup -name '*.gz' -mtime -1 | xargs -i scp -i "$ssh_keyfile" {} "$ssh_user@$ssh_server:/$dst_dir/"
+        find /data/backup -name '*.gz' -mtime -1 -print0 | xargs -0 -i scp -i "$ssh_keyfile" {} "$ssh_user@$ssh_server:/$dst_dir/"
     fi
 }
 
