@@ -137,8 +137,8 @@ directory node['nagios']['plugins_dir'] do
   action :create
 end
 
+# specify file checksum to avoid external network request
 nagios_plugin = 'check_proc_mem'
-checksum = '1c4a4f5d624b911ec38bf8ec920a58e19c106ee3f063b529a226e536df6a6f64'
 download_prefix = 'https://raw.githubusercontent.com/DennyZhang/devops_public/2016-06-23'
 
 remote_file "#{node['nagios']['plugins_dir']}/#{nagios_plugin}.sh" do
@@ -146,31 +146,26 @@ remote_file "#{node['nagios']['plugins_dir']}/#{nagios_plugin}.sh" do
   owner 'nagios'
   group 'nagios'
   mode '0755'
-  checksum checksum
   retries 3
   retry_delay 3
 end
 
 nagios_plugin = 'check_proc_cpu'
-checksum = '710483595cd4786dd3477aa13584cd842b8a761b51d04f1d5c680756b12696e1'
 remote_file "#{node['nagios']['plugins_dir']}/#{nagios_plugin}.sh" do
   source "#{download_prefix}/nagios_plugins/#{nagios_plugin}/#{nagios_plugin}.sh"
   owner 'nagios'
   group 'nagios'
   mode '0755'
-  checksum checksum
   retries 3
   retry_delay 3
 end
 
 nagios_plugin = 'check_proc_fd'
-checksum = '35875219b953257dcc1774ce51e7a0fe1b5d58cf7857e2ea1171676c5a7ce67b'
 remote_file "#{node['nagios']['plugins_dir']}/#{nagios_plugin}.sh" do
   source "#{download_prefix}/nagios_plugins/#{nagios_plugin}/#{nagios_plugin}.sh"
   owner 'nagios'
   group 'nagios'
   mode '0755'
-  checksum checksum
   retries 3
   retry_delay 3
 end
