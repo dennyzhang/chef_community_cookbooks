@@ -13,7 +13,7 @@ driver_config:
   tls_cacert: <%= ENV.fetch('TLS_FOLDER', "../my_tls") %>/ca.pem
   tls_cert: <%= ENV.fetch('TLS_FOLDER', "../my_tls") %>/cert.pem
   tls_key: <%= ENV.fetch('TLS_FOLDER', "../my_tls") %>/key.pem
-  provision_command: "curl -L https://raw.githubusercontent.com/DennyZhang/devops_public/master/chef/chef_kitchen_provision.sh | bash -e"
+  provision_command: "curl -L https://raw.githubusercontent.com/DennyZhang/devops_public/2016-06-23/chef/chef_kitchen_provision.sh | bash -e"
   <% if ENV.fetch('DOCKER_PORT_FORWARD_PREFIX', "") != "" %>
   forward:
   - <%= ENV.fetch('DOCKER_PORT_FORWARD_PREFIX', "21") %>080:80

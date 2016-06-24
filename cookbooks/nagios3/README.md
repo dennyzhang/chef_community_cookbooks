@@ -1,12 +1,8 @@
 nagios3 Cookbook
 ================
-[![Build Status](https://travis-ci.org/DennyZhang/nagios3.svg?branch=master)](https://travis-ci.org/DennyZhang/nagios3)
 Install and Configure nagios3 monitor with nagiosgraph and common checks predefined
 
 No special configuration is required to enforce the basic checks.
-
-![](https://github.com/DennyZhang/nagios3/raw/master/nagios1.png)
-![](https://github.com/DennyZhang/nagios3/raw/master/nagios2.png)
 
 Requirements
 ------------

@@ -35,14 +35,6 @@ end
   end
 end
 
-# https://github.com/DennyZhang/S3Sync
-remote_file '/opt/mdm/bin/s3sync.sh' do
-  source 'https://raw.githubusercontent.com/DennyZhang/S3Sync/master/s3sync.sh'
-  mode '0755'
-  retries 3
-  retry_delay 3
-end
-
 # TODO: s3sync.sh backup /data/backup/archive denny-bucket2
 #        s3backup/dir1 /opt/dir1/config/s3.metadata
 # # #####################################################

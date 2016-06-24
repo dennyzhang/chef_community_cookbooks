@@ -1,6 +1,5 @@
 systempatch Cookbook
 ================
-[![Build Status](https://travis-ci.org/DennyZhang/systempatch.svg?branch=master)](https://travis-ci.org/DennyZhang/systempatch)
 Patch linux system for critical issues
 
 Requirements

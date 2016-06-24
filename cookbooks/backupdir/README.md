@@ -1,6 +1,5 @@
 backupdir Cookbook
 ================
-[![Build Status](https://travis-ci.org/DennyZhang/backupdir.svg?branch=master)](https://travis-ci.org/DennyZhang/backupdir)
 Backup directories by a crontab and do a remote copy
 
 Requirements

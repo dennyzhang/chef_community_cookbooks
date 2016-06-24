@@ -137,12 +137,12 @@ directory node['nagios']['plugins_dir'] do
   action :create
 end
 
-proc_nagios_plugin = 'check_proc_mem'
+nagios_plugin = 'check_proc_mem'
 checksum = '1c4a4f5d624b911ec38bf8ec920a58e19c106ee3f063b529a226e536df6a6f64'
-git_url = 'https://raw.githubusercontent.com/DennyZhang'
+download_prefix = 'https://raw.githubusercontent.com/DennyZhang/devops_public/2016-06-23'
 
-remote_file "#{node['nagios']['plugins_dir']}/#{proc_nagios_plugin}.sh" do
-  source "#{git_url}/#{proc_nagios_plugin}/master/#{proc_nagios_plugin}.sh"
+remote_file "#{node['nagios']['plugins_dir']}/#{nagios_plugin}.sh" do
+  source "#{download_prefix}/nagios_plugins/#{nagios_plugin}/#{nagios_plugin}.sh"
   owner 'nagios'
   group 'nagios'
   mode '0755'
@@ -151,10 +151,10 @@ remote_file "#{node['nagios']['plugins_dir']}/#{proc_nagios_plugin}.sh" do
   retry_delay 3
 end
 
-proc_nagios_plugin = 'check_proc_cpu'
+nagios_plugin = 'check_proc_cpu'
 checksum = '710483595cd4786dd3477aa13584cd842b8a761b51d04f1d5c680756b12696e1'
-remote_file "#{node['nagios']['plugins_dir']}/#{proc_nagios_plugin}.sh" do
-  source "#{git_url}/#{proc_nagios_plugin}/master/#{proc_nagios_plugin}.sh"
+remote_file "#{node['nagios']['plugins_dir']}/#{nagios_plugin}.sh" do
+  source "#{download_prefix}/nagios_plugins/#{nagios_plugin}/#{nagios_plugin}.sh"
   owner 'nagios'
   group 'nagios'
   mode '0755'
@@ -163,10 +163,10 @@ remote_file "#{node['nagios']['plugins_dir']}/#{proc_nagios_plugin}.sh" do
   retry_delay 3
 end
 
-proc_nagios_plugin = 'check_proc_fd'
+nagios_plugin = 'check_proc_fd'
 checksum = '35875219b953257dcc1774ce51e7a0fe1b5d58cf7857e2ea1171676c5a7ce67b'
-remote_file "#{node['nagios']['plugins_dir']}/#{proc_nagios_plugin}.sh" do
-  source "#{git_url}/#{proc_nagios_plugin}/master/#{proc_nagios_plugin}.sh"
+remote_file "#{node['nagios']['plugins_dir']}/#{nagios_plugin}.sh" do
+  source "#{download_prefix}/nagios_plugins/#{nagios_plugin}/#{nagios_plugin}.sh"
   owner 'nagios'
   group 'nagios'
   mode '0755'
