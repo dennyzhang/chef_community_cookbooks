@@ -5,7 +5,7 @@
 ## Description : If given file is changed, do a backup; Otherwise skip
 ## --
 ## Created : <2015-01-22>
-## Updated: Time-stamp: <2016-06-24 20:15:26>
+## Updated: Time-stamp: <2016-06-24 20:16:03>
 ##-------------------------------------------------------------------
 # TDOO: move to common library
 function log() {
@@ -26,9 +26,9 @@ function backup_file() {
     local dst_dir="/data/backup/$base_filename"
     local dst_file="$dst_dir/$base_filename"
     local dst_file_gz="$dst_dir/$base_filename-${timestamp}.tar.gz"
-    local new_cksum=$(cksum $src_file | awk -F' ' '{print $1}')
+    local new_cksum=$(cksum "$src_file" | awk -F' ' '{print $1}')
 
-    [ -d $dst_dir ] || mkdir -p $dst_dir
+    [ -d "$dst_dir" ] || mkdir -p "$dst_dir"
 
     log "Compare modify time, to see whether need to backup $src_file"
 
@@ -38,8 +38,8 @@ function backup_file() {
         echo "$new_cksum" > "$dst_dir/cksum.txt"
         tar_dir "$dst_file" "$dst_file_gz"
     else
-        old_cksum=$(cat $dst_dir/cksum.txt)
-        if [ $new_cksum != $old_cksum ]; then
+        old_cksum=$(cat "$dst_dir/cksum.txt")
+        if [ "$new_cksum" != "$old_cksum" ]; then
             log "Update $dst_file, and compress as $dst_file_gz"
             /bin/cp "$src_file" "$dst_file"
             echo "$new_cksum" > "$dst_dir/cksum.txt"
