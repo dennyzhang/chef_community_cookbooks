@@ -5,7 +5,7 @@
 ## Description : Backup directory and tar it with timestamp
 ## --
 ## Created : <2015-01-22>
-## Updated: Time-stamp: <2016-06-24 20:13:21>
+## Updated: Time-stamp: <2016-06-24 20:43:29>
 ##-------------------------------------------------------------------
 # TDOO: move to common library
 function log() {
@@ -69,22 +69,23 @@ function clean_old_backup() {
     for item in ${dst_dir_list[*]}; do
         dst_dir=${item%:*}
         retention_day=${item#*:}
-        if [ -d $dst_dir/ ]; then
-            find $dst_dir -mtime +$retention_day -and -not -type d -delete
+        if [ -d "$dst_dir/" ]; then
+            find "$dst_dir" -mtime "+$retention_day" -and -not -type d -delete
         fi
     done;
 }
 
 ######################### Backup Functions #########################
 function backup_config() {
-    local dst_dir=$(get_dst_dir "config")
+    local dst_dir
+    dst_dir=$(get_dst_dir "config")
     log "Backup config to $dst_dir.tar.gz"
     declare -a config_dir_list=(
         "/etc/ssl" "/etc/apache2"
         "/etc/httpd" "/etc/libapache2-mod-jk"
         "/cloudpass/backend/build/config")
     for config_dir in ${config_dir_list[*]}; do
-        [ ! -d $config_dir ] || /bin/cp -r $config_dir "$dst_dir"
+        [ ! -d "$config_dir" ] || /bin/cp -r "$config_dir" "$dst_dir"
     done
 
     tar_dir "$dst_dir" "${dst_dir}_config.tar.gz" && rm -rf "$dst_dir"

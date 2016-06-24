@@ -5,7 +5,7 @@
 ## Description :
 ## --
 ## Created : <2014-12-05>
-## Updated: Time-stamp: <2016-06-24 20:10:42>
+## Updated: Time-stamp: <2016-06-24 20:41:00>
 ##-------------------------------------------------------------------
 # TDOO: move to common library
 function log() {
@@ -19,7 +19,7 @@ function log() {
 }
 
 function current_eth0_ip(){
-    echo $(/sbin/ifconfig eth0 | grep 'inet addr:' | cut -d: -f2 | awk '{ print $1}')
+    /sbin/ifconfig eth0 | grep 'inet addr:' | cut -d: -f2 | awk '{print $1}'
 }
 
 function shell_exit() {
@@ -63,13 +63,13 @@ function scp_backup() {
     dst_dir=$(get_dst_dir)
 
     log "mkdir $dst_dir, if it's missing"
-    ssh "$ssh_user@$ssh_server" "[ -d $dst_dir ] || mkdir -p $dst_dir"
+    ssh "$ssh_user@$ssh_server" [ -d "$dst_dir" ] || mkdir -p "$dst_dir"
 
     log "Perform remote copy"
     if [ -n "$backup_date" ]; then
-        find /data/backup -name "*$backup_date*.gz" | xargs -i scp -i $ssh_keyfile {} $ssh_user@$ssh_server:/$dst_dir/
+        find /data/backup -name "*$backup_date*.gz" | xargs -i scp -i "$ssh_keyfile" {} "$ssh_user@$ssh_server:/$dst_dir/"
     else
-        find /data/backup -name '*.gz' -mtime -1 | xargs -i scp -i $ssh_keyfile {} $ssh_user@$ssh_server:/$dst_dir/
+        find /data/backup -name '*.gz' -mtime -1 | xargs -i scp -i "$ssh_keyfile" {} "$ssh_user@$ssh_server:/$dst_dir/"
     fi
 }
 

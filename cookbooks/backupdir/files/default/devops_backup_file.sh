@@ -5,7 +5,7 @@
 ## Description : If given file is changed, do a backup; Otherwise skip
 ## --
 ## Created : <2015-01-22>
-## Updated: Time-stamp: <2016-06-24 20:16:03>
+## Updated: Time-stamp: <2016-06-24 20:42:06>
 ##-------------------------------------------------------------------
 # TDOO: move to common library
 function log() {
@@ -20,13 +20,15 @@ function log() {
 
 function backup_file() {
     local src_file=${1?}
-    local base_filename=$(basename "$src_file")
+    local base_filename
+    base_filename=$(basename "$src_file")
     # local src_modify_time=$(stat -c "%Y" "$src_file")
 
     local dst_dir="/data/backup/$base_filename"
     local dst_file="$dst_dir/$base_filename"
     local dst_file_gz="$dst_dir/$base_filename-${timestamp}.tar.gz"
-    local new_cksum=$(cksum "$src_file" | awk -F' ' '{print $1}')
+    local new_cksum
+    new_cksum=$(cksum "$src_file" | awk -F' ' '{print $1}')
 
     [ -d "$dst_dir" ] || mkdir -p "$dst_dir"
 
