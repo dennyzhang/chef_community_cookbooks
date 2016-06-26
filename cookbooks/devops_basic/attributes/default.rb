@@ -14,3 +14,10 @@ default['devops_basic']['supported_os_list'] = ['ubuntu-14.04']
 # Note: In below, 2016-06-16 is repo's tag name
 default['devops_basic']['download_link_prefix'] = \
 'https://raw.githubusercontent.com/DennyZhang/devops_public/tag_v1'
+
+# whether install justniffer
+default['devops_basic']['whether_install_justniffer'] = 'true'
+
+default['devops_basic']['package_list'] = \
+['lsof', 'curl', 'wget', 'inotify-tools', 'bc', 'telnet', 'tar', 'tree', 'vim', \
+ 'git', 'tmux', 'syslinux', 'python-pip']

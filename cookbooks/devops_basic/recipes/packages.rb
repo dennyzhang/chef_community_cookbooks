@@ -9,16 +9,30 @@
 #
 include_recipe 'apt::default'
 
-%w(lsof curl wget inotify-tools bc telnet tar tree vim).each do |x|
+# install packages
+node['devops_basic']['package_list'].each do |x|
   package x do
     action :install
     not_if "dpkg -l #{x} | grep -E '^ii'"
   end
 end
 
-%w(git tmux syslinux python-pip).each do |x|
-  package x do
+################################################################################
+if node['devops_basic']['whether_install_justniffer'] == 'true'
+  # whether install justniffer
+  apt_repository 'ruby2.1-repo' do
+    uri 'ppa:oreste-notelli/ppa'
+    distribution node['lsb']['codename']
+    key 'C3173AA6'
+    keyserver 'keyserver.ubuntu.com'
+    retries 3
+    retry_delay 3
+    not_if { ::File.exist?('/etc/apt/sources.list.d/ruby2.1-repo.list') }
+  end
+
+  package 'justniffer' do
     action :install
     not_if "dpkg -l #{x} | grep -E '^ii'"
   end
 end
+################################################################################
