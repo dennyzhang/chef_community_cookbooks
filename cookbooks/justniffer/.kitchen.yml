@@ -33,4 +33,5 @@ suites:
   - name: default
     run_list:
       - recipe[justniffer::default]
+      - recipe[justniffer::start]
     attributes:
