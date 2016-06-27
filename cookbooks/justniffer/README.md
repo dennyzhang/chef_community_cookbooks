@@ -9,6 +9,9 @@ Requirements
 
 Recipes
 -------
+* default: install justniffer
+* start: start justniffer process: "nohup /usr/bin/justniffer -i eth0 -l '%request.timestamp(%T %D) %request.header.host - %response.time' >> /root/justniffer.log.log 2>&1 &"
+* stop: stop justniffer process by "killall justniffer"
 
 License & Authors
 -----------------
