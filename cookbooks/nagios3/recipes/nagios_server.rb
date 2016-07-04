@@ -7,7 +7,7 @@
 # Apache License, Version 2.0
 #
 
-log "platform: #{node['platform']}"
+# log "platform: #{node['platform']}"
 
 if node['platform_family'] == 'debian' && \
    node['platform'] == 'ubuntu' && \
