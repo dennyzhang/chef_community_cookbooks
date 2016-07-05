@@ -26,11 +26,3 @@ chef_handler 'MyChefReport::ChangReportHandler' do
   source "#{node['chef_handler']['handler_path']}/changereport_handler.rb"
   action :enable
 end
-
-logrotate_app 'changereport_chef_handler' do
-  cookbook 'logrotate'
-  path "#{working_dir}/history.txt"
-  frequency 'monthly'
-  rotate 7
-  create '644 root adm'
-end
