@@ -45,3 +45,8 @@ default['nagios']['admin_username'] = 'nagiosadmin'
 default['nagios']['admin_password_hash'] = '$1$GnGoDNzy$0m0OWNzhcGQjc8KwKZdaD/'
 
 default['nagios']['nagiosgraph_url'] = 'http://www.mirrorservice.org/sites/downloads.sourceforge.net/n/na/nagiosgraph/nagiosgraph/1.5.2/nagiosgraph-1.5.2.tar.gz'
+
+# slack
+default['nagios']['slack_domain'] = ''
+# When slack_token is empty, skip slack alerting in nagios
+default['nagios']['slack_token'] = ''
