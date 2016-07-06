@@ -288,6 +288,6 @@ service node['nagios']['nagios_name'] do
   action [:enable, :start]
 end
 ###########################################################################
-if node.default['nagios_mdm']['slack_token'] != ''
-  include_recipe 'nagios-mdm::slack_notification'
+if node.default['nagios']['slack_token'] != ''
+  include_recipe 'nagios::slack_notification'
 end
