@@ -16,10 +16,10 @@ define contactgroup {
 
 define command {
        command_name notify-service-by-slack
-       command_line /usr/local/bin/slack_nagios.pl -field slack_channel=#<%= nagios3.slack_channel %> -field HOSTALIAS="$HOSTNAME$" -field SERVICEDESC="$SERVICEDESC$" -field SERVICESTATE="$SERVICESTATE$" -field SERVICEOUTPUT="$SERVICEOUTPUT$" -field NOTIFICATIONTYPE="$NOTIFICATIONTYPE$"
+       command_line /usr/local/bin/slack_nagios.pl -field slack_channel=#<%= node.nagios3.slack_channel %> -field HOSTALIAS="$HOSTNAME$" -field SERVICEDESC="$SERVICEDESC$" -field SERVICESTATE="$SERVICESTATE$" -field SERVICEOUTPUT="$SERVICEOUTPUT$" -field NOTIFICATIONTYPE="$NOTIFICATIONTYPE$"
        }
        
 define command {
        command_name notify-host-by-slack
-       command_line /usr/local/bin/slack_nagios.pl -field slack_channel=#<%= nagios3.slack_channel %> -field HOSTALIAS="$HOSTNAME$" -field HOSTSTATE="$HOSTSTATE$" -field HOSTOUTPUT="$HOSTOUTPUT$" -field NOTIFICATIONTYPE="$NOTIFICATIONTYPE$"
+       command_line /usr/local/bin/slack_nagios.pl -field slack_channel=#<%= node.nagios3.slack_channel %> -field HOSTALIAS="$HOSTNAME$" -field HOSTSTATE="$HOSTSTATE$" -field HOSTOUTPUT="$HOSTOUTPUT$" -field NOTIFICATIONTYPE="$NOTIFICATIONTYPE$"
        }
