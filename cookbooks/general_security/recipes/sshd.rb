@@ -7,6 +7,7 @@
 # Apache License, Version 2.0
 #
 
+# TODO: whether need to restart sshd, after reconfiguration
 # sed -i 's/PermitRootLogin .*/PermitRootLogin without-password/' /etc/ssh/sshd_config
 if node['general_security']['ssh_disable_passwd_login'] == 'true'
   execute 'SSH disable password login' do
