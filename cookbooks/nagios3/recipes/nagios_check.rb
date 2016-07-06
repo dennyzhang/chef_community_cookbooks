@@ -7,8 +7,8 @@
 # Apache License, Version 2.0
 #
 
-if node['nagios']['enable_basic_check'] == '1'
-  node['nagios']['client_ip_list'].split(';').each do |nagios_client_ip|
+if node['nagios3']['enable_basic_check'] == '1'
+  node['nagios3']['client_ip_list'].split(';').each do |nagios_client_ip|
     service_check_list = []
     ########################### Common Check ##################################
     service_check_list += \
@@ -60,7 +60,7 @@ if node['nagios']['enable_basic_check'] == '1'
     # ]
 
     ############################################################################
-    conf_folder = "/etc/#{node['nagios']['nagios_name']}/conf.d"
+    conf_folder = "/etc/#{node['nagios3']['nagios_name']}/conf.d"
     template "#{conf_folder}/#{nagios_client_ip}_nagios2.cfg" do
       source 'host_nagios2.cfg.erb'
       mode 0644
@@ -68,7 +68,7 @@ if node['nagios']['enable_basic_check'] == '1'
         nagios_hostname: nagios_client_ip,
         service_check_list: service_check_list
       )
-      notifies :restart, "service[#{node['nagios']['nagios_name']}]", :delayed
+      notifies :restart, "service[#{node['nagios3']['nagios_name']}]", :delayed
     end
   end
 end

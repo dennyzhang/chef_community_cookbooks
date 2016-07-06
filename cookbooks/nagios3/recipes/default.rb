@@ -20,15 +20,15 @@ when 'fedora', 'rhel', 'suse'
   end
 end
 
-if !node['nagios']['server_ip'].index(node['ipaddress']).nil? || \
-   !node['nagios']['server_ip'].index('localhost').nil? || \
-   !node['nagios']['server_ip'].index('127.0.0.1').nil?
+if !node['nagios3']['server_ip'].index(node['ipaddress']).nil? || \
+   !node['nagios3']['server_ip'].index('localhost').nil? || \
+   !node['nagios3']['server_ip'].index('127.0.0.1').nil?
   include_recipe 'nagios3::nagios_server'
 end
 
-if !node['nagios']['client_ip_list'].index(node['ipaddress']).nil? || \
-   !node['nagios']['client_ip_list'].index('localhost').nil? || \
-   !node['nagios']['client_ip_list'].index('127.0.0.1').nil?
+if !node['nagios3']['client_ip_list'].index(node['ipaddress']).nil? || \
+   !node['nagios3']['client_ip_list'].index('localhost').nil? || \
+   !node['nagios3']['client_ip_list'].index('127.0.0.1').nil?
   include_recipe 'nagios3::nagios_client'
   include_recipe 'nagios3::nagios_check'
 end

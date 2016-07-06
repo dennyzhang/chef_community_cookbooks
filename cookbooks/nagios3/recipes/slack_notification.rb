@@ -20,8 +20,8 @@ template '/usr/local/bin/slack_nagios.pl' do
   mode 0755
 end
 
-cookbook_file '/etc/nagios3/conf.d/slack_nagios.cfg' do
-  source 'slack_nagios.cfg'
+template '/etc/nagios3/conf.d/contacts_slack_nagios.cfg' do
+  source 'contacts_slack_nagios.cfg.erb'
   owner 'root'
   group 'root'
   mode 0644

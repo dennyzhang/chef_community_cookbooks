@@ -19,23 +19,23 @@ when 'debian'
 
   # install nagios-nrpe-plugin will install and start apache2, which is not expected
   # In nagios server
-  if !node['nagios']['server_ip'].index(node['ipaddress']).nil? || \
-     !node['nagios']['server_ip'].index(node['hostname']).nil? || \
-     !node['nagios']['server_ip'].index('localhost').nil? || \
-     !node['nagios']['server_ip'].index('127.0.0.1').nil?
+  if !node['nagios3']['server_ip'].index(node['ipaddress']).nil? || \
+     !node['nagios3']['server_ip'].index(node['hostname']).nil? || \
+     !node['nagios3']['server_ip'].index('localhost').nil? || \
+     !node['nagios3']['server_ip'].index('127.0.0.1').nil?
     apt_package 'nagios-nrpe-plugin' do
       action :install
       not_if "dpkg -l nagios-nrpe-plugin | grep -E '^ii'"
     end
   else
     # in pure nagios client
-    service node['nagios']['apache_name'] do
+    service node['nagios3']['apache_name'] do
       action :nothing
     end
 
     apt_package 'nagios-nrpe-plugin' do
       action :install
-      notifies :stop, "service[#{node['nagios']['apache_name']}]", :immediately
+      notifies :stop, "service[#{node['nagios3']['apache_name']}]", :immediately
       not_if "dpkg -l nagios-nrpe-plugin | grep -E '^ii'"
     end
   end
@@ -74,13 +74,13 @@ directory '/etc/nagios/nrpe.d' do
   action :create
 end
 
-allowed_hosts = node['nagios']['allowed_hosts']
+allowed_hosts = node['nagios3']['allowed_hosts']
 
-if node['nagios']['allowed_hosts'].index(node['nagios']['server_ip']).nil?
+if node['nagios3']['allowed_hosts'].index(node['nagios3']['server_ip']).nil?
   if allowed_hosts == ''
-    allowed_hosts = node['nagios']['server_ip']
+    allowed_hosts = node['nagios3']['server_ip']
   else
-    allowed_hosts = allowed_hosts + ',' + node['nagios']['server_ip']
+    allowed_hosts = allowed_hosts + ',' + node['nagios3']['server_ip']
   end
 end
 
@@ -92,7 +92,7 @@ template '/etc/nagios/nrpe.cfg' do
   variables(
     allowed_hosts: allowed_hosts
   )
-  notifies :restart, "service[#{node['nagios']['nrpe_name']}]", :delayed
+  notifies :restart, "service[#{node['nagios3']['nrpe_name']}]", :delayed
 end
 
 template '/etc/nagios/nrpe.d/common_nrpe.cfg' do
@@ -101,9 +101,9 @@ template '/etc/nagios/nrpe.d/common_nrpe.cfg' do
   group 'root'
   mode 0755
   variables(
-    nagios_plugins: node['nagios']['plugins_dir']
+    nagios_plugins: node['nagios3']['plugins_dir']
   )
-  notifies :restart, "service[#{node['nagios']['nrpe_name']}]", :delayed
+  notifies :restart, "service[#{node['nagios3']['nrpe_name']}]", :delayed
 end
 
 template '/etc/nagios/nrpe.d/my_nrpe.cfg' do
@@ -112,10 +112,10 @@ template '/etc/nagios/nrpe.d/my_nrpe.cfg' do
   group 'root'
   mode 0755
   variables(
-    apache_pid_file: node['nagios']['apache_pid_file'],
-    nagios_plugins: node['nagios']['plugins_dir']
+    apache_pid_file: node['nagios3']['apache_pid_file'],
+    nagios_plugins: node['nagios3']['plugins_dir']
   )
-  notifies :restart, "service[#{node['nagios']['nrpe_name']}]", :delayed
+  notifies :restart, "service[#{node['nagios3']['nrpe_name']}]", :delayed
 end
 
 template '/etc/nagios/nrpe.d/check_logfile.cfg' do
@@ -124,12 +124,12 @@ template '/etc/nagios/nrpe.d/check_logfile.cfg' do
   group 'root'
   mode 0755
   variables(
-    nagios_plugins: node['nagios']['plugins_dir']
+    nagios_plugins: node['nagios3']['plugins_dir']
   )
-  notifies :restart, "service[#{node['nagios']['nrpe_name']}]", :delayed
+  notifies :restart, "service[#{node['nagios3']['nrpe_name']}]", :delayed
 end
 
-directory node['nagios']['plugins_dir'] do
+directory node['nagios3']['plugins_dir'] do
   owner 'root'
   group 'root'
   mode 0755
@@ -150,7 +150,7 @@ nagios_plugin_list.each do |plugin|
   plugin_name = l[0]
   file_checksum = l[1]
 
-  remote_file "#{node['nagios']['plugins_dir']}/#{plugin_name}.sh" do
+  remote_file "#{node['nagios3']['plugins_dir']}/#{plugin_name}.sh" do
     source "#{download_prefix}/nagios_plugins/#{plugin_name}/#{plugin_name}.sh"
     owner 'nagios'
     group 'nagios'
@@ -162,7 +162,7 @@ nagios_plugin_list.each do |plugin|
 end
 
 %w(check_linux_stats.pl check_ip_address.sh).each do |x|
-  template "#{node['nagios']['plugins_dir']}/#{x}" do
+  template "#{node['nagios3']['plugins_dir']}/#{x}" do
     source "#{x}.erb"
     owner 'root'
     group 'root'
@@ -181,13 +181,13 @@ end
 ########################################################################
 # Install plugin
 %w(check_logfiles check_service_status.sh).each do |x|
-  cookbook_file "#{node['nagios']['plugins_dir']}/#{x}" do
+  cookbook_file "#{node['nagios3']['plugins_dir']}/#{x}" do
     source x
     mode '0755'
   end
 end
 
-service node['nagios']['nrpe_name'] do
+service node['nagios3']['nrpe_name'] do
   supports status: true, restart: true, reload: true
   action [:enable, :start]
 end

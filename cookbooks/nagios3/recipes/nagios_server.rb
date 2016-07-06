@@ -19,7 +19,7 @@ include_recipe 'apache2'
 
 ########################### Apache Service ###############################
 
-service node['nagios']['apache_name'] do
+service node['nagios3']['apache_name'] do
   action :nothing
 end
 
@@ -62,11 +62,11 @@ when 'debian'
   end
 
   # In Ubuntu, add url alias for http://$server/nagios to /nagios3
-  template "/etc/#{node['nagios']['nagios_name']}/apache2.conf" do
+  template "/etc/#{node['nagios3']['nagios_name']}/apache2.conf" do
     source 'ubuntu_nagios_apache2.conf.erb'
     owner 'root'
     group 'root'
-    notifies :restart, "service[#{node['nagios']['apache_name']}]", :delayed
+    notifies :restart, "service[#{node['nagios3']['apache_name']}]", :delayed
   end
 
 when 'fedora', 'rhel', 'suse'
@@ -90,11 +90,11 @@ when 'fedora', 'rhel', 'suse'
   end
 
   # In Ubuntu, add url alias for http://$server/nagios to /nagios3
-  template "/etc/#{node['nagios']['nagios_name']}/apache2.conf" do
+  template "/etc/#{node['nagios3']['nagios_name']}/apache2.conf" do
     source 'centos_nagios_apache2.conf.erb'
     owner 'root'
     group 'root'
-    notifies :restart, "service[#{node['nagios']['apache_name']}]", :delayed
+    notifies :restart, "service[#{node['nagios3']['apache_name']}]", :delayed
   end
 
 else
@@ -102,32 +102,32 @@ else
 end
 
 # Nagios: enable external commands
-template '/etc/' + node['nagios']['nagios_name'] + '/nagios.cfg' do
-  source node['nagios']['conf_erb_file']
+template '/etc/' + node['nagios3']['nagios_name'] + '/nagios.cfg' do
+  source node['nagios3']['conf_erb_file']
   owner 'root'
   group 'root'
   mode 0644
   variables(check_external_commands: '1')
-  notifies :restart, "service[#{node['nagios']['apache_name']}]", :delayed
+  notifies :restart, "service[#{node['nagios3']['apache_name']}]", :delayed
 end
 
 # nagios commands.cfg
-template node['nagios']['command_file'] do
-  source node['nagios']['command_erb_file']
+template node['nagios3']['command_file'] do
+  source node['nagios3']['command_erb_file']
   owner 'root'
   group 'root'
   mode 0644
-  notifies :restart, "service[#{node['nagios']['nagios_name']}]", :delayed
+  notifies :restart, "service[#{node['nagios3']['nagios_name']}]", :delayed
 end
 
 # localhost_nagios cfg
-template node['nagios']['localhost_cfg'] do
-  source node['nagios']['localhost_cfg_erb']
+template node['nagios3']['localhost_cfg'] do
+  source node['nagios3']['localhost_cfg_erb']
   owner 'root'
   group 'root'
   mode 0644
-  notifies :restart, "service[#{node['nagios']['nagios_name']}]", :delayed
-  only_if { node['nagios']['change_localhost_cfg'] == '1' }
+  notifies :restart, "service[#{node['nagios3']['nagios_name']}]", :delayed
+  only_if { node['nagios3']['change_localhost_cfg'] == '1' }
 end
 
 directory '/var/log/apache2/' do
@@ -149,20 +149,20 @@ directory '/var/lib/nagios3/' do
   action :create
 end
 
-template node['nagios']['htpasswd_users'] do
+template node['nagios3']['htpasswd_users'] do
   source 'htpasswd.users.erb'
   owner 'root'
   group 'root'
   mode 0644
-  variables(nagios_admin_username: node['nagios']['admin_username'],
-            nagios_admin_password_hash: node['nagios']['admin_password_hash'])
-  notifies :restart, "service[#{node['nagios']['apache_name']}]", :delayed
+  variables(nagios_admin_username: node['nagios3']['admin_username'],
+            nagios_admin_password_hash: node['nagios3']['admin_password_hash'])
+  notifies :restart, "service[#{node['nagios3']['apache_name']}]", :delayed
 end
 
 include_recipe 'nagios3::nagios_check'
 
 ############################# Nagios Graph ################################
-directory node['nagios']['download_dir'] do
+directory node['nagios3']['download_dir'] do
   mode '07555'
   owner 'root'
   group 'root'
@@ -171,8 +171,8 @@ end
 
 nagiosgraph_tar = 'nagiosgraph.tar.gz'
 remote_file 'Download nagiosgraph Tarball' do
-  path "#{node['nagios']['download_dir']}/#{nagiosgraph_tar}"
-  source node['nagios']['nagiosgraph_url']
+  path "#{node['nagios3']['download_dir']}/#{nagiosgraph_tar}"
+  source node['nagios3']['nagiosgraph_url']
   retries 3
   retry_delay 3
   use_last_modified true
@@ -181,9 +181,9 @@ remote_file 'Download nagiosgraph Tarball' do
 end
 
 execute 'Unpack nagiosgraph Tarball' do
-  command "tar -xf #{node['nagios']['download_dir']}/#{nagiosgraph_tar}"
+  command "tar -xf #{node['nagios3']['download_dir']}/#{nagiosgraph_tar}"
   action :run
-  cwd node['nagios']['download_dir']
+  cwd node['nagios3']['download_dir']
   notifies :run, 'execute[Deploy nagiosgraph]', :immediately
 end
 
@@ -200,7 +200,7 @@ execute 'Deploy nagiosgraph' do
  /bin/cp share/nagiosgraph.css /usr/local/nagiosgraph/share/
  /bin/cp share/nagiosgraph.js /usr/local/nagiosgraph/share/
  EOF
-  cwd "#{node['nagios']['download_dir']}/nagiosgraph-1.5.2"
+  cwd "#{node['nagios3']['download_dir']}/nagiosgraph-1.5.2"
   action :nothing
   not_if { ::File.exist?('/usr/local/nagiosgraph/bin/insert.pl') }
 end
@@ -225,69 +225,85 @@ template '/usr/local/nagiosgraph/etc/nagiosgraph.conf' do
   source 'nagiosgraph.conf.erb'
   owner 'nagios'
   group 'nagios'
-  notifies :restart, "service[#{node['nagios']['nagios_name']}]", :delayed
+  notifies :restart, "service[#{node['nagios3']['nagios_name']}]", :delayed
 end
 
 # Apache virtual host for graphed service
-template "/etc//#{node['nagios']['apache_name']}/conf-enabled/nagiosgraph.conf" do
+template "/etc//#{node['nagios3']['apache_name']}/conf-enabled/nagiosgraph.conf" do
   source 'httpd_nagiosgraph.conf'
   owner 'root'
   group 'root'
   mode 0644
-  notifies :restart, "service[#{node['nagios']['apache_name']}]", :delayed
+  notifies :restart, "service[#{node['nagios3']['apache_name']}]", :delayed
 end
 
 case node['platform_family']
 when 'debian'
   # define graphed-service
-  template "/etc/#{node['nagios']['nagios_name']}/conf.d/services_nagios2.cfg" do
+  template "/etc/#{node['nagios3']['nagios_name']}/conf.d/services_nagios2.cfg" do
     source 'ubuntu_services_nagios2.cfg.erb'
     owner 'root'
     group 'root'
     mode 0644
-    notifies :restart, "service[#{node['nagios']['nagios_name']}]", :delayed
+    notifies :restart, "service[#{node['nagios3']['nagios_name']}]", :delayed
   end
 
-  template "/etc/#{node['nagios']['nagios_name']}/conf.d/extinfo_nagios2.cfg" do
+  template "/etc/#{node['nagios3']['nagios_name']}/conf.d/extinfo_nagios2.cfg" do
     source 'ubuntu_extinfo_nagios2.cfg.erb'
     owner 'root'
     group 'root'
     mode 0644
-    notifies :restart, "service[#{node['nagios']['nagios_name']}]", :delayed
+    notifies :restart, "service[#{node['nagios3']['nagios_name']}]", :delayed
   end
 
-  template "/etc/#{node['nagios']['nagios_name']}/conf.d/hostgroups_nagios2.cfg" do
+  template "/etc/#{node['nagios3']['nagios_name']}/conf.d/hostgroups_nagios2.cfg" do
     source 'ubuntu_hostgroups_nagios2.cfg.erb'
     owner 'root'
     group 'root'
     mode 0644
-    notifies :restart, "service[#{node['nagios']['nagios_name']}]", :delayed
+    notifies :restart, "service[#{node['nagios3']['nagios_name']}]", :delayed
+  end
+
+  # slack integration
+  if node.default['nagios3']['slack_token'] != ''
+    admin_members = 'root,slack'
+    include_recipe 'nagios3::slack_notification'
+  else
+    admin_members = 'root'
+  end
+
+  # define contact
+  template "/etc/#{node['nagios3']['nagios_name']}/conf.d/contacts_nagios2.cfg" do
+    source 'contacts_nagios2.cfg.erb'
+    owner 'root'
+    group 'root'
+    mode 0644
+    variables(
+      admin_members: admin_members
+    )
+    notifies :restart, "service[#{node['nagios3']['nagios_name']}]", :delayed
   end
 
 when 'fedora', 'rhel', 'suse'
   # define graphed-service
-  template "/etc/#{node['nagios']['nagios_name']}/objects/templates.cfg" do
+  template "/etc/#{node['nagios3']['nagios_name']}/objects/templates.cfg" do
     source 'redhat_templates.cfg.erb'
     owner 'root'
     group 'root'
     mode 0644
-    notifies :restart, "service[#{node['nagios']['nagios_name']}]", :delayed
+    notifies :restart, "service[#{node['nagios3']['nagios_name']}]", :delayed
   end
 else
   Chef::Application.fatal!("Need to customize for OS of #{node['platform_family']}")
 end
 
 ############################# Enable vhost ################################
-link "/etc/#{node['nagios']['apache_name']}/conf-enabled/nagios3.conf" do
-  to "/etc/#{node['nagios']['nagios_name']}/apache2.conf"
+link "/etc/#{node['nagios3']['apache_name']}/conf-enabled/nagios3.conf" do
+  to "/etc/#{node['nagios3']['nagios_name']}/apache2.conf"
 end
 
 ############################# Nagios Service ##############################
-service node['nagios']['nagios_name'] do
+service node['nagios3']['nagios_name'] do
   supports status: true, restart: true, reload: true
   action [:enable, :start]
-end
-###########################################################################
-if node.default['nagios']['slack_token'] != ''
-  include_recipe 'nagios::slack_notification'
 end
