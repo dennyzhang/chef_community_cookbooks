@@ -10,3 +10,4 @@ supports 'ubuntu'
 
 depends 'locale'
 depends 'apt'
+depends 'devops_library'
