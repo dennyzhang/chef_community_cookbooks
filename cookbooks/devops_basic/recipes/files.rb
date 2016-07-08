@@ -27,76 +27,50 @@ end
   end
 end
 
-# Download bash scripts from http links
-download_link_prefix = node['devops_basic']['download_link_prefix']
-
-remote_file '/opt/devops/bin/enforce_all_nagios_check.sh' do
-  source "#{download_link_prefix}/" \
-         'bash/enforce_all_nagios_check/enforce_all_nagios_check.sh'
+cookbook_file '/opt/devops/bin/enforce_all_nagios_check.sh' do
+  source 'devops_public/bash/enforce_all_nagios_check/enforce_all_nagios_check.sh'
   owner 'root'
   group 'root'
   mode '0755'
-  retries 3
-  retry_delay 3
+  cookbook 'devops_library'
 end
 
-# TODO: use checksum mechansim to avoid re-download
-remote_file '/opt/devops/bin/wait_for.sh' do
-  source "#{download_link_prefix}/" \
-         'bash/wait_for/wait_for.sh'
+cookbook_file '/opt/devops/bin/create_loop_device.sh' do
+  source 'devops_public/bash/create_loop_device.sh'
   owner 'root'
   group 'root'
   mode '0755'
-  retries 3
-  retry_delay 3
+  cookbook 'devops_library'
 end
 
-remote_file '/opt/devops/bin/create_loop_device.sh' do
-  source "#{download_link_prefix}/" \
-         'bash/create_loop_device.sh'
+cookbook_file '/opt/devops/bin/disable_oom.sh' do
+  source 'devops_public/bash/disable_oom.sh'
   owner 'root'
   group 'root'
   mode '0755'
-  retries 3
-  retry_delay 3
+  cookbook 'devops_library'
 end
 
-remote_file '/opt/devops/bin/disable_oom.sh' do
-  source "#{download_link_prefix}/" \
-         'bash/disable_oom.sh'
+cookbook_file '/opt/devops/bin/free_cache.sh' do
+  source 'devops_public/bash/free_cache.sh'
   owner 'root'
   group 'root'
   mode '0755'
-  retries 3
-  retry_delay 3
+  cookbook 'devops_library'
 end
 
-remote_file '/opt/devops/bin/free_cache.sh' do
-  source "#{download_link_prefix}/" \
-         'bash/free_cache.sh'
+cookbook_file '/opt/devops/bin/manage_all_services.sh' do
+  source 'devops_public/bash/manage_all_services/manage_all_services.sh'
   owner 'root'
   group 'root'
   mode '0755'
-  retries 3
-  retry_delay 3
+  cookbook 'devops_library'
 end
 
-remote_file '/opt/devops/bin/manage_all_services.sh' do
-  source "#{download_link_prefix}/" \
-         'bash/manage_all_services/manage_all_services.sh'
+cookbook_file '/opt/devops/bin/docker_destroy.sh' do
+  source 'devops_public/bash/docker_facility/docker_destroy.sh'
   owner 'root'
   group 'root'
   mode '0755'
-  retries 3
-  retry_delay 3
-end
-
-remote_file '/opt/devops/bin/docker_destroy.sh' do
-  source "#{download_link_prefix}/" \
-         'bash/docker_facility/docker_destroy.sh'
-  owner 'root'
-  group 'root'
-  mode '0755'
-  retries 3
-  retry_delay 3
+  cookbook 'devops_library'
 end
