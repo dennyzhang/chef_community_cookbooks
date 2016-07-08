@@ -137,6 +137,7 @@ directory node['nagios3']['plugins_dir'] do
   action :create
 end
 
+# TODO: change this later
 # specify file checksum to avoid external network request
 download_prefix = 'https://raw.githubusercontent.com/DennyZhang/devops_public/tag_v1'
 
