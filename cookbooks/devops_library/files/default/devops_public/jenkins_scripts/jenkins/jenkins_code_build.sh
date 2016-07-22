@@ -9,7 +9,7 @@
 ## Description :
 ## --
 ## Created : <2015-07-03>
-## Updated: Time-stamp: <2016-07-08 11:27:13>
+## Updated: Time-stamp: <2016-07-19 08:03:50>
 ##-------------------------------------------------------------------
 ################################################################################################
 ## env variables:
@@ -33,7 +33,7 @@ if [ ! -f /var/lib/devops/refresh_common_library.sh ]; then
     [ -d /var/lib/devops/ ] || (sudo mkdir -p  /var/lib/devops/ && sudo chmod 777 /var/lib/devops)
     wget -O /var/lib/devops/refresh_common_library.sh "$DOWNLOAD_PREFIX/common_library/refresh_common_library.sh"
 fi
-bash /var/lib/devops/refresh_common_library.sh "1597538024" "/var/lib/devops/devops_common_library.sh" \
+bash /var/lib/devops/refresh_common_library.sh "2593132520" "/var/lib/devops/devops_common_library.sh" \
      "${DOWNLOAD_PREFIX}/common_library/devops_common_library.sh"
 . /var/lib/devops/devops_common_library.sh
 ################################################################################################
@@ -44,6 +44,7 @@ function git_log() {
     command="git log -n $tail_count --pretty=format:\"%h - %an, %ar : %s\""
     echo -e "\n\nShow latest git commits: $command"
     eval "$command"
+    echo -e "\n"
 }
 
 function copy_to_reposerver() {
@@ -121,12 +122,11 @@ source_string "$env_parameters"
 
 log "env variables. CLEAN_START: $CLEAN_START, SKIP_COPY: $SKIP_COPY, FORCE_BUILD: $FORCE_BUILD, build_command: $build_command"
 if [ -n "$CLEAN_START" ] && $CLEAN_START; then
-    [ ! -d "$code_dir" ] || rm -rf "$code_dir"
+    [ ! -d "$code_dir" ] || sudo rm -rf "$code_dir"
 fi
 
 if [ ! -d "$working_dir" ]; then
-    sudo mkdir -p "$working_dir"
-    sudo chown -R jenkins:jenkins "$working_dir"
+    mkdir -p "$working_dir"
 fi
 
 if [ -d "$code_dir" ]; then
@@ -161,7 +161,7 @@ env
 log "\n\n\n"
 
 log "================= Build code: cd $code_dir ================="
-sudo /usr/sbin/locale-gen --lang en_US.UTF-8
+# sudo /usr/sbin/locale-gen --lang en_US.UTF-8
 export LANG="en_US.UTF-8"
 export LC_ALL="en_US.UTF-8"
 

@@ -9,7 +9,7 @@
 ## Description :
 ## --
 ## Created : <2016-04-13>
-## Updated: Time-stamp: <2016-07-08 11:27:12>
+## Updated: Time-stamp: <2016-07-19 14:44:31>
 ##-------------------------------------------------------------------
 
 ################################################################################################
@@ -29,7 +29,7 @@ if [ ! -f /var/lib/devops/refresh_common_library.sh ]; then
     [ -d /var/lib/devops/ ] || (sudo mkdir -p  /var/lib/devops/ && sudo chmod 777 /var/lib/devops)
     wget -O /var/lib/devops/refresh_common_library.sh "$DOWNLOAD_PREFIX/common_library/refresh_common_library.sh"
 fi
-bash /var/lib/devops/refresh_common_library.sh "1597538024" "/var/lib/devops/devops_common_library.sh" \
+bash /var/lib/devops/refresh_common_library.sh "2593132520" "/var/lib/devops/devops_common_library.sh" \
      "${DOWNLOAD_PREFIX}/common_library/devops_common_library.sh"
 . /var/lib/devops/devops_common_library.sh
 ################################################################################################
@@ -109,8 +109,8 @@ function replicate_git_repo() {
 
     [ -d "$working_dir" ] || mkdir -p "$working_dir"
     intermediate_dir="$working_dir/$git_branch_dst/intermediate"
-    git_repo_src_name=$(echo "${git_repo_src_url%.git}" | awk -F '/' '{print $2}')
-    git_repo_dst_name=$(echo "${git_repo_dst_url%.git}" | awk -F '/' '{print $2}')
+    git_repo_src_name=$(parse_git_repo "$git_repo_src_url")
+    git_repo_dst_name=$(parse_git_repo "$git_repo_dst_url")
 
     git_update_code "$git_branch_src" "$working_dir" "$git_repo_src_url"
     git_update_dst_repo "$git_branch_dst" "$working_dir" "$git_repo_dst_url"
