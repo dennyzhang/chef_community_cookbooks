@@ -67,6 +67,14 @@ cookbook_file '/opt/devops/bin/manage_all_services.sh' do
   cookbook 'devops_library'
 end
 
+cookbook_file '/opt/devops/bin/wait_for.sh' do
+  source 'devops_public/bash/wait_for/wait_for.sh'
+  owner 'root'
+  group 'root'
+  mode '0755'
+  cookbook 'devops_library'
+end
+
 cookbook_file '/opt/devops/bin/docker_destroy.sh' do
   source 'devops_public/bash/docker_facility/docker_destroy.sh'
   owner 'root'
