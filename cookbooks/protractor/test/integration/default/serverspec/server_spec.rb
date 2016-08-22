@@ -5,7 +5,7 @@ require 'serverspec'
 set :backend, :exec
 
 #####################################################
-# verify service running 
+# verify service running
 describe port(4444) do
   it { should be_listening }
 end
