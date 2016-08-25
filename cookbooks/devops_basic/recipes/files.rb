@@ -8,7 +8,7 @@
 # Apache License, Version 2.0
 #
 %w(
-  /usr/local/var /usr/local/var/run
+  /usr/local/var /usr/local/var/run /var/chef /var/chef/cache
   /opt/devops /opt/devops/bin /data).each do |x|
   directory x do
     owner 'root'
