@@ -52,5 +52,5 @@ default['nagios3']['slack_domain'] = ''
 default['nagios3']['slack_token'] = ''
 default['nagios3']['slack_channel'] = ''
 
-default['nagios3']['memory_warn_threshold'] = '70'
+default['nagios3']['memory_warn_threshold'] = '80'
 default['nagios3']['memory_cri_threshold'] = '90'
