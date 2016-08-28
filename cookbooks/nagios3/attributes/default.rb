@@ -51,3 +51,6 @@ default['nagios3']['slack_domain'] = ''
 # When slack_token is empty, skip slack alerting in nagios
 default['nagios3']['slack_token'] = ''
 default['nagios3']['slack_channel'] = ''
+
+default['nagios3']['memory_warn_threshold'] = '70'
+default['nagios3']['memory_cri_threshold'] = '90'
