@@ -18,6 +18,6 @@ include_recipe 'devops_basic::files'
 include_recipe 'devops_basic::packages'
 include_recipe 'devops_basic::os_check'
 include_recipe 'devops_basic::package_version_check'
+include_recipe 'devops_basic::global_env'
 
 include_recipe 'devops_library::install_serverspec'
-include_recipe 'devops_library::global_env'
