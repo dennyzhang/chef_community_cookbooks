@@ -8,7 +8,7 @@
 # Apache License, Version 2.0
 #
 execute 'Add Date and Time to Bash History' do
-  command "echo export HISTTIMEFORMAT=\"%h %d %H:%M:%S \" >> /root/.bashrc"
+  command "echo \"export HISTTIMEFORMAT='%h %d %H:%M:%S '\" >> /root/.bashrc"
   action :run
   not_if "grep 'export HISTTIMEFORMAT=' /root/.bashrc"
 end
