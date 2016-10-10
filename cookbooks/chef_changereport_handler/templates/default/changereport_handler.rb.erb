@@ -3,9 +3,9 @@ module MyChefReport
     # This method gets called when the chef run fails and this handler is registered
     # to act as an exception handler.
     def report
-      report_dir_path = "<%= node.chef_changereport_handler.working_dir %>"
-      report_extra_info = "<%= node.chef_changereport_handler.report_extra_info %>"
-      command_run_after_failure = "<%= node.chef_changereport_handler.command_run_after_failure %>"
+      report_dir_path = "<%= node['chef_changereport_handler']['working_dir'] %>"
+      report_extra_info = "<%= node['chef_changereport_handler']['report_extra_info'] %>"
+      command_run_after_failure = "<%= node['chef_changereport_handler']['command_run_after_failure'] %>"
 
       detail_info = ""
       indent = "    "
