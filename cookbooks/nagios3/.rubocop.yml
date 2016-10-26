@@ -6,3 +6,6 @@ Metrics/LineLength:
 
 Style/Next:
   Enabled: false
+
+BlockLength:
+  Max: 90
