@@ -12,24 +12,24 @@ if node['nagios3']['enable_basic_check'] == '1'
     service_check_list = []
     ########################### Common Check ##################################
     service_check_list += \
-    [
-      'check_total_procs:check_nrpe2!check_total_procs',
-      # TODO: customize threshold
-      'check_load:check_nrpe2!check_cpu_load',
-      'check_users:check_nrpe2!check_users',
-      'check_swap_usage:check_nrpe2!check_swap_usage',
-      'check_zombie_procs:check_nrpe2!check_zombie_procs',
-      # TODO: customize threshold
-      'check_disk_rootfs:check_nrpe2!check_disk_rootfs',
-      # TODO: customize threshold
-      'check_memory:check_nrpe2!check_memory',
-      # TODO: customize threshold
-      'check_network_eth0:check_nrpe2!check_network_eth0'
-      # 'check_ip_address:check_nrpe2!check_ip_address',
-      # 'Check_Certificate:check_nrpe2!check_certificate',
-      # 'check_cdn:',
-      # 'check_cdn_server:',
-    ]
+      [
+        'check_total_procs:check_nrpe2!check_total_procs',
+        # TODO: customize threshold
+        'check_load:check_nrpe2!check_cpu_load',
+        'check_users:check_nrpe2!check_users',
+        'check_swap_usage:check_nrpe2!check_swap_usage',
+        'check_zombie_procs:check_nrpe2!check_zombie_procs',
+        # TODO: customize threshold
+        'check_disk_rootfs:check_nrpe2!check_disk_rootfs',
+        # TODO: customize threshold
+        'check_memory:check_nrpe2!check_memory',
+        # TODO: customize threshold
+        'check_network_eth0:check_nrpe2!check_network_eth0'
+        # 'check_ip_address:check_nrpe2!check_ip_address',
+        # 'Check_Certificate:check_nrpe2!check_certificate',
+        # 'check_cdn:',
+        # 'check_cdn_server:',
+      ]
     ###########################################################################
 
     # ########################### App Related Checks ##########################
@@ -63,7 +63,7 @@ if node['nagios3']['enable_basic_check'] == '1'
     conf_folder = "/etc/#{node['nagios3']['nagios_name']}/conf.d"
     template "#{conf_folder}/#{nagios_client_ip}_nagios2.cfg" do
       source 'host_nagios2.cfg.erb'
-      mode 0644
+      mode 0o644
       variables(
         nagios_hostname: nagios_client_ip,
         service_check_list: service_check_list

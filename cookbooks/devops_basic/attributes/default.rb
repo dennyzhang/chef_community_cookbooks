@@ -15,6 +15,7 @@ default['devops_basic']['supported_os_list'] = ['ubuntu-14.04']
 default['devops_basic']['whether_install_justniffer'] = 'true'
 
 default['devops_basic']['package_list'] = \
-['lsof', 'curl', 'wget', 'inotify-tools', 'bc', 'telnet', 'tar', 'tree', 'vim', \
- 'git', 'tmux', 'syslinux', 'python-pip', 'logwatch'
-]
+  [
+    'lsof', 'curl', 'wget', 'inotify-tools', 'bc', 'telnet', 'tar', 'tree', 'vim', \
+    'git', 'tmux', 'syslinux', 'python-pip', 'logwatch'
+  ]

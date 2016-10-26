@@ -11,6 +11,6 @@
 directory '/usr/local/coredump' do
   owner 'root'
   group 'root'
-  mode 00755
+  mode 0o755
   action :create
 end

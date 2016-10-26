@@ -69,7 +69,7 @@ end
 directory '/etc/nagios/nrpe.d' do
   owner 'root'
   group 'root'
-  mode 0755
+  mode 0o755
   recursive true
   action :create
 end
@@ -88,7 +88,7 @@ template '/etc/nagios/nrpe.cfg' do
   source 'nrpe.cfg.erb'
   owner 'root'
   group 'root'
-  mode 0755
+  mode 0o755
   variables(
     allowed_hosts: allowed_hosts
   )
@@ -99,7 +99,7 @@ template '/etc/nagios/nrpe.d/common_nrpe.cfg' do
   source 'common_nrpe.cfg.erb'
   owner 'root'
   group 'root'
-  mode 0755
+  mode 0o755
   variables(
     nagios_plugins: node['nagios3']['plugins_dir']
   )
@@ -110,7 +110,7 @@ template '/etc/nagios/nrpe.d/my_nrpe.cfg' do
   source 'my_nrpe.cfg.erb'
   owner 'root'
   group 'root'
-  mode 0755
+  mode 0o755
   variables(
     apache_pid_file: node['nagios3']['apache_pid_file'],
     nagios_plugins: node['nagios3']['plugins_dir']
@@ -122,7 +122,7 @@ template '/etc/nagios/nrpe.d/check_logfile.cfg' do
   source 'check_logfile.cfg.erb'
   owner 'root'
   group 'root'
-  mode 0755
+  mode 0o755
   variables(
     nagios_plugins: node['nagios3']['plugins_dir']
   )
@@ -132,7 +132,7 @@ end
 directory node['nagios3']['plugins_dir'] do
   owner 'root'
   group 'root'
-  mode 0755
+  mode 0o755
   recursive true
   action :create
 end
@@ -142,9 +142,9 @@ end
 download_prefix = 'https://raw.githubusercontent.com/DennyZhang/devops_public/tag_v1'
 
 nagios_plugin_list = \
-['check_proc_mem:d9ccd86e1fcd4aee631bdf7a213d5eda93ea1cb3579fc8bb83ad2025f1b59220',
- 'check_proc_cpu:f874bd1721c38cb191b84998a4feded999ba6830f18e7aa1771ebdc1c398adab',
- 'check_proc_fd:fb2e8b19094d5b6c609b03fc2c93054b6a213b9074fa9305b71673a36588451c']
+  ['check_proc_mem:d9ccd86e1fcd4aee631bdf7a213d5eda93ea1cb3579fc8bb83ad2025f1b59220',
+   'check_proc_cpu:f874bd1721c38cb191b84998a4feded999ba6830f18e7aa1771ebdc1c398adab',
+   'check_proc_fd:fb2e8b19094d5b6c609b03fc2c93054b6a213b9074fa9305b71673a36588451c']
 
 nagios_plugin_list.each do |plugin|
   l = plugin.split(':')
@@ -167,7 +167,7 @@ end
     source "#{x}.erb"
     owner 'root'
     group 'root'
-    mode 0755
+    mode 0o755
   end
 end
 

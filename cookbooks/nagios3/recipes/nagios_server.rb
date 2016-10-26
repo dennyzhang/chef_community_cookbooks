@@ -106,7 +106,7 @@ template '/etc/' + node['nagios3']['nagios_name'] + '/nagios.cfg' do
   source node['nagios3']['conf_erb_file']
   owner 'root'
   group 'root'
-  mode 0644
+  mode 0o644
   variables(check_external_commands: '1')
   notifies :restart, "service[#{node['nagios3']['apache_name']}]", :delayed
 end
@@ -116,7 +116,7 @@ template node['nagios3']['command_file'] do
   source node['nagios3']['command_erb_file']
   owner 'root'
   group 'root'
-  mode 0644
+  mode 0o644
   notifies :restart, "service[#{node['nagios3']['nagios_name']}]", :delayed
 end
 
@@ -125,7 +125,7 @@ template node['nagios3']['localhost_cfg'] do
   source node['nagios3']['localhost_cfg_erb']
   owner 'root'
   group 'root'
-  mode 0644
+  mode 0o644
   notifies :restart, "service[#{node['nagios3']['nagios_name']}]", :delayed
   only_if { node['nagios3']['change_localhost_cfg'] == '1' }
 end
@@ -153,7 +153,7 @@ template node['nagios3']['htpasswd_users'] do
   source 'htpasswd.users.erb'
   owner 'root'
   group 'root'
-  mode 0644
+  mode 0o644
   variables(nagios_admin_username: node['nagios3']['admin_username'],
             nagios_admin_password_hash: node['nagios3']['admin_password_hash'])
   notifies :restart, "service[#{node['nagios3']['apache_name']}]", :delayed
@@ -233,7 +233,7 @@ template "/etc//#{node['nagios3']['apache_name']}/conf-enabled/nagiosgraph.conf"
   source 'httpd_nagiosgraph.conf'
   owner 'root'
   group 'root'
-  mode 0644
+  mode 0o644
   notifies :restart, "service[#{node['nagios3']['apache_name']}]", :delayed
 end
 
@@ -244,7 +244,7 @@ when 'debian'
     source 'ubuntu_services_nagios2.cfg.erb'
     owner 'root'
     group 'root'
-    mode 0644
+    mode 0o644
     notifies :restart, "service[#{node['nagios3']['nagios_name']}]", :delayed
   end
 
@@ -252,7 +252,7 @@ when 'debian'
     source 'ubuntu_extinfo_nagios2.cfg.erb'
     owner 'root'
     group 'root'
-    mode 0644
+    mode 0o644
     notifies :restart, "service[#{node['nagios3']['nagios_name']}]", :delayed
   end
 
@@ -260,7 +260,7 @@ when 'debian'
     source 'ubuntu_hostgroups_nagios2.cfg.erb'
     owner 'root'
     group 'root'
-    mode 0644
+    mode 0o644
     notifies :restart, "service[#{node['nagios3']['nagios_name']}]", :delayed
   end
 
@@ -277,7 +277,7 @@ when 'debian'
     source 'contacts_nagios2.cfg.erb'
     owner 'root'
     group 'root'
-    mode 0644
+    mode 0o644
     variables(
       admin_members: admin_members
     )
@@ -290,7 +290,7 @@ when 'fedora', 'rhel', 'suse'
     source 'redhat_templates.cfg.erb'
     owner 'root'
     group 'root'
-    mode 0644
+    mode 0o644
     notifies :restart, "service[#{node['nagios3']['nagios_name']}]", :delayed
   end
 else

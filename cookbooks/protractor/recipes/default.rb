@@ -24,7 +24,7 @@ node.default['java']['jdk']['8']['x86_64']['url'] = node['protractor']['jdk_url'
 
 # shasum -a 256 ./jdk-8u40-linux-x64.tar.gz
 node.default['java']['jdk']['8']['x86_64']['checksum'] = \
-'da1ad819ce7b7ec528264f831d88afaa5db34b7955e45422a7e380b1ead6b04d'
+  'da1ad819ce7b7ec528264f831d88afaa5db34b7955e45422a7e380b1ead6b04d'
 
 include_recipe 'java'
 
@@ -50,7 +50,7 @@ end
 end
 
 file '/etc/profile.d/xvfb.sh' do
-  mode 00544
+  mode 0o544
   action :create
   content "XVFB_PORT=#{node['protractor']['xvfb_port']}"
 end
@@ -59,7 +59,7 @@ template '/etc/init.d/xvfb' do
   source 'xvfb.initscript'
   owner 'root'
   group 'root'
-  mode 0755
+  mode 0o755
 end
 
 service 'xvfb' do
@@ -120,7 +120,7 @@ template '/etc/init.d/webdriver-manager' do
   source 'webdriver-manager.initscript'
   owner 'root'
   group 'root'
-  mode 0755
+  mode 0o755
   notifies :restart, 'service[webdriver-manager]', :delayed
 end
 
@@ -134,7 +134,7 @@ end
 directory node['protractor']['test_dir'] do
   owner 'root'
   group 'root'
-  mode 00755
+  mode 0o755
   action :create
 end
 

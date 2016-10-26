@@ -17,13 +17,13 @@ end
 # https://github.com/tinyspeck/services-examples/blob/master/nagios.pl
 template '/usr/local/bin/slack_nagios.pl' do
   source 'nagios.pl'
-  mode 0755
+  mode 0o755
 end
 
 template '/etc/nagios3/conf.d/contacts_slack_nagios.cfg' do
   source 'contacts_slack_nagios.cfg.erb'
   owner 'root'
   group 'root'
-  mode 0644
+  mode 0o644
   notifies :restart, 'service[nagios3]', :delayed
 end

@@ -46,7 +46,7 @@ end
 directory '/etc/sysctl.d' do
   owner 'root'
   group 'root'
-  mode 00755
+  mode 0o755
 end
 
 cookbook_file '/etc/sysctl.d/60-coredump.conf' do
