@@ -5,6 +5,8 @@ license 'All rights reserved'
 description 'Chef cookbook to install and setup protractor'
 long_description IO.read(File.join(File.dirname(__FILE__), 'README.md'))
 version '0.2.0'
+issues_url 'http://www.dennyzhang.com'
+source_url 'http://www.dennyzhang.com'
 
 supports 'arch'
 supports 'centos'

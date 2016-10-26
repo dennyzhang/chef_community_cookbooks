@@ -11,7 +11,7 @@ working_dir = node['chef_changereport_handler']['working_dir']
 directory working_dir do
   owner 'root'
   group 'root'
-  mode 00755
+  mode 0o755
   action :create
 end
 

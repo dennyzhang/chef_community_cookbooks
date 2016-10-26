@@ -9,7 +9,7 @@
 ## Description :
 ## --
 ## Created : <2015-07-29>
-## Updated: Time-stamp: <2016-07-19 07:50:31>
+## Updated: Time-stamp: <2016-10-17 23:05:44>
 ##-------------------------------------------------------------------
 
 ################################################################################################
@@ -26,7 +26,7 @@ if [ ! -f /var/lib/devops/refresh_common_library.sh ]; then
     [ -d /var/lib/devops/ ] || (sudo mkdir -p  /var/lib/devops/ && sudo chmod 777 /var/lib/devops)
     wget -O /var/lib/devops/refresh_common_library.sh "$DOWNLOAD_PREFIX/common_library/refresh_common_library.sh"
 fi
-bash /var/lib/devops/refresh_common_library.sh "2593132520" "/var/lib/devops/devops_common_library.sh" \
+bash /var/lib/devops/refresh_common_library.sh "4214886847" "/var/lib/devops/devops_common_library.sh" \
      "${DOWNLOAD_PREFIX}/common_library/devops_common_library.sh"
 . /var/lib/devops/devops_common_library.sh
 ################################################################################################
@@ -120,8 +120,8 @@ setup_serverspec "$working_dir"
 cat > spec/localhost/sample_spec.rb <<EOF
 require 'spec_helper'
 
-# Check at least 3 GB free disk
-describe command("[ $(df -h / | tail -n1 |awk -F' ' '{print $4}' | awk -F'G' '{print $1}' | awk -F'.' '{print $1}') -gt 3 ]") do
+# Check at least 2 GB free disk
+describe command("[ $(df -h / | tail -n1 |awk -F' ' '{print $4}' | awk -F'G' '{print $1}' | awk -F'.' '{print $1}') -gt 2 ]") do
   its(:exit_status) { should eq 0 }
 end
 

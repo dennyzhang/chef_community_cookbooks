@@ -16,4 +16,5 @@ default['devops_basic']['whether_install_justniffer'] = 'true'
 
 default['devops_basic']['package_list'] = \
 ['lsof', 'curl', 'wget', 'inotify-tools', 'bc', 'telnet', 'tar', 'tree', 'vim', \
- 'git', 'tmux', 'syslinux', 'python-pip', 'logwatch']
+ 'git', 'tmux', 'syslinux', 'python-pip', 'logwatch'
+]

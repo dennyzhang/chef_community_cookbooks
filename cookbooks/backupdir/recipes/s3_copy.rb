@@ -24,7 +24,7 @@ end
 directory '/root/.aws' do
   owner 'root'
   group 'root'
-  mode 00700
+  mode 0o700
   action :create
 end
 
