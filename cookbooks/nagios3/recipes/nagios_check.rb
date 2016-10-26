@@ -34,11 +34,12 @@ if node['nagios3']['enable_basic_check'] == '1'
 
     # ########################### App Related Checks ##########################
     service_check_list += \
-    ['check_apache_mem:check_nrpe2!check_apache_mem',
-     'check_apache_fd:check_nrpe2!check_apache_fd',
-     'check_apache_cpu:check_nrpe2!check_apache_cpu',
-     'check_apache_log:check_nrpe2!check_apache_log'
-    ]
+      [
+        'check_apache_mem:check_nrpe2!check_apache_mem',
+        'check_apache_fd:check_nrpe2!check_apache_fd',
+        'check_apache_cpu:check_nrpe2!check_apache_cpu',
+        'check_apache_log:check_nrpe2!check_apache_log'
+      ]
 
     # if !node['servers']['apache_ip_list'].index(nagios_client_ip).nil?
     # service_check_list = service_check_list + \

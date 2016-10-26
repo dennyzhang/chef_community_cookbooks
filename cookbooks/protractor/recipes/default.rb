@@ -84,7 +84,7 @@ node.default['nodejs']['version'] = '0.12.1'
 node.default['nodejs']['source']['url'] = node['protractor']['nodejs_url']
 
 node.default['nodejs']['source']['checksum'] = \
-'270d478d0ffb06063f01eab932f672b788f6ecf3c117075ac8b87c0c17e0c9de'
+  '270d478d0ffb06063f01eab932f672b788f6ecf3c117075ac8b87c0c17e0c9de'
 
 node.default['nodejs']['npm']['install_method'] = 'source'
 

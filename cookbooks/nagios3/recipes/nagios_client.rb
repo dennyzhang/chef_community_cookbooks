@@ -77,11 +77,11 @@ end
 allowed_hosts = node['nagios3']['allowed_hosts']
 
 if node['nagios3']['allowed_hosts'].index(node['nagios3']['server_ip']).nil?
-  if allowed_hosts == ''
-    allowed_hosts = node['nagios3']['server_ip']
-  else
-    allowed_hosts = allowed_hosts + ',' + node['nagios3']['server_ip']
-  end
+  allowed_hosts = if allowed_hosts == ''
+                    node['nagios3']['server_ip']
+                  else
+                    allowed_hosts + ',' + node['nagios3']['server_ip']
+                  end
 end
 
 template '/etc/nagios/nrpe.cfg' do
