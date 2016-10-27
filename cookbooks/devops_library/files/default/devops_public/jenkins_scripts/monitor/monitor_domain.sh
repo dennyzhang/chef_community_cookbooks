@@ -13,7 +13,7 @@ if [ ! -f /var/lib/devops/refresh_common_library.sh ]; then
     [ -d /var/lib/devops/ ] || (sudo mkdir -p  /var/lib/devops/ && sudo chmod 777 /var/lib/devops)
     wget -O /var/lib/devops/refresh_common_library.sh "$DOWNLOAD_PREFIX/common_library/refresh_common_library.sh"
 fi
-bash /var/lib/devops/refresh_common_library.sh "4214886847" "/var/lib/devops/devops_common_library.sh" \
+bash /var/lib/devops/refresh_common_library.sh "397508245" "/var/lib/devops/devops_common_library.sh" \
      "${DOWNLOAD_PREFIX}/common_library/devops_common_library.sh"
 . /var/lib/devops/devops_common_library.sh
 ################################################################################################
@@ -22,9 +22,9 @@ function check_domain() {
     if ! command -v jq >/dev/null 2>&1; then
         sudo apt-get install jq -y
     fi
-
+    errcode=$?
     # Versify command jq
-    if [ $? -ne 0 ]; then
+    if [ $errcode -ne 0 ]; then
         log "Error: command(jq) not exist"
         exit 1
     fi

@@ -10,7 +10,7 @@
 ##
 ## --
 ## Created : <2016-04-03>
-## Updated: Time-stamp: <2016-07-08 11:27:10>
+## Updated: Time-stamp: <2016-10-27 17:18:41>
 ##-------------------------------------------------------------------
 ################################################################################################
 ## env variables:
@@ -27,7 +27,7 @@ if [ ! -f /var/lib/devops/refresh_common_library.sh ]; then
     [ -d /var/lib/devops/ ] || (sudo mkdir -p  /var/lib/devops/ && sudo chmod 777 /var/lib/devops)
     wget -O /var/lib/devops/refresh_common_library.sh "$DOWNLOAD_PREFIX/common_library/refresh_common_library.sh"
 fi
-bash /var/lib/devops/refresh_common_library.sh "4214886847" "/var/lib/devops/devops_common_library.sh" \
+bash /var/lib/devops/refresh_common_library.sh "397508245" "/var/lib/devops/devops_common_library.sh" \
      "${DOWNLOAD_PREFIX}/common_library/devops_common_library.sh"
 . /var/lib/devops/devops_common_library.sh
 ################################################################################################
@@ -106,7 +106,8 @@ tar tcpdump telnet tmux tree tzdata udev unzip util-linux vim wget zip";;
 function get_current_package_list() {
     ssh_command="dpkg -l"
     package_list=$($SSH_CONNECT "$ssh_command")
-    if [ $? -ne 0 ]; then
+    errcode=$?
+    if [ $errcode -ne 0 ]; then
         # TODO: better way to report output
         echo "ERROR: fail to run $ssh_command"
         exit 1

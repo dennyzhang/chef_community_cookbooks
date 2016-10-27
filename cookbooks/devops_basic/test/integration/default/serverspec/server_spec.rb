@@ -4,15 +4,16 @@ require 'serverspec'
 # Required by serverspec
 set :backend, :exec
 
-%w(/opt/devops/bin/enforce_all_nagios_check.sh
-   /opt/devops/bin/wait_for.sh).each do |x|
-  describe file(x) do
-    it { should be_file }
+def run_check_jenkins_job(jenkins_run_cmd, jenkins_check_cmd, \
+                          job_name, parameters)
+  # Run jenkins jobs once and verify the job status
+  describe command("#{jenkins_run_cmd} #{job_name} -w #{parameters}") do
+    its(:stdout) { should contain 'Started ' }
+    its(:exit_status) { should eq 0 }
   end
-end
 
-%w(lsof curl tmux).each do |x|
-  describe package(x) do
-    it { should be_installed }
+  describe command("#{jenkins_check_cmd} #{job_name}") do
+    its(:stdout) { should contain 'Jenkins job success: ' }
+    its(:exit_status) { should eq 0 }
   end
 end
