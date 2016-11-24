@@ -5,7 +5,7 @@
 ## Description : NRPE Nagios Checks configuration
 ## --
 ## Created : <2014-9-11>
-## Updated: Time-stamp: <2016-10-10 17:16:45>
+## Updated: Time-stamp: <2016-11-24 20:50:23>
 ##-------------------------------------------------------------------
 # NRPE configurations#
 
@@ -14,7 +14,7 @@ command[check_total_procs]=<%= @nagios_plugins %>/check_procs -w 5500 -c 8000
 command[check_cpu_load]=<%= @nagios_plugins %>/check_linux_stats.pl -C -w 200 -c 600 -s 5
 command[check_users]=<%= @nagios_plugins %>/check_users -w 10 -c 15
 command[check_zombie_procs]=<%= @nagios_plugins %>/check_procs -w 5 -c 10 -s Z
-command[check_disk_rootfs]=<%= @nagios_plugins %>/check_linux_stats.pl -D -w 15 -c 5 -u % -p /
+command[check_disk_rootfs]=<%= @nagios_plugins %>/check_linux_stats.pl -D -w 15 -c 10 -u % -p /
 command[check_memory]=<%= @nagios_plugins %>/check_linux_stats.pl -M -w <%= node['nagios3']['memory_warn_threshold'] %>,<%= node['nagios3']['memory_warn_threshold'] %> -c <%= node['nagios3']['memory_cri_threshold'] %>,<%= node['nagios3']['memory_cri_threshold'] %>
 command[check_network_eth0]=<%= @nagios_plugins %>/check_linux_stats.pl -N -w 100000000 -c 150000000 -p eth0
 command[check_swap_usage]=<%= @nagios_plugins %>/check_swap -w 20% -c 10%

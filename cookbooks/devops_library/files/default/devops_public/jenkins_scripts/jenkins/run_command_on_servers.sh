@@ -9,7 +9,7 @@
 ## Description :
 ## --
 ## Created : <2016-04-13>
-## Updated: Time-stamp: <2016-07-08 11:27:12>
+## Updated: Time-stamp: <2016-11-07 15:23:46>
 ##-------------------------------------------------------------------
 ## env variables:
 ##       server_list: ip-1
@@ -47,11 +47,14 @@ source_string "$env_parameters"
 [ -n "$EXIT_NODE_CONNECT_FAIL" ] || export EXIT_NODE_CONNECT_FAIL=false
 [ -n "$SSH_USERNAME" ] || export SSH_USERNAME="root"
 
+echo "server_list: $server_list"
 server_list=$(string_strip_comments "$server_list")
 server_list=$(string_strip_whitespace "$server_list")
-command=$(string_strip_comments "$command")
+command_list=$(string_strip_comments "$command_list")
 
-install_package "ansible" "ansible"
+if ! which ansible 1>/dev/null 2>&1; then
+    sudo apt-get install -y ansible
+fi
 
 # Dump bash command to scripts
 current_filename=$(basename "${0}")
@@ -69,5 +72,5 @@ echo "==================== Parallel run command By Ansible:"
 cat "$tmp_file"
 echo "===================="
 
-ansible all -i "$ansible_host_file" -m script -a "$tmp_file" -u "$SSH_USERNAME" "--private-key=$ssh_key_file"
+sudo ansible all -i "$ansible_host_file" -m script -a "$tmp_file" -u "$SSH_USERNAME" "--private-key=$ssh_key_file"
 ## File : run_command_on_servers.sh ends
