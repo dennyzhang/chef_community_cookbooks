@@ -139,12 +139,12 @@ end
 
 # TODO: change this later
 # specify file checksum to avoid external network request
-download_prefix = 'https://raw.githubusercontent.com/DennyZhang/devops_public/tag_v1'
+download_prefix = 'https://raw.githubusercontent.com/DennyZhang/devops_public/tag_v2'
 
 nagios_plugin_list = \
   ['check_proc_mem:d9ccd86e1fcd4aee631bdf7a213d5eda93ea1cb3579fc8bb83ad2025f1b59220',
    'check_proc_cpu:f874bd1721c38cb191b84998a4feded999ba6830f18e7aa1771ebdc1c398adab',
-   'check_proc_fd:fb2e8b19094d5b6c609b03fc2c93054b6a213b9074fa9305b71673a36588451c']
+   'check_proc_fd:c451946d6c8334d384f8fa70cc9ded329717e726146c385b8610824e6b746052']
 
 nagios_plugin_list.each do |plugin|
   l = plugin.split(':')
