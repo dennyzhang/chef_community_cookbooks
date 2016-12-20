@@ -1,25 +1,46 @@
 define contact {
-       contact_name   slack
+       contact_name   slack_cri
+       alias Slack
+       service_notification_period 24x7
+       host_notification_period 24x7
+       service_notification_options c
+       host_notification_options d,r
+       service_notification_commands notify-service-by-slack-cri
+       host_notification_commands notify-host-by-slack-cri
+}
+
+define contact {
+       contact_name   slack_all
        alias Slack
        service_notification_period 24x7
        host_notification_period 24x7
        service_notification_options w,u,c,r
        host_notification_options d,r
-       service_notification_commands notify-service-by-slack
-       host_notification_commands notify-host-by-slack
+       service_notification_commands notify-service-by-slack-all
+       host_notification_commands notify-host-by-slack-all
 }
 
 define contactgroup {
        contactgroup_name slack_admins
-       alias Nagios Administrators members root,slack
+       alias Nagios Administrators members root,slack_cri
 }
 
 define command {
-       command_name notify-service-by-slack
-       command_line /usr/local/bin/slack_nagios.pl -field slack_channel=#<%= node['nagios3']['slack_channel'] %> -field HOSTALIAS="$HOSTNAME$" -field SERVICEDESC="$SERVICEDESC$" -field SERVICESTATE="$SERVICESTATE$" -field SERVICEOUTPUT="$SERVICEOUTPUT$" -field NOTIFICATIONTYPE="$NOTIFICATIONTYPE$"
+       command_name notify-service-by-slack-cri
+       command_line /usr/local/bin/slack_nagios.pl -field slack_channel=#<%= node['nagios3']['slack_cri_channel'] %> -field HOSTALIAS="$HOSTNAME$" -field SERVICEDESC="$SERVICEDESC$" -field SERVICESTATE="$SERVICESTATE$" -field SERVICEOUTPUT="$SERVICEOUTPUT$" -field NOTIFICATIONTYPE="$NOTIFICATIONTYPE$"
        }
        
 define command {
-       command_name notify-host-by-slack
-       command_line /usr/local/bin/slack_nagios.pl -field slack_channel=#<%= node['nagios3']['slack_channel'] %> -field HOSTALIAS="$HOSTNAME$" -field HOSTSTATE="$HOSTSTATE$" -field HOSTOUTPUT="$HOSTOUTPUT$" -field NOTIFICATIONTYPE="$NOTIFICATIONTYPE$"
+       command_name notify-host-by-slack-cri
+       command_line /usr/local/bin/slack_nagios.pl -field slack_channel=#<%= node['nagios3']['slack_cri_channel'] %> -field HOSTALIAS="$HOSTNAME$" -field HOSTSTATE="$HOSTSTATE$" -field HOSTOUTPUT="$HOSTOUTPUT$" -field NOTIFICATIONTYPE="$NOTIFICATIONTYPE$"
+       }
+
+define command {
+       command_name notify-service-by-slack-all
+       command_line /usr/local/bin/slack_nagios.pl -field slack_channel=#<%= node['nagios3']['slack_all_channel'] %> -field HOSTALIAS="$HOSTNAME$" -field SERVICEDESC="$SERVICEDESC$" -field SERVICESTATE="$SERVICESTATE$" -field SERVICEOUTPUT="$SERVICEOUTPUT$" -field NOTIFICATIONTYPE="$NOTIFICATIONTYPE$"
+       }
+       
+define command {
+       command_name notify-host-by-slack-all
+       command_line /usr/local/bin/slack_nagios.pl -field slack_channel=#<%= node['nagios3']['slack_all_channel'] %> -field HOSTALIAS="$HOSTNAME$" -field HOSTSTATE="$HOSTSTATE$" -field HOSTOUTPUT="$HOSTOUTPUT$" -field NOTIFICATIONTYPE="$NOTIFICATIONTYPE$"
        }

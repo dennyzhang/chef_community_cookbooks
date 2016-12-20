@@ -266,7 +266,7 @@ when 'debian'
 
   # slack integration
   if node.default['nagios3']['slack_token'] != ''
-    admin_members = 'root,slack'
+    admin_members = 'root,slack_all,slack_cri'
     include_recipe 'nagios3::slack_notification'
   else
     admin_members = 'root'

@@ -50,7 +50,8 @@ default['nagios3']['nagiosgraph_url'] = 'http://www.mirrorservice.org/sites/down
 default['nagios3']['slack_domain'] = ''
 # When slack_token is empty, skip slack alerting in nagios
 default['nagios3']['slack_token'] = ''
-default['nagios3']['slack_channel'] = ''
+default['nagios3']['slack_cri_channel'] = ''
+default['nagios3']['slack_all_channel'] = ''
 
 default['nagios3']['memory_warn_threshold'] = '80'
 default['nagios3']['memory_cri_threshold'] = '90'
