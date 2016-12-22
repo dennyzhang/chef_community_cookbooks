@@ -20,4 +20,5 @@ include_recipe 'devops_basic::os_check'
 include_recipe 'devops_basic::package_version_check'
 include_recipe 'devops_basic::global_env'
 
+include_recipe 'devops_library::enable_alias'
 include_recipe 'devops_library::install_serverspec'

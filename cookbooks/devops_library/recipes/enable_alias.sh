@@ -1,7 +1,7 @@
 # -*- encoding: utf-8 -*-
 #
 # Cookbook Name:: devops_library
-# Recipe:: default
+# Recipe:: enable_alias
 #
 # Copyright 2015, http://DennyZhang.com
 #
