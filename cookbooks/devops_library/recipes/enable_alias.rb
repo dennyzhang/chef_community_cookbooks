@@ -15,3 +15,13 @@ cookbook_file '/etc/profile.d/mybackup.sh' do
   group 'root'
   mode 0o755
 end
+
+# create directory for backup
+%w(/data/backup).each do |x|
+  directory x do
+    owner 'root'
+    group 'root'
+    mode 0o777
+    action :create
+  end
+end
