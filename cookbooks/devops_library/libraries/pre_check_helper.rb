@@ -96,7 +96,7 @@ module PreCheck
 
     def check_os_version(supported_os_list, current_os_version)
       #   Sample: check_os_version(['ubuntu-14.04', 'centos-6.5'], 'ubuntu-14.04')
-      return unless supported_os_list.include? current_os_version
+      return if supported_os_list.include? current_os_version
       Chef::Application.fatal!("Current OS version is #{current_os_version}. " \
                                "Supported OS versions: #{supported_os_list.join(',')}")
     end
