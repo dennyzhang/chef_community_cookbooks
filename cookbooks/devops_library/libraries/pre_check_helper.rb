@@ -1,6 +1,4 @@
 module PreCheck
-  # TODO: use a well-known ruby library to enforce the check logic
-
   # Precheck for input parameters and infrastructure layer
   module HelperInputFormat
     # Parameter checks for input format
@@ -56,12 +54,32 @@ module PreCheck
       end
     end
 
-    def check_tcp_port_format(tcp_port, extra_msg)
-      # TODO: to be implemented
+    def check_tcp_port_format(tcp_port, extra_msg = '')
+      # Check whether tcp_port is a valid tcp port
+      #   Sample: check_tcp_port_format('53:', 'haproxy_port is not a valid tcp port')
+      if tcp_port == ''
+        err_msg = "Error: invalid tcp port #{tcp_port}.#{extra_msg}"
+        Chef::Application.fatal!(err_msg)
+      end
+
+      # If to_i fail, it will use default value 0
+      port = tcp_port.to_i
+      return if port > 0 && port < 65_535
+      err_msg = "Error: invalid tcp port #{tcp_port}.#{extra_msg}"
+      Chef::Application.fatal!(err_msg)
     end
 
-    def check_int_format(ip_address)
-      # TODO: to be implemented
+    def check_int_format(int_value)
+      #   Sample: check_int_format("12")
+
+      err_msg = "Error: not a valid integer: #{int_value}"
+      begin
+        result = Integer(int_value)
+        return if result is true && result > 0
+        Chef::Application.fatal!(err_msg)
+      rescue
+        Chef::Application.fatal!(err_msg)
+      end
     end
   end
 
