@@ -16,7 +16,6 @@ include_recipe 'locale'
 
 include_recipe 'devops_basic::files'
 include_recipe 'devops_basic::packages'
-include_recipe 'devops_basic::os_check'
 include_recipe 'devops_basic::package_version_check'
 include_recipe 'devops_basic::global_env'
 
