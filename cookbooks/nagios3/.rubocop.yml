@@ -2,7 +2,7 @@ AllCops:
   Excludes:
 
 Metrics/LineLength:
-  Max: 90
+  Max: 95
 
 Style/Next:
   Enabled: false
