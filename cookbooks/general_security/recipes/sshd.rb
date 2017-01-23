@@ -40,4 +40,24 @@ if node['general_security']['ssh_disable_root_login'] == 'true'
   end
 end
 
+# sshd use secured ciphers stream
+if node['general_security']['ssh_ciphers_stream'] != ''
+  execute 'SSHD update cipher streams' do
+    command "sed -i \"s/^Ciphers .*/Ciphers #{node['general_security']['ssh_ciphers_stream']}/g\" "\
+            '/etc/ssh/sshd_config'
+    action :run
+    not_if "grep \"Ciphers #{node['general_security']['ssh_ciphers_stream']}\" /etc/ssh/sshd_config"
+  end
+end
+
+# sshd use secured MACs algorithms
+if node['general_security']['ssh_macs_algorithms'] != ''
+  execute 'SSHD update MACs algorithms' do
+    command "sed -i \"s/^MACs .*/MACs #{node['general_security']['ssh_macs_algorithms']}/g\" "\
+            '/etc/ssh/sshd_config'
+    action :run
+    not_if "grep \"MACs #{node['general_security']['ssh_macs_algorithms']}\" /etc/ssh/sshd_config"
+  end
+end
+
 # TODO: SSH configure gateway
