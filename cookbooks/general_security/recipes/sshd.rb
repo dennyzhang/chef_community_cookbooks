@@ -41,36 +41,38 @@ if node['general_security']['ssh_disable_root_login'] == 'true'
 end
 
 # sshd use secured ciphers stream
-if node['general_security']['ssh_ciphers_stream'] != ''
+ciphers_stream = node['general_security']['ssh_ciphers_stream']
+if ciphers_stream != ''
   execute 'SSHD inject cipher section if missing' do
-    command "echo \"Ciphers #{node['general_security']['ssh_ciphers_stream']}\" >> "\
+    command "echo \"Ciphers #{ciphers_stream}\" >> "\
             '/etc/ssh/sshd_config'
     action :run
-    not_if "grep \"^Ciphers .*\" /etc/ssh/sshd_config"
+    not_if "grep '^Ciphers .*' /etc/ssh/sshd_config"
   end
 
   execute 'SSHD update cipher streams' do
-    command "sed -i \"s/^Ciphers .*/Ciphers #{node['general_security']['ssh_ciphers_stream']}/g\" "\
-            '/etc/ssh/sshd_config'
+    command "sed -i \"s/^Ciphers .*/Ciphers #{ciphers_stream}/g\" "\
+            ' /etc/ssh/sshd_config'
     action :run
-    not_if "grep \"Ciphers #{node['general_security']['ssh_ciphers_stream']}\" /etc/ssh/sshd_config"
+    not_if "grep \"Ciphers #{ciphers_stream}\" /etc/ssh/sshd_config"
   end
 end
 
 # sshd use secured MACs algorithms
-if node['general_security']['ssh_macs_algorithms'] != ''
+macs_algorithms = node['general_security']['ssh_macs_algorithms']
+if macs_algorithms != ''
   execute 'SSHD inject MACs algorithms section if missing' do
-    command "echo \"MACs #{node['general_security']['ssh_macs_algorithms']}\" >> "\
+    command "echo \"MACs #{macs_algorithms}\" >> "\
             '/etc/ssh/sshd_config'
     action :run
-    not_if "grep \"^MACs .*\" /etc/ssh/sshd_config"
+    not_if "grep '^MACs .*' /etc/ssh/sshd_config"
   end
 
   execute 'SSHD update MACs algorithms' do
-    command "sed -i \"s/^MACs .*/MACs #{node['general_security']['ssh_macs_algorithms']}/g\" "\
+    command "sed -i \"s/^MACs .*/MACs #{macs_algorithms}/g\" "\
             '/etc/ssh/sshd_config'
     action :run
-    not_if "grep \"MACs #{node['general_security']['ssh_macs_algorithms']}\" /etc/ssh/sshd_config"
+    not_if "grep \"MACs #{macs_algorithms}\" /etc/ssh/sshd_config"
   end
 end
 
