@@ -42,6 +42,13 @@ end
 
 # sshd use secured ciphers stream
 if node['general_security']['ssh_ciphers_stream'] != ''
+  execute 'SSHD inject cipher section if missing' do
+    command "echo \"Ciphers #{node['general_security']['ssh_ciphers_stream']}\" >> "\
+            '/etc/ssh/sshd_config'
+    action :run
+    not_if "grep \"^Ciphers .*\" /etc/ssh/sshd_config"
+  end
+
   execute 'SSHD update cipher streams' do
     command "sed -i \"s/^Ciphers .*/Ciphers #{node['general_security']['ssh_ciphers_stream']}/g\" "\
             '/etc/ssh/sshd_config'
@@ -52,6 +59,13 @@ end
 
 # sshd use secured MACs algorithms
 if node['general_security']['ssh_macs_algorithms'] != ''
+  execute 'SSHD inject MACs algorithms section if missing' do
+    command "echo \"MACs #{node['general_security']['ssh_macs_algorithms']}\" >> "\
+            '/etc/ssh/sshd_config'
+    action :run
+    not_if "grep \"^MACs .*\" /etc/ssh/sshd_config"
+  end
+
   execute 'SSHD update MACs algorithms' do
     command "sed -i \"s/^MACs .*/MACs #{node['general_security']['ssh_macs_algorithms']}/g\" "\
             '/etc/ssh/sshd_config'
