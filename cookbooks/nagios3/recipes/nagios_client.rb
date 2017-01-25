@@ -30,7 +30,7 @@ when 'debian'
   else
     # in pure nagios client
     service node['nagios3']['apache_name'] do
-      action :nothing
+      action  [:stop, :disable]
     end
 
     apt_package 'nagios-nrpe-plugin' do
