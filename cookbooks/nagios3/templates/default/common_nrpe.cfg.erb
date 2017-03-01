@@ -5,7 +5,7 @@
 ## Description : NRPE Nagios Checks configuration
 ## --
 ## Created : <2014-9-11>
-## Updated: Time-stamp: <2016-12-07 22:55:43>
+## Updated: Time-stamp: <2017-03-01 10:14:50>
 ##-------------------------------------------------------------------
 # NRPE configurations#
 
@@ -25,5 +25,6 @@ command[check_certificate]=<%= @nagios_plugins %>/check_http -H localhost -C 30
 command[check_uptime]=<%= @nagios_plugins %>/check_linux_stats.pl -U -w 9
 command[diskspace]=<%= @nagios_plugins %>/check_diskspace.py
 command[check_open_files]=<%= @nagios_plugins %>/check_linux_stats.pl -F -w 600000,500000 -c 900000,10000000
-command[check_paging]=<%= @nagios_plugins %>/check_linux_stats.pl -W -w 1000000000,1500000000 -c 4000000000,5000000000 -s 3 
-command[check_disk]=<%= @nagios_plugins %>/check_linux_stats.pl -D -w 10 -c 5 -p /,/usr,/tmp,/var
+command[check_paging]=<%= @nagios_plugins %>/check_linux_stats.pl -W -w 1000000000,1500000000 -c 4000000000,5000000000 -s 3
+# monitor disk for all mounted volumes, instead of rootfs only
+command[check_disk]=<%= @nagios_plugins %>/check_linux_stats.pl -D -w 10 -c 5
