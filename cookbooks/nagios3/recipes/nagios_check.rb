@@ -13,6 +13,7 @@ if node['nagios3']['enable_basic_check'] == '1'
     ########################### Common Check ##################################
     service_check_list += \
       [
+        'check_out_of_memory:check_nrpe2!check_out_of_memory',
         'check_total_procs:check_nrpe2!check_total_procs',
         # TODO: customize threshold
         'check_load:check_nrpe2!check_cpu_load',

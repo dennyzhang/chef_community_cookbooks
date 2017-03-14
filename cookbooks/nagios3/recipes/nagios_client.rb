@@ -139,21 +139,23 @@ end
 
 # TODO: change this later
 # specify file checksum to avoid external network request
-download_prefix = 'https://raw.githubusercontent.com/DennyZhang/devops_public/tag_v2'
+download_prefix = 'https://raw.githubusercontent.com/DennyZhang/devops_public/tag_v4'
 
 nagios_plugin_list = \
-  ['check_proc_mem:c451946d6c8334d384f8fa70cc9ded329717e726146c385b8610824e6b746052',
-   'check_proc_cpu:f874bd1721c38cb191b84998a4feded999ba6830f18e7aa1771ebdc1c398adab',
-   'check_proc_fd:fb2e8b19094d5b6c609b03fc2c93054b6a213b9074fa9305b71673a36588451c',
-   'check_proc_threadcount:3ebbba5c577968d3aa909d98fcc4b545d2c1c6a2789ddff77938b6da2f347079']
+  ['check_proc_mem.sh:c451946d6c8334d384f8fa70cc9ded329717e726146c385b8610824e6b746052',
+   'check_proc_cpu.sh:f874bd1721c38cb191b84998a4feded999ba6830f18e7aa1771ebdc1c398adab',
+   'check_proc_fd.sh:fb2e8b19094d5b6c609b03fc2c93054b6a213b9074fa9305b71673a36588451c',
+   'check_proc_threadcount.sh:3ebbba5c577968d3aa909d98fcc4b545d2c1c6a2789ddff77938b6da2f347079',
+   'check_out_of_memory.py:70a7eb0dc13cac431eeb943db2fcb5e429dc4d02dccadd93451809573e5c61b2']
 
 nagios_plugin_list.each do |plugin|
   l = plugin.split(':')
-  plugin_name = l[0]
+  plugin = l[0]
+  plugin_name = plugin.split('.')[0]
   file_checksum = l[1]
 
-  remote_file "#{node['nagios3']['plugins_dir']}/#{plugin_name}.sh" do
-    source "#{download_prefix}/nagios_plugins/#{plugin_name}/#{plugin_name}.sh"
+  remote_file "#{node['nagios3']['plugins_dir']}/#{plugin}" do
+    source "#{download_prefix}/nagios_plugins/#{plugin_name}/#{plugin}"
     owner 'nagios'
     group 'nagios'
     mode '0755'

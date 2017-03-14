@@ -5,7 +5,7 @@
 ## Description : NRPE Nagios Checks configuration
 ## --
 ## Created : <2014-9-11>
-## Updated: Time-stamp: <2017-03-01 10:14:50>
+## Updated: Time-stamp: <2017-03-14 15:42:34>
 ##-------------------------------------------------------------------
 # NRPE configurations#
 
@@ -19,6 +19,7 @@ command[check_memory]=<%= @nagios_plugins %>/check_linux_stats.pl -M -w <%= node
 command[check_network_eth0]=<%= @nagios_plugins %>/check_linux_stats.pl -N -w 100000000 -c 150000000 -p eth0
 command[check_swap_usage]=<%= @nagios_plugins %>/check_swap -w 20% -c 10%
 command[check_ip_address]=<%= @nagios_plugins %>/check_ip_address.sh
+command[check_out_of_memory]=python <%= @nagios_plugins %>/check_out_of_memory.py --hours_to_check 8
 
 # Misc Common Checks
 command[check_certificate]=<%= @nagios_plugins %>/check_http -H localhost -C 30
