@@ -22,6 +22,7 @@ if node['nagios3']['enable_basic_check'] == '1'
         'check_zombie_procs:check_nrpe2!check_zombie_procs',
         # TODO: customize threshold
         'check_disk_rootfs:check_nrpe2!check_disk_rootfs',
+        'check_disk:check_nrpe2!check_disk',
         # TODO: customize threshold
         'check_memory:check_nrpe2!check_memory',
         # TODO: customize threshold
