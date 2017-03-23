@@ -10,22 +10,53 @@
 ## Description :
 ## --
 ## Created : <2017-03-23>
-## Updated: Time-stamp: <2017-03-23 14:16:41>
+## Updated: Time-stamp: <2017-03-23 16:06:26>
 ##-------------------------------------------------------------------
 import argparse
 import sys
+import glob
+import os
+
 NAGIOS_OK_ERROR=0
 NAGIOS_EXIT_ERROR=2
+MAX_FILE_SIZE = 1024 * 1024 * 1024 # 1GB
+SEPARATOR = "|"
 
-def filter_log_by_errmsg(log_folder, err_patterns, logfile_postfix = ".log"):
-    err_msgs = ""
-    return err_msgs
+def filter_log_by_errmsg(log_folder, err_pattern_list, \
+                         logfile_pattern = "*.log"):
+    err_msg_list = []
 
-def filter_errmsg_by_whitelist(errmsgs, whitelist_patterns, separator = "|"):
-    ret_msg = ""
-    return ret_msg
+    # TODO: Performance tunning: For files bigger than GB, the script won't work
+    for fname in glob.glob("%s/%s" % (log_folder, logfile_pattern)):
+        if os.stat(fname).st_size > MAX_FILE_SIZE:
+            print "ERROR: Unsupported large files. %s is larger than %s." % (fname, MAX_FILE_SIZE)
+            sys.exit(NAGIOS_EXIT_ERROR)
+        with open(fname) as f:
+            content = f.readlines()
+        for err_pattern in err_pattern_list:
+            # print "Parse %s for %s." % (fname, err_pattern)
+            for line in content:
+                if err_pattern in line:
+                    err_msg_list.append(line)
+    # print "err_msg_list: %s" % (','.join(err_msg_list))
+    return err_msg_list
 
-# Sample: ./parse_log_for_errmsg.py /opt/mymdm/logs "error|exception" "route53|Maybe document|Not found template"
+def filter_errmsg_by_whitelist(err_msg_list, whitelist_pattern_list):
+    ret_msg_list = []
+    for line in err_msg_list:
+        has_matched = False
+        for whitelist_pattern in whitelist_pattern_list:
+            if whitelist_pattern in line:
+                has_matched = True
+                break
+        if has_matched is False:
+            ret_msg_list.append(line)
+    return ret_msg_list
+
+# Sample: ./parse_log_for_errmsg.py \
+#                --log_folder /opt/mymdm/logs
+#                --err_patterns "error|exception" \
+#                --whitelist_patterns "route53|Maybe document|Not found template"
 if __name__ == '__main__':
     # get parameters from users
     parser = argparse.ArgumentParser()
@@ -35,16 +66,26 @@ if __name__ == '__main__':
                         help="Interested error patterns. If multiple, we should use | to separate them")
     parser.add_argument('--whitelist_patterns', default='', required=False, \
                         help="What white patterns are expected to be safe")
+    parser.add_argument('--logfile_pattern', default='*.log', required=False, \
+                        help="What white patterns are expected to be safe")
+
     l = parser.parse_args()
     log_folder = l.log_folder
-    err_patterns = l.err_patterns
-    whitelist_patterns = l.whitelist_patterns
+    err_pattern_list = l.err_patterns.split(SEPARATOR)
+    if l.whitelist_patterns == "":
+        whitelist_pattern_list = []
+    else:
+        whitelist_pattern_list = l.whitelist_patterns.split(SEPARATOR)
 
-    err_msgs = filter_log_by_errmsg(log_folder, err_patterns)
-    if whitelist_patterns != "":
-        err_msgs = filter_errmsg_by_whitelist(errmsgs, whitelist_patterns)
-    if err_msgs != "":
-        print "ERROR: unexpected errors/exceptions are found under %s. errmsg: %s" % (log_folder, err_msgs)
+    err_msg_list = filter_log_by_errmsg(log_folder, err_pattern_list, l.logfile_pattern)
+    # print "err_msg_list: %s" % (','.join(err_msg_list))
+
+    if len(whitelist_pattern_list) != 0:
+        # print "here! whitelist_pattern_list: %s. len: %d" % (",".join(whitelist_pattern_list), len(whitelist_pattern_list))
+        err_msg_list = filter_errmsg_by_whitelist(err_msg_list, whitelist_pattern_list)
+    if len(err_msg_list) != 0:
+        print "ERROR: unexpected errors/exceptions are found under %s. errmsg: %s" % \
+            (log_folder, "\n".join(err_msg_list))
         sys.exit(NAGIOS_EXIT_ERROR)
     else:
         print "OK: no unexpected errors/exceptions are found under %s." % (log_folder)
