@@ -28,6 +28,14 @@ end
   end
 end
 
+cookbook_file '/opt/devops/bin/parse_log_for_errmsg.py' do
+  source 'devops_public/python/parse_log_for_errmsg/parse_log_for_errmsg.py'
+  owner 'root'
+  group 'root'
+  mode 0o755
+  cookbook 'devops_library'
+end
+
 cookbook_file '/opt/devops/bin/enforce_all_nagios_check.sh' do
   source 'devops_public/bash/enforce_all_nagios_check/enforce_all_nagios_check.sh'
   owner 'root'
