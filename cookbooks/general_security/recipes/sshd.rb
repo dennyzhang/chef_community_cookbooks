@@ -62,7 +62,7 @@ end
 macs_algorithms = node['general_security']['ssh_macs_algorithms']
 if macs_algorithms != ''
   execute 'SSHD inject MACs algorithms section if missing' do
-    command "echo \"MACs #{macs_algorithms}\" >> "\
+    command "echo -e \"\nMACs #{macs_algorithms}\" >> "\
             '/etc/ssh/sshd_config'
     action :run
     not_if "grep '^MACs .*' /etc/ssh/sshd_config"
