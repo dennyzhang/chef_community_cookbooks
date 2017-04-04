@@ -44,7 +44,7 @@ end
 ciphers_stream = node['general_security']['ssh_ciphers_stream']
 if ciphers_stream != ''
   execute 'SSHD inject cipher section if missing' do
-    command "echo -e \"\nCiphers #{ciphers_stream}\" >> "\
+    command "echo \"\nCiphers #{ciphers_stream}\" >> "\
             '/etc/ssh/sshd_config'
     action :run
     not_if "grep '^Ciphers .*' /etc/ssh/sshd_config"
@@ -62,7 +62,7 @@ end
 macs_algorithms = node['general_security']['ssh_macs_algorithms']
 if macs_algorithms != ''
   execute 'SSHD inject MACs algorithms section if missing' do
-    command "echo -e \"\nMACs #{macs_algorithms}\" >> "\
+    command "echo \"\nMACs #{macs_algorithms}\" >> "\
             '/etc/ssh/sshd_config'
     action :run
     not_if "grep '^MACs .*' /etc/ssh/sshd_config"
