@@ -91,3 +91,11 @@ cookbook_file '/opt/devops/bin/docker_destroy.sh' do
   mode 0o755
   cookbook 'devops_library'
 end
+
+cookbook_file '/opt/devops/bin/cleanup_old_files.py' do
+  source 'devops_public/python/cleanup_old_files/cleanup_old_files.py'
+  owner 'root'
+  group 'root'
+  mode 0o755
+  cookbook 'devops_library'
+end
