@@ -9,26 +9,27 @@
 ## Description :
 ## --
 ## Created : <2016-01-08>
-## Updated: Time-stamp: <2016-12-07 21:14:14>
+## Updated: Time-stamp: <2017-04-12 19:46:04>
 ##-------------------------------------------------------------------
 . /etc/profile
-[ -n "$DOWNLOAD_TAG_NAME" ] || export DOWNLOAD_TAG_NAME="tag_v2"
+[ -n "$DOWNLOAD_TAG_NAME" ] || export DOWNLOAD_TAG_NAME="tag_v5"
 export DOWNLOAD_PREFIX="https://raw.githubusercontent.com/DennyZhang/devops_public/${DOWNLOAD_TAG_NAME}"
 # TODO: don't hardcode download link
 if [ ! -f /var/lib/devops/refresh_common_library.sh ]; then
     [ -d /var/lib/devops/ ] || (sudo mkdir -p  /var/lib/devops/ && sudo chmod 777 /var/lib/devops)
     wget -O /var/lib/devops/refresh_common_library.sh \
          "$DOWNLOAD_PREFIX/common_library/refresh_common_library.sh"
+    chmod 777 /var/lib/devops/refresh_common_library.sh
 fi
 
 library_list="
 1550237670 1949 devops_common_library.sh
 4106968546 2330 docker_helper.sh
-1592666793 7220 general_helper.sh
+153794576 7263 general_helper.sh
 4132387734 3040 git_helper.sh
 3267528388 2977 language_helper.sh
 1056265537 2369 network_helper.sh
-2257779887 3866 package_helper.sh
+2719501647 3912 package_helper.sh
 1769136427 8849 paramater_helper.sh
 2232144565 1637 process_helper.sh
 3078361702 1778 refresh_common_library.sh
