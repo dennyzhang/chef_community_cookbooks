@@ -1,6 +1,6 @@
 source 'https://ruby.taobao.org/'
-gem 'test-kitchen'
 gem 'kitchen-docker'
+gem 'test-kitchen'
 
 gem 'berkshelf'
 gem 'docker'
