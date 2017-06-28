@@ -9,7 +9,7 @@
 ## Description :
 ## --
 ## Created : <2015-07-03>
-## Updated: Time-stamp: <2017-04-08 14:40:09>
+## Updated: Time-stamp: <2017-06-26 14:13:58>
 ##-------------------------------------------------------------------
 ################################################################################################
 ## env variables:
@@ -23,17 +23,17 @@
 ##           export IS_PACK_FILE=false
 ##           export IS_GENERATE_SHA1SUM=false
 ##           export repo_dir=/var/www/repo
-##           export working_dir=/var/lib/jenkins/code/build
+##           export working_dir=$HOME/code/build
 ##      build_command: make
 ################################################################################################
 . /etc/profile
-[ -n "$DOWNLOAD_TAG_NAME" ] || export DOWNLOAD_TAG_NAME="tag_v5"
+[ -n "$DOWNLOAD_TAG_NAME" ] || export DOWNLOAD_TAG_NAME="tag_v6"
 export DOWNLOAD_PREFIX="https://raw.githubusercontent.com/DennyZhang/devops_public/${DOWNLOAD_TAG_NAME}"
 if [ ! -f /var/lib/devops/refresh_common_library.sh ]; then
     [ -d /var/lib/devops/ ] || (sudo mkdir -p  /var/lib/devops/ && sudo chmod 777 /var/lib/devops)
     wget -O /var/lib/devops/refresh_common_library.sh "$DOWNLOAD_PREFIX/common_library/refresh_common_library.sh"
 fi
-bash /var/lib/devops/refresh_common_library.sh "2953601642" "/var/lib/devops/devops_common_library.sh" \
+bash /var/lib/devops/refresh_common_library.sh "2886589901" "/var/lib/devops/devops_common_library.sh" \
      "${DOWNLOAD_PREFIX}/common_library/devops_common_library.sh"
 . /var/lib/devops/devops_common_library.sh
 ################################################################################################
@@ -95,7 +95,7 @@ function pack_files(){
     mv "$package_name" "$repo_dir"
 }
 
-flag_file="/var/lib/jenkins/$JOB_NAME.flag"
+flag_file="$HOME/$JOB_NAME.flag"
 
 function shell_exit() {
     errcode=$?
@@ -109,7 +109,7 @@ function shell_exit() {
 }
 
 ########################################################################
-[ -n "$working_dir" ] || working_dir="/var/lib/jenkins/code/$JOB_NAME"
+[ -n "$working_dir" ] || working_dir="$HOME/code/$JOB_NAME"
 # $GIT_BRANCH environment variable override $branch_name
 [ -z "$GIT_BRANCH" ] || branch_name="$GIT_BRANCH"
 # Build Repo

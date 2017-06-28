@@ -9,7 +9,7 @@
 #
 %w(
   /usr/local/var /usr/local/var/run /var/chef /var/chef/cache
-  /opt/devops /opt/devops/bin /data
+  /opt/devops /opt/devops/bin /data /var/lib/devops/
 ).each do |x|
   directory x do
     owner 'root'

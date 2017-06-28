@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 #!/usr/bin/python
 ##-------------------------------------------------------------------
 ##
@@ -7,6 +6,9 @@
 ## Description :
 ##    Test page loading with selenium: slow load, severe 
 ##              errors when launching network requests, and save screenshots as images.
+##
+## More reading: http://www.dennyzhang.com/selenium_docker/
+##
 ## Sample:
 ##   - Test page load: basic test
 ##        python ./selenium_load_page.py --page_url http://www.dennyzhang.com
@@ -81,7 +83,8 @@ if __name__ == '__main__':
                         help="Remote selenium server to run the test", type=str)
     parser.add_argument('--max_load_seconds', required=False, default=10, \
                         help="If page load takes too long, quit the test", type=int)
-    parser.add_argument('--should_save_screenshot', required=False, default=True, \
+    parser.add_argument('--should_save_screenshot', required=False, dest='should_save_screenshot', \
+                        action='store_true', default=True, \
                         help="Once enabled, selenium will save the page as screenshot in the selenium server", \
                         type=bool)
     parser.add_argument('--screenshot_dir', required=False, default="/tmp/screenshot""", \

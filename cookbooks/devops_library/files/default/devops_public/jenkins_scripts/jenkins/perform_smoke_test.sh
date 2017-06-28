@@ -9,17 +9,17 @@
 ## Description :
 ## --
 ## Created : <2015-08-16>
-## Updated: Time-stamp: <2017-04-08 14:40:08>
+## Updated: Time-stamp: <2017-06-26 15:22:40>
 ##-------------------------------------------------------------------
 ################################################################################################
 . /etc/profile
-[ -n "$DOWNLOAD_TAG_NAME" ] || export DOWNLOAD_TAG_NAME="tag_v5"
+[ -n "$DOWNLOAD_TAG_NAME" ] || export DOWNLOAD_TAG_NAME="tag_v6"
 export DOWNLOAD_PREFIX="https://raw.githubusercontent.com/DennyZhang/devops_public/${DOWNLOAD_TAG_NAME}"
 if [ ! -f /var/lib/devops/refresh_common_library.sh ]; then
     [ -d /var/lib/devops/ ] || (sudo mkdir -p  /var/lib/devops/ && sudo chmod 777 /var/lib/devops)
     wget -O /var/lib/devops/refresh_common_library.sh "$DOWNLOAD_PREFIX/common_library/refresh_common_library.sh"
 fi
-bash /var/lib/devops/refresh_common_library.sh "2953601642" "/var/lib/devops/devops_common_library.sh" \
+bash /var/lib/devops/refresh_common_library.sh "2886589901" "/var/lib/devops/devops_common_library.sh" \
      "${DOWNLOAD_PREFIX}/common_library/devops_common_library.sh"
 . /var/lib/devops/devops_common_library.sh
 ################################################################################################
@@ -98,9 +98,9 @@ function test_protractor() {
 }
 
 #################################################################################
-working_dir="/var/lib/jenkins/code/smoketest/"
-[ -d $working_dir ] || mkdir -p $working_dir
+working_dir="$HOME/code/smoketest/"
+[ -d "$working_dir" ] || mkdir -p "$working_dir"
 
-prepare_protractor $working_dir "$server_ip" "gui_test_case"
-test_protractor $working_dir
+prepare_protractor "$working_dir" "$server_ip" "gui_test_case"
+test_protractor "$working_dir"
 ## File : perform_smoke_test.sh ends

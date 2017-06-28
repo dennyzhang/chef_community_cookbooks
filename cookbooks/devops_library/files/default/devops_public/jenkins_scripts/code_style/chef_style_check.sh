@@ -10,7 +10,7 @@
 ##      Demo: http://jenkinscn.dennyzhang.com:18088/job/ChefCodeQualityCheck/
 ## --
 ## Created : <2016-04-25>
-## Updated: Time-stamp: <2017-04-08 14:40:09>
+## Updated: Time-stamp: <2017-06-26 13:50:31>
 ##-------------------------------------------------------------------
 ################################################################################################
 ## env variables:
@@ -18,16 +18,16 @@
 ##           git@github.com:DennyZhang/devops_public.git,dev
 ##           git@gitlabcn.dennyzhang.com:devops/devops_scripts.git,dev
 ##      env_parameters:
-##           export working_dir="/var/lib/jenkins/code/codestyle"
+##           export working_dir="$HOME/code/codestyle"
 ################################################################################################
 . /etc/profile
-[ -n "$DOWNLOAD_TAG_NAME" ] || export DOWNLOAD_TAG_NAME="tag_v5"
+[ -n "$DOWNLOAD_TAG_NAME" ] || export DOWNLOAD_TAG_NAME="tag_v6"
 export DOWNLOAD_PREFIX="https://raw.githubusercontent.com/DennyZhang/devops_public/${DOWNLOAD_TAG_NAME}"
 if [ ! -f /var/lib/devops/refresh_common_library.sh ]; then
     [ -d /var/lib/devops/ ] || (sudo mkdir -p  /var/lib/devops/ && sudo chmod 777 /var/lib/devops)
     wget -O /var/lib/devops/refresh_common_library.sh "$DOWNLOAD_PREFIX/common_library/refresh_common_library.sh"
 fi
-bash /var/lib/devops/refresh_common_library.sh "2953601642" "/var/lib/devops/devops_common_library.sh" \
+bash /var/lib/devops/refresh_common_library.sh "2886589901" "/var/lib/devops/devops_common_library.sh" \
      "${DOWNLOAD_PREFIX}/common_library/devops_common_library.sh"
 . /var/lib/devops/devops_common_library.sh
 ################################################################################################
@@ -86,7 +86,7 @@ function shell_exit() {
 trap shell_exit SIGHUP SIGINT SIGTERM 0
 
 source_string "$env_parameters"
-[ -n "$working_dir" ] || working_dir="/var/lib/jenkins/code/codestyle"
+[ -n "$working_dir" ] || working_dir="$HOME/code/codestyle"
 
 failed_git_repos=""
 

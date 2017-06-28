@@ -9,7 +9,7 @@
 ## Description :
 ## --
 ## Created : <2015-08-05>
-## Updated: Time-stamp: <2017-04-08 14:40:10>
+## Updated: Time-stamp: <2017-06-27 11:27:17>
 ################################################################################################
 ## Purpose: General function to deploy all-in-one env by chef
 ##
@@ -41,19 +41,18 @@
 ## Hook points: START_COMMAND -> POST_START_COMMAND -> PRE_STOP_COMMAND -> STOP_COMMAND
 ################################################################################################
 . /etc/profile
-[ -n "$DOWNLOAD_TAG_NAME" ] || export DOWNLOAD_TAG_NAME="tag_v5"
+[ -n "$DOWNLOAD_TAG_NAME" ] || export DOWNLOAD_TAG_NAME="tag_v6"
 export DOWNLOAD_PREFIX="https://raw.githubusercontent.com/DennyZhang/devops_public/${DOWNLOAD_TAG_NAME}"
 if [ ! -f /var/lib/devops/refresh_common_library.sh ]; then
-    [ -d /var/lib/devops/ ] || (sudo mkdir -p  /var/lib/devops/ && sudo chmod 777 /var/lib/devops)
+    [ -d /var/lib/devops/ ] || (mkdir -p  /var/lib/devops/ && chmod 777 /var/lib/devops)
     wget -O /var/lib/devops/refresh_common_library.sh "$DOWNLOAD_PREFIX/common_library/refresh_common_library.sh"
 fi
-bash /var/lib/devops/refresh_common_library.sh "2953601642" "/var/lib/devops/devops_common_library.sh" \
+bash /var/lib/devops/refresh_common_library.sh "2886589901" "/var/lib/devops/devops_common_library.sh" \
      "${DOWNLOAD_PREFIX}/common_library/devops_common_library.sh"
 . /var/lib/devops/devops_common_library.sh
 ################################################################################################
 function shell_exit() {
     errcode=$?
-    unset common_ssh_options
     if $STOP_CONTAINER; then
         if [ -n "$PRE_STOP_COMMAND" ]; then
             ssh_pre_stop_command="ssh $common_ssh_options -p $ssh_port root@$ssh_server_ip \"$PRE_STOP_COMMAND\""
@@ -85,7 +84,7 @@ log "env variables. KILL_RUNNING_CHEF_UPDATE: $KILL_RUNNING_CHEF_UPDATE, STOP_CO
 # TODO: use chef-zero, instead of chef-solo
 #[ -n "${CHEF_BINARY_CMD}" ] || CHEF_BINARY_CMD=chef-client
 [ -n "${CHEF_BINARY_CMD}" ] || CHEF_BINARY_CMD=chef-solo
-[ -n "$ssh_key_file" ] || ssh_key_file="/var/lib/jenkins/.ssh/id_rsa"
+[ -n "$ssh_key_file" ] || ssh_key_file="$HOME/.ssh/id_rsa"
 [ -n "$code_dir" ] || code_dir="/root/test"
 [ -n "$SSH_SERVER_PORT" ] || SSH_SERVER_PORT=22
 [ -n "$EXIT_NODE_CONNECT_FAIL" ] || EXIT_NODE_CONNECT_FAIL=true
@@ -127,7 +126,7 @@ fi
 
 if $KILL_RUNNING_CHEF_UPDATE; then
     log "$kill_chef_command"
-    ssh -i $ssh_key_file -p "$ssh_port" -o StrictHostKeyChecking=no "root@$ssh_server_ip" "\$kill_chef_command"
+    ssh -i "$ssh_key_file" -p "$ssh_port" -o StrictHostKeyChecking=no "root@$ssh_server_ip" "\$kill_chef_command"
 fi
 
 if [ -n "$CODE_SH" ]; then
@@ -135,7 +134,7 @@ if [ -n "$CODE_SH" ]; then
     git_repo=$(parse_git_repo "$git_repo_url")
     # ssh -i $ssh_key_file -p $ssh_port -o StrictHostKeyChecking=no root@$ssh_server_ip $CODE_SH $code_dir $git_repo_url $git_repo $devops_branch_name
     # TODO: remove this line and replace to above
-    ssh -i $ssh_key_file -p "$ssh_port" -o StrictHostKeyChecking=no "root@$ssh_server_ip" "$CODE_SH" "$code_dir" "$git_repo_url" "$devops_branch_name" "all-in-one"
+    ssh -i "$ssh_key_file" -p "$ssh_port" -o StrictHostKeyChecking=no "root@$ssh_server_ip" "$CODE_SH" "$code_dir" "$git_repo_url" "$devops_branch_name" "all-in-one"
 fi
 
 # TODO: replace deployment logic by chef_deploy function
@@ -148,8 +147,8 @@ EOF
 
 echo "$chef_json" > /tmp/client.json
 
-scp -i $ssh_key_file -P "$ssh_port" -o StrictHostKeyChecking=no /tmp/client.rb "root@$ssh_server_ip:/root/client.rb"
-scp -i $ssh_key_file -P "$ssh_port" -o StrictHostKeyChecking=no /tmp/client.json "root@$ssh_server_ip:/root/client.json"
+scp -i "$ssh_key_file" -P "$ssh_port" -o StrictHostKeyChecking=no /tmp/client.rb "root@$ssh_server_ip:/root/client.rb"
+scp -i "$ssh_key_file" -P "$ssh_port" -o StrictHostKeyChecking=no /tmp/client.json "root@$ssh_server_ip:/root/client.json"
 
 log "Apply chef update"
 # TODO: use chef-zero, instead of chef-solo

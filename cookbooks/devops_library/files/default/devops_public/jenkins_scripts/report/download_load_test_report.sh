@@ -9,7 +9,7 @@
 ## Description :
 ## --
 ## Created : <2015-09-24>
-## Updated: Time-stamp: <2017-04-08 14:40:07>
+## Updated: Time-stamp: <2017-06-26 15:22:09>
 ##-------------------------------------------------------------------
 
 ################################################################################################
@@ -28,13 +28,13 @@
 ##       env_parameters:
 ################################################################################################
 . /etc/profile
-[ -n "$DOWNLOAD_TAG_NAME" ] || export DOWNLOAD_TAG_NAME="tag_v5"
+[ -n "$DOWNLOAD_TAG_NAME" ] || export DOWNLOAD_TAG_NAME="tag_v6"
 export DOWNLOAD_PREFIX="https://raw.githubusercontent.com/DennyZhang/devops_public/${DOWNLOAD_TAG_NAME}"
 if [ ! -f /var/lib/devops/refresh_common_library.sh ]; then
     [ -d /var/lib/devops/ ] || (sudo mkdir -p  /var/lib/devops/ && sudo chmod 777 /var/lib/devops)
     wget -O /var/lib/devops/refresh_common_library.sh "$DOWNLOAD_PREFIX/common_library/refresh_common_library.sh"
 fi
-bash /var/lib/devops/refresh_common_library.sh "2953601642" "/var/lib/devops/devops_common_library.sh" \
+bash /var/lib/devops/refresh_common_library.sh "2886589901" "/var/lib/devops/devops_common_library.sh" \
      "${DOWNLOAD_PREFIX}/common_library/devops_common_library.sh"
 . /var/lib/devops/devops_common_library.sh
 ################################################################################################
@@ -73,7 +73,7 @@ log "Start to copy the remote report file..."
 jenkins_job_name="${test_report_url##*/}"
 log "variables. test_report_url: $test_report_url, jenkins_job_name=$jenkins_job_name, workspace_path=$workspace_path"
 
-ssh_key_file="/var/lib/jenkins/.ssh/id_rsa"
+ssh_key_file="$HOME/.ssh/id_rsa"
 report_file_name="jmeter.html"
 report_check_log="/etc/jmeter/plans.d/verify_load_test.log"
 report_remote_path="/etc/jmeter/plans.d/$report_file_name"
@@ -93,7 +93,7 @@ if [ -n "$START_COMMAND" ]; then
     sleep 5
 fi
 
-ssh -i $ssh_key_file -p "$ssh_port" -o StrictHostKeyChecking=no "root@$ssh_server_ip" test -f $report_remote_path
+ssh -i "$ssh_key_file" -p "$ssh_port" -o StrictHostKeyChecking=no "root@$ssh_server_ip" test -f $report_remote_path
 errcode=$?
 if [ $errcode -ne 0 ];then
     log "The load test report file don't be found in the container."
@@ -102,8 +102,8 @@ fi
 
 mkdir -p "$report_dir_path"
 
-scp -i $ssh_key_file -P "$ssh_port" -o StrictHostKeyChecking=no "root@$ssh_server_ip:${report_remote_path%/*}/*" "$report_dir_path"
-scp -i $ssh_key_file -P "$ssh_port" -o StrictHostKeyChecking=no "root@$ssh_server_ip:$report_check_log" "$report_dir_path"
+scp -i "$ssh_key_file" -P "$ssh_port" -o StrictHostKeyChecking=no "root@$ssh_server_ip:${report_remote_path%/*}/*" "$report_dir_path"
+scp -i "$ssh_key_file" -P "$ssh_port" -o StrictHostKeyChecking=no "root@$ssh_server_ip:$report_check_log" "$report_dir_path"
 cat "$report_dir_path/${report_check_log##*/}"
 result=$(grep -w "Check failed" "$report_dir_path/${report_check_log##*/}" | sed -n '1p')
 

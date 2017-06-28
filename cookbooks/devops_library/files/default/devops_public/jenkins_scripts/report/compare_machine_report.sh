@@ -5,7 +5,7 @@
 ## Description :
 ## --
 ## Created : <2016-06-12>
-## Updated: Time-stamp: <2017-04-08 14:40:07>
+## Updated: Time-stamp: <2017-06-26 14:14:41>
 ##-------------------------------------------------------------------
 
 ################################################################################################
@@ -18,25 +18,25 @@
 ##          export CHECK_SCENARIO="all"
 ##          export OUTPUT_DIR="/root/version.d"
 ##          export JENKINS_BASEURL="http://123.57.240.189:58080"
-##          export ssh_key_file="/var/lib/jenkins/.ssh/id_rsa"
+##          export ssh_key_file="$HOME/.ssh/id_rsa"
 ################################################################################################
 . /etc/profile
-[ -n "$DOWNLOAD_TAG_NAME" ] || export DOWNLOAD_TAG_NAME="tag_v5"
+[ -n "$DOWNLOAD_TAG_NAME" ] || export DOWNLOAD_TAG_NAME="tag_v6"
 export DOWNLOAD_PREFIX="https://raw.githubusercontent.com/DennyZhang/devops_public/${DOWNLOAD_TAG_NAME}"
 if [ ! -f /var/lib/devops/refresh_common_library.sh ]; then
     [ -d /var/lib/devops/ ] || (sudo mkdir -p  /var/lib/devops/ && sudo chmod 777 /var/lib/devops)
     wget -O /var/lib/devops/refresh_common_library.sh "$DOWNLOAD_PREFIX/common_library/refresh_common_library.sh"
 fi
-bash /var/lib/devops/refresh_common_library.sh "2953601642" "/var/lib/devops/devops_common_library.sh" \
+bash /var/lib/devops/refresh_common_library.sh "2886589901" "/var/lib/devops/devops_common_library.sh" \
      "${DOWNLOAD_PREFIX}/common_library/devops_common_library.sh"
 . /var/lib/devops/devops_common_library.sh
 ################################################################################################
 source_string "$env_parameters"
 [ -n "$CHECK_SCENARIO" ] || CHECK_SCENARIO="all"
 [ -n "$OUTPUT_DIR" ] || OUTPUT_DIR="/tmp/version.d"
-[ -n "$TRANSFER_DST_PATH" ] || TRANSFER_DST_PATH="/var/lib/jenkins/jobs/$JOB_NAME/workspace"
+[ -n "$TRANSFER_DST_PATH" ] || TRANSFER_DST_PATH="$HOME/jobs/$JOB_NAME/workspace"
 [ -n "$JENKINS_BASEURL" ] || JENKINS_BASEURL=$JENKINS_URL
-[ -n "$ssh_key_file" ] || ssh_key_file="/var/lib/jenkins/.ssh/id_rsa"
+[ -n "$ssh_key_file" ] || ssh_key_file="$HOME/.ssh/id_rsa"
 
 # Input Parameters check
 check_list_fields "IP:TCP_PORT:STRING" "$ssh_server1"

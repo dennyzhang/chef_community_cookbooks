@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 #!/usr/bin/python
 ##-------------------------------------------------------------------
 ## @copyright 2017 DennyZhang.com
@@ -8,7 +7,7 @@
 ## File : examine_hosts_file.py
 ## Author : Denny <denny@dennyzhang.com>
 ## Created : <2017-05-03>
-## Updated: Time-stamp: <2017-05-11 13:30:41>
+## Updated: Time-stamp: <2017-05-22 17:12:15>
 ## Description :
 ##    Examine /etc/hosts:
 ##        1. Whether expected list of ip-hostname are included in /etc/hosts
@@ -91,7 +90,7 @@ if __name__ == '__main__':
     allow_check_for_ip_list = map(lambda x: x.strip(), allow_check_for_ips.split(','))
 
     allow_check_for_hostnames = l.allow_check_for_hostnames
-    allow_check_for_hostname_list = map(lambda x: x.strhostname(), allow_check_for_hostnames.split(','))
+    allow_check_for_hostname_list = map(lambda x: x.strip(), allow_check_for_hostnames.split(','))
 
     has_duplicate_entries = False
     has_conflict_entries = False

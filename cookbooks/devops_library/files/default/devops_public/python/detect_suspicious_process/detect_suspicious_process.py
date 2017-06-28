@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 #!/usr/bin/python
 ##-------------------------------------------------------------------
 ## @copyright 2015 DennyZhang.com
@@ -7,9 +6,12 @@
 ## Description : http://www.dennyzhang.com/suspicious_process/
 ##        python ./detect_suspicious_process.py
 ##        python ./detect_suspicious_process.py --whitelist_file /tmp/whitelist.txt
+##
+## More reading: http://www.dennyzhang.com/suspicious_process/
+##
 ## --
 ## Created : <2016-01-15>
-## Updated: Time-stamp: <2016-08-20 13:32:55>
+## Updated: Time-stamp: <2017-05-23 17:41:27>
 ##-------------------------------------------------------------------
 import argparse
 import subprocess

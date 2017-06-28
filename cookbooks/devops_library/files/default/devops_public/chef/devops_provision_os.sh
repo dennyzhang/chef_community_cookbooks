@@ -11,16 +11,16 @@
 #   bash -e /root/devops_provision_os.sh
 ## --
 ## Created : <2016-04-20>
-## Updated: Time-stamp: <2017-04-12 15:11:51>
+## Updated: Time-stamp: <2017-06-20 22:37:44>
 ################################################################################################
 . /etc/profile
-[ -n "$DOWNLOAD_TAG_NAME" ] || export DOWNLOAD_TAG_NAME="tag_v5"
+[ -n "$DOWNLOAD_TAG_NAME" ] || export DOWNLOAD_TAG_NAME="tag_v6"
 export DOWNLOAD_PREFIX="https://raw.githubusercontent.com/DennyZhang/devops_public/${DOWNLOAD_TAG_NAME}"
 if [ ! -f /var/lib/devops/refresh_common_library.sh ]; then
     [ -d /var/lib/devops/ ] || (sudo mkdir -p  /var/lib/devops/ && sudo chmod 777 /var/lib/devops)
     wget -O /var/lib/devops/refresh_common_library.sh "$DOWNLOAD_PREFIX/common_library/refresh_common_library.sh"
 fi
-bash /var/lib/devops/refresh_common_library.sh "2953601642" "/var/lib/devops/devops_common_library.sh" \
+bash /var/lib/devops/refresh_common_library.sh "2886589901" "/var/lib/devops/devops_common_library.sh" \
      "${DOWNLOAD_PREFIX}/common_library/devops_common_library.sh"
 . /var/lib/devops/devops_common_library.sh
 ################################################################################################
@@ -65,6 +65,14 @@ install_chef $chef_version
 download_facility "/root/git_update.sh" "${DOWNLOAD_PREFIX}/bash/git_update.sh"
 download_facility "/root/manage_all_services.sh" "${DOWNLOAD_PREFIX}/bash/manage_all_services/manage_all_services.sh"
 download_facility "/root/ufw_add_node_to_cluster.sh" "${DOWNLOAD_PREFIX}/bash/ufw/ufw_add_node_to_cluster.sh"
+download_facility "/usr/sbin/examine_hosts_file.py" "${DOWNLOAD_PREFIX}/python/hosts_file/examine_hosts_file.py"
+download_facility "/usr/sbin/update_hosts_file.py" "${DOWNLOAD_PREFIX}/python/hosts_file/update_hosts_file.py"
+download_facility "/usr/sbin/node_usage.py" "${DOWNLOAD_PREFIX}/python/node_usage/node_usage.py"
+
+# TODO:
+# apt-get install -y python-dev python-pip
+
+# pip install psutil==5.2.2
 
 # inject ssh key for ssh with keyfile
 if [ -n "$ssh_public_key" ]; then

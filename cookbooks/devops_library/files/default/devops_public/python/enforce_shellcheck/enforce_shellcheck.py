@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 #!/usr/bin/python
 ##-------------------------------------------------------------------
 ## @copyright 2017 DennyZhang.com
@@ -8,14 +7,18 @@
 ## File : enforce_shellcheck.py
 ## Author : Denny <denny@dennyzhang.com>
 ## Description :
+##
+## More reading: http://www.dennyzhang.com/shellcheck/
+##
 ## --
 ## Created : <2017-04-02>
-## Updated: Time-stamp: <2017-05-11 06:09:12>
+## Updated: Time-stamp: <2017-06-20 22:17:48>
 ##-------------------------------------------------------------------
 import argparse
 import sys
 import os
 import subprocess
+import re
 
 def find_files_by_postfix(folder_check, filename_postfix):
     l = []
@@ -33,7 +36,10 @@ def ignore_files(file_list, ignore_file_list):
     for fname in file_list:
         skip = False
         for ignore_file_pattern in ignore_file_list:
-            if ignore_file_pattern in fname:
+            ignore_file_pattern = ignore_file_pattern.strip().strip("\n")
+            if ignore_file_pattern == "":
+                continue
+            if re.search(ignore_file_pattern, fname) is not None :
                 skip = True
                 break
         if skip is False:
@@ -52,7 +58,7 @@ def run_check(file_list, check_pattern):
     return has_error
 ################################################################################
 #
-# wget -O /tmp/enforce_shellcheck.py https://raw.githubusercontent.com/DennyZhang/devops_public/tag_v5/python/enforce_shellcheck/enforce_shellcheck.py
+# wget -O /tmp/enforce_shellcheck.py https://raw.githubusercontent.com/DennyZhang/devops_public/tag_v6/python/enforce_shellcheck/enforce_shellcheck.py
 # python /tmp/enforce_shellcheck.py --code_dir devops_code/devops_public
 ################################################################################
 
@@ -76,6 +82,7 @@ if __name__ == '__main__':
 
     exclude_code_list = l.exclude_code_list
 
+    print "Run shellcheck for *.sh under %s" % (code_dir)
     file_list = find_files_by_postfix(code_dir, ".sh")
     if check_ignore_file != "":
         with open(check_ignore_file) as f:
@@ -85,6 +92,7 @@ if __name__ == '__main__':
     has_error = run_check(file_list, \
                           "shellcheck -e " + exclude_code_list + " %s")
     if has_error is False:
+        print "OK: no error detected from shellcheck"
         sys.exit(0)
     else:
         print "ERROR: %s has failed." % (os.path.basename(__file__))

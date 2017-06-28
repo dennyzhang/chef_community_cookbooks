@@ -9,7 +9,7 @@
 ## Description :
 ## --
 ## Created : <2015-08-05>
-## Updated: Time-stamp: <2017-04-08 14:40:07>
+## Updated: Time-stamp: <2017-06-26 14:14:42>
 ##-------------------------------------------------------------------
 ################################################################################################
 ## env variables:
@@ -24,16 +24,16 @@
 ##      env_parameters:
 ##         export MARK_PREVIOUS_FIXED=false
 ##         export CLEAN_START=false
-##         export working_dir=/var/lib/jenkins/code/monitorfile
+##         export working_dir=$HOME/code/monitorfile
 ################################################################################################
 . /etc/profile
-[ -n "$DOWNLOAD_TAG_NAME" ] || export DOWNLOAD_TAG_NAME="tag_v5"
+[ -n "$DOWNLOAD_TAG_NAME" ] || export DOWNLOAD_TAG_NAME="tag_v6"
 export DOWNLOAD_PREFIX="https://raw.githubusercontent.com/DennyZhang/devops_public/${DOWNLOAD_TAG_NAME}"
 if [ ! -f /var/lib/devops/refresh_common_library.sh ]; then
     [ -d /var/lib/devops/ ] || (sudo mkdir -p  /var/lib/devops/ && sudo chmod 777 /var/lib/devops)
     wget -O /var/lib/devops/refresh_common_library.sh "$DOWNLOAD_PREFIX/common_library/refresh_common_library.sh"
 fi
-bash /var/lib/devops/refresh_common_library.sh "2953601642" "/var/lib/devops/devops_common_library.sh" \
+bash /var/lib/devops/refresh_common_library.sh "2886589901" "/var/lib/devops/devops_common_library.sh" \
      "${DOWNLOAD_PREFIX}/common_library/devops_common_library.sh"
 . /var/lib/devops/devops_common_library.sh
 ################################################################################################
@@ -65,7 +65,7 @@ function detect_changed_file() {
     done
 }
 
-flag_file="/var/lib/jenkins/$JOB_NAME.flag"
+flag_file="$HOME/$JOB_NAME.flag"
 
 function shell_exit() {
     errcode=$?
@@ -101,7 +101,7 @@ function git_http_compare_link() {
 ########################################################################
 trap shell_exit SIGHUP SIGINT SIGTERM 0
 source_string "$env_parameters"
-[ -n "$working_dir" ] || working_dir="/var/lib/jenkins/code/$JOB_NAME"
+[ -n "$working_dir" ] || working_dir="$HOME/code/$JOB_NAME"
 
 log "env variables. CLEAN_START: $CLEAN_START"
 

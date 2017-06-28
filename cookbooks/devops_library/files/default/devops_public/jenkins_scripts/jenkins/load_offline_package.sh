@@ -10,7 +10,7 @@
 ## Description :
 ## --
 ## Created : <2016-01-06>
-## Updated: Time-stamp: <2017-04-08 14:40:09>
+## Updated: Time-stamp: <2017-06-26 14:14:07>
 ##-------------------------------------------------------------------
 
 ################################################################################################
@@ -22,13 +22,13 @@
 ##       package_new_location: /var/www/repo/download
 ################################################################################################
 . /etc/profile
-[ -n "$DOWNLOAD_TAG_NAME" ] || export DOWNLOAD_TAG_NAME="tag_v5"
+[ -n "$DOWNLOAD_TAG_NAME" ] || export DOWNLOAD_TAG_NAME="tag_v6"
 export DOWNLOAD_PREFIX="https://raw.githubusercontent.com/DennyZhang/devops_public/${DOWNLOAD_TAG_NAME}"
 if [ ! -f /var/lib/devops/refresh_common_library.sh ]; then
     [ -d /var/lib/devops/ ] || (sudo mkdir -p  /var/lib/devops/ && sudo chmod 777 /var/lib/devops)
     wget -O /var/lib/devops/refresh_common_library.sh "$DOWNLOAD_PREFIX/common_library/refresh_common_library.sh"
 fi
-bash /var/lib/devops/refresh_common_library.sh "2953601642" "/var/lib/devops/devops_common_library.sh" \
+bash /var/lib/devops/refresh_common_library.sh "2886589901" "/var/lib/devops/devops_common_library.sh" \
      "${DOWNLOAD_PREFIX}/common_library/devops_common_library.sh"
 . /var/lib/devops/devops_common_library.sh
 ################################################################################################
@@ -68,7 +68,8 @@ from_ssh_port=${from_server_split[1]}
 START=$(date +%s)
 
 log "The parameter :package_location=${package_location}, package_new_location=${package_new_location}"
-ssh_key_file="/var/lib/jenkins/.ssh/id_rsa"
+
+ssh_key_file="$HOME/.ssh/id_rsa"
 
 common_ssh_options="-i $ssh_key_file -o StrictHostKeyChecking=no "
 

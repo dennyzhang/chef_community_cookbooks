@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 #!/usr/bin/python
 ##-------------------------------------------------------------------
 ## @copyright 2017 DennyZhang.com
@@ -8,7 +7,7 @@
 ## File : update_hosts_file.py
 ## Author : Denny <denny@dennyzhang.com>
 ## Created : <2017-05-03>
-## Updated: Time-stamp: <2017-05-11 13:19:28>
+## Updated: Time-stamp: <2017-05-22 17:12:17>
 ## Description :
 ##    Load an extra hosts binding into /etc/hosts
 ## Sample:
@@ -16,7 +15,7 @@
 ##-------------------------------------------------------------------
 import os, sys
 import argparse
-import socket
+import socket, datetime
 
 import logging
 log_file = "/var/log/%s.log" % (os.path.basename(__file__).rstrip('\.py'))
@@ -53,8 +52,9 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--extra_hosts_file', required=False, default="", \
                         help="Load extra hosts into /etc/hosts", type=str)
-    parser.add_argument('--skip_current_hostname', required=False, default=False, \
-                        help="Skip the binding for current hostname, if it's specified in --extra_hosts_file", type=bool)
+    parser.add_argument('--skip_current_hostname', required=False, dest='skip_current_hostname', \
+                        action='store_true', default=False, \
+                        help="Skip the binding for current hostname, if it's specified in --extra_hosts_file")
 
     l = parser.parse_args()
     extra_hosts_file = l.extra_hosts_file
@@ -63,12 +63,19 @@ if __name__ == '__main__':
     current_hosts_dict = load_hostsfile_to_dict("/etc/hosts")
     extra_hosts_dict = load_hostsfile_to_dict(extra_hosts_file)
     has_changed = False
+    has_backup = False
+
     current_hostname = socket.gethostname()
     for hostname in extra_hosts_dict:
         if skip_current_hostname is True and hostname == current_hostname:
             continue
 
         if hostname not in current_hosts_dict:
+            if has_backup is False:
+                host_backup_file = "/etc/hosts.%s" % \
+                                   (datetime.datetime.utcnow().strftime("%Y-%m-%d_%H%M%S"))
+                logging.info("Backup /etc/hosts to %s" % (host_backup_file))
+                has_backup = True
             open("/etc/hosts", "ab").write("%s %s" % (extra_hosts_dict[hostname]), hostname)
             logging.error("Append /etc/hosts: (%s:%s)" % (hostname, extra_hosts_dict[hostname]))
             has_changed = True
