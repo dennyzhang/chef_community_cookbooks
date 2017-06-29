@@ -9,7 +9,7 @@
 #
 %w(
   /usr/local/var /usr/local/var/run /var/chef /var/chef/cache
-  /opt/devops /opt/devops/bin /data /var/lib/devops/
+  /opt/devops /opt/devops/bin /data
 ).each do |x|
   directory x do
     owner 'root'
@@ -19,7 +19,7 @@
   end
 end
 
-%w(/data/backup).each do |x|
+%w(/data/backup /var/lib/devops).each do |x|
   directory x do
     owner 'root'
     group 'root'
