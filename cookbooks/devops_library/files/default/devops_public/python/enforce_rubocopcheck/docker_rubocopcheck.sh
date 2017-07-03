@@ -4,19 +4,21 @@
 ## Licensed under MIT 
 ##   https://raw.githubusercontent.com/DennyZhang/devops_public/master/LICENSE
 ##
-## File : docker_pylint.sh
+## File : docker_rubocopcheck.sh
 ## Author : Denny <denny@dennyzhang.com>
 ## Description :
+##
+## More reading: TODO
+##
 ## --
 ## Created : <2017-05-12>
-## Updated: Time-stamp: <2017-07-02 15:56:56>
+## Updated: Time-stamp: <2017-06-30 17:08:13>
 ##-------------------------------------------------------------------
 code_dir=${1?""}
-preinstall_pip_packages=${2-""}
-ignore_file_list=${3-""}
+ignore_file_list=${2-""}
 
-image_name="denny/pylintcheck:1.0"
-check_filename="/enforce_pylint.py"
+image_name="denny/rubocopcheck:1.0"
+check_filename="/enforce_rubocopcheck.py"
 
 current_filename=$(basename "$0")
 test_id="${current_filename%.sh}_$$"
@@ -59,13 +61,6 @@ docker run -t -d --privileged -v "${code_dir}:/code" --name "$container_name" --
 echo "Copy ignore file"
 docker cp "/tmp/$ignore_file" "$container_name:/$ignore_file"
 
-echo "Install pip packages before testing"
-package_list=${preinstall_pip_packages//,/ }
-for pip_package in $package_list; do
-    echo "pip install $pip_package"
-    docker exec -t "$container_name" pip install "$pip_package"
-done
-
-echo "Run code check: python $check_filename --code_dir /code --check_ignore_file /${ignore_file}"
-docker exec -t "$container_name" python "$check_filename" --code_dir /code --check_ignore_file "/${ignore_file}"
-## File : docker_pylint.sh ends
+echo "Run code check: python $check_filename --code_dir /code --check_ignore_folder /${ignore_folder}"
+docker exec -t "$container_name" python "$check_filename" --code_dir /code --check_ignore_folder "/${ignore_file}" 
+## File : docker_rubocopcheck.sh ends

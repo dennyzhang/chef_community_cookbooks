@@ -1,4 +1,5 @@
 # -*- encoding: utf-8 -*-
+
 #
 # Cookbook Name:: devops_basic
 # Recipe:: package_version_check

@@ -1,4 +1,5 @@
 # -*- encoding: utf-8 -*-
+
 #
 # Cookbook Name:: linux_basic
 # Recipe:: repo

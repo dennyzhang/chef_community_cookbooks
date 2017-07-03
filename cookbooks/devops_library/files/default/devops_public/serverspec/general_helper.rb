@@ -1,4 +1,5 @@
 # -*- encoding: utf-8 -*-
+
 ##-------------------------------------------------------------------
 ## @copyright 2016 DennyZhang.com
 ## Licensed under MIT
@@ -9,7 +10,7 @@
 ## Description :
 ## --
 ## Created : <2016-05-10>
-## Updated: Time-stamp: <2016-10-26 13:45:41>
+## Updated: Time-stamp: <2017-07-03 08:28:59>
 ##-------------------------------------------------------------------
 ################################################################################
 require 'socket'
@@ -35,9 +36,8 @@ ensure
 end
 
 def print_local_ip
-  # print current ip, which is useful for debugging issues of "kitchen verify"
   node_ip = local_ip
-  print "==== local_ip: #{node_ip} ===="
+  print("==== local_ip: #{node_ip} ====")
 end
 
 def sleep_for(seconds)

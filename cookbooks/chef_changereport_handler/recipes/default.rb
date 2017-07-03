@@ -1,4 +1,5 @@
 # -*- encoding: utf-8 -*-
+
 #
 # Cookbook Name:: chef_changereport_handler
 # Recipe:: default

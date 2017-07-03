@@ -1,4 +1,5 @@
 # -*- encoding: utf-8 -*-
+
 default['devops_basic']['os_check'] = {
   'min_cpu_count' => '2',
   'min_memory_gb' => '3.5',
