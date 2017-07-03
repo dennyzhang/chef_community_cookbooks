@@ -1,6 +1,3 @@
-AllCops:
-  Excludes:
-
 Metrics/LineLength:
   Max: 100
 
