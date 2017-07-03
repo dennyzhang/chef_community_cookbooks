@@ -1,6 +1,8 @@
 AllCops:
-  Excludes:
+  Exclude:
     - Berksfile
+    - LICENSE
+    - README.md
 
 Style/Next:
   Enabled: false
