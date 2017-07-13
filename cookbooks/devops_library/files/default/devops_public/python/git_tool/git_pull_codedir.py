@@ -13,7 +13,7 @@
 ##        pip install GitPython
 ## --
 ## Created : <2017-03-24>
-## Updated: Time-stamp: <2017-06-04 16:26:11>
+## Updated: Time-stamp: <2017-07-05 20:35:24>
 ##-------------------------------------------------------------------
 import os, sys
 import sys
@@ -22,7 +22,10 @@ import argparse
 # Notice: Need to run: pip install GitPython
 import git
 
-log_file = "/var/log/%s.log" % (os.path.basename(__file__).rstrip('\.py'))
+log_folder = "%s/log" % (os.path.expanduser('~'))
+if os.path.exists(log_folder) is False:
+    os.makedirs(log_folder)
+log_file = "%s/%s.log" % (log_folder, os.path.basename(__file__).rstrip('\.py'))
 logging.basicConfig(filename=log_file, level=logging.DEBUG, format='%(asctime)s %(message)s')
 logging.getLogger().addHandler(logging.StreamHandler())
 

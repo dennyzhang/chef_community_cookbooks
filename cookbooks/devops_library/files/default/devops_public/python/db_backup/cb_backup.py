@@ -5,7 +5,7 @@
 ## Description : Couchbase Daily Backup
 ## --
 ## Created : <2016-08-01>
-## Updated: Time-stamp: <2017-05-10 16:07:01>
+## Updated: Time-stamp: <2017-07-05 20:35:12>
 ##-------------------------------------------------------------------
 # TODO: move to common library
 import argparse
@@ -14,7 +14,10 @@ from datetime import date
 import calendar
 import subprocess
 
-log_file = "/var/log/%s.log" % (os.path.basename(__file__).rstrip('\.py'))
+log_folder = "%s/log" % (os.path.expanduser('~'))
+if os.path.exists(log_folder) is False:
+    os.makedirs(log_folder)
+log_file = "%s/%s.log" % (log_folder, os.path.basename(__file__).rstrip('\.py'))
 # setup logging
 from logging.handlers import RotatingFileHandler
 import logging
