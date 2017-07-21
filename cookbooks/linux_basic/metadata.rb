@@ -5,8 +5,8 @@ license 'All rights reserved'
 description 'Basic DevOps for single machine'
 long_description IO.read(File.join(File.dirname(__FILE__), 'README.md'))
 version '2.3.3'
-issues_url 'http://www.dennyzhang.com'
-source_url 'http://www.dennyzhang.com'
+issues_url 'https://www.dennyzhang.com'
+source_url 'https://www.dennyzhang.com'
 
 supports 'ubuntu', '>= 12.04'
 supports 'debian', '>= 6.0'

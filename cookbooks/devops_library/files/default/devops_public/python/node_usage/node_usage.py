@@ -9,17 +9,47 @@
 ## Description : Show OS and process resource usage: CPU, RAM and disk
 ## Sample:
 ##         python ./node_usage.py
-##             {"disk": {"disk_0": {"free_gb": "170.42", "total_gb": "377.83", "partition": "/", "used_percentage": "49.82%", "used_gb": "188.22"}, "free_gb": "170.42", "total_gb": "377.83", "used_percentage": "/ 49.82%(188.22gb/377.83gb)", "used_gb": "188.22"}, "hostname": "totvsjenkins", "ram": {"used_percentage": "8.79%(2.07gb/23.55gb)", "ram_buffers_gb": "8.17", "ram_available_gb": "21.40", "ram_total_gb": "23.55", "ram_used_gb": "2.07"}}
+##             {"disk": {"disk_0": {"free_gb": "170.42", "total_gb": "377.83", "partition": "/", "used_percentage": "49.82%", "used_gb": "188.22"}, "free_gb": "170.42", "total_gb": "377.83", "used_percentage": "/ 49.82%(188.22gb/377.83gb)", "used_gb": "188.22"}, "hostname": "dennytest", "ram": {"used_percentage": "8.79%(2.07gb/23.55gb)", "ram_buffers_gb": "8.17", "ram_available_gb": "21.40", "ram_total_gb": "23.55", "ram_used_gb": "2.07"}}
 ##
 ## --
 ## Created : <2017-05-22>
-## Updated: Time-stamp: <2017-07-13 08:31:40>
+## Updated: Time-stamp: <2017-07-18 10:19:10>
 ##-------------------------------------------------------------------
 import os, sys
 import psutil
 import argparse
 import json
 import socket
+import subprocess
+import json
+
+# https://stackoverflow.com/questions/136168/get-last-n-lines-of-a-file-with-python-similar-to-tail
+def tail(f, lines=20):
+    total_lines_wanted = lines
+
+    BLOCK_SIZE = 1024
+    f.seek(0, 2)
+    block_end_byte = f.tell()
+    lines_to_go = total_lines_wanted
+    block_number = -1
+    blocks = [] # blocks of size BLOCK_SIZE, in reverse order starting
+                # from the end of the file
+    while lines_to_go > 0 and block_end_byte > 0:
+        if (block_end_byte - BLOCK_SIZE > 0):
+            # read the last block we haven't yet read
+            f.seek(block_number*BLOCK_SIZE, 2)
+            blocks.append(f.read(BLOCK_SIZE))
+        else:
+            # file too small, start from begining
+            f.seek(0,0)
+            # only read what was not read
+            blocks.append(f.read(block_end_byte))
+        lines_found = blocks[-1].count('\n')
+        lines_to_go -= lines_found
+        block_end_byte -= BLOCK_SIZE
+        block_number -= 1
+    all_read_text = ''.join(reversed(blocks))
+    return '\n'.join(all_read_text.splitlines()[-total_lines_wanted:])
 
 def get_ip_address():
     s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
@@ -97,41 +127,29 @@ def get_cpu_usage(output_dict):
         content = f.readlines()
     output_dict["cpu_load"] = content[0].rstrip("\n")
 
-def get_process_usage(output_dict, pid_file):
-    if os.path.exists(pid_file) is False:
-        output_dict["process_status"] = "ERROR: pid file(%s) doesn't exist" % (pid_file)
-        return
-
-    pid = ""
-    with open(pid_file) as f:
-        pid = f.readlines()
-        pid = int(pid[0])
-
-    try:
-        py = psutil.Process(pid)
-    except psutil.NoSuchProcess as e:
-        output_dict["process_status"] = "ERROR: pid(%d) is not running" % (pid)
-        return
-
-    process_status = "Service Status: Process is running with pid(%d).\n" % (pid)
-
-    # TODO: implement the logic
-    memoryUse = py.memory_info()[0]/2.**30
-    output_dict["process_status"] = process_status
+def get_service_status(output_dict, service_command):
+    command_output = subprocess.check_output(service_command.split(" "))
+    output_dict["service_status"] = "%s:\n%s" % (service_command, command_output.decode("utf-8"))
 
 def tail_log_file(output_dict, log_file, tail_log_num):
-    log_message = "tail -n %d %s:" % (tail_log_num, log_file)
-    # TODO: implement this logic
-    log_message = "%s\nTODO: implement this logic\nhello, world\nthis is a test" % (log_message)
+    log_message = "[Log] tail -n %d %s:" % (tail_log_num, log_file)
+    try:
+        with open(log_file,'r') as f:
+            message = tail(f, tail_log_num)
+            # Escape double quotes for JSON
+            message = json.dumps(message)
+            log_message = "%s\n%s" % (log_message, message)
+    except Exception as e:
+        log_message = "%s\nFailed to tail log: %s" % (log_message, e)
     output_dict["tail_log_file"] = log_message
 
-def show_usage(pid_file, log_file, tail_log_num):
+def show_usage(service_command, log_file, tail_log_num):
     output_dict = {}
     output_dict['hostname'] = socket.gethostname()
     output_dict['ipaddress_eth0'] = get_ip_address()
 
-    if pid_file is not None:
-        get_process_usage(output_dict, pid_file)
+    if service_command is not None:
+        get_service_status(output_dict, service_command)
 
     if log_file is not None:
         tail_log_file(output_dict, log_file, tail_log_num)
@@ -145,12 +163,12 @@ def show_usage(pid_file, log_file, tail_log_num):
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
-    parser.add_argument('--pid_file', required=False, \
-                        help="Process pidfile. If not given, the check of process resource usage will be skipped", type=str)
+    parser.add_argument('--check_service_command', required=False, \
+                        help="What command to check service status. If not given, service check will be skipped", type=str)
     parser.add_argument('--log_file', required=False, \
                         help="Tail log file", type=str)
-    parser.add_argument('--tail_log_num', required=False, default=20,\
+    parser.add_argument('--tail_log_num', required=False, default=30,\
                         help="Tail last multiple lines of log file", type=int)
     l = parser.parse_args()
-    show_usage(l.pid_file, l.log_file, l.tail_log_num)
+    show_usage(l.check_service_command, l.log_file, l.tail_log_num)
 ## File : node_usage.py ends

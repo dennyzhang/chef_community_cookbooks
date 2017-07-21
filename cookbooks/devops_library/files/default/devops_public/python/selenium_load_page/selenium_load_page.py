@@ -7,17 +7,17 @@
 ##    Test page loading with selenium: slow load, severe 
 ##              errors when launching network requests, and save screenshots as images.
 ##
-## More reading: http://www.dennyzhang.com/selenium_docker/
+## More reading: https://www.dennyzhang.com/selenium_docker/
 ##
 ## Sample:
 ##   - Test page load: basic test
-##        python ./selenium_load_page.py --page_url http://www.dennyzhang.com
+##        python ./selenium_load_page.py --page_url https://www.dennyzhang.com
 ##
 ##   - Test page load: if it takes more than 5 seconds, fail the test. Default timeout is 10 seconds
-##        python ./selenium_load_page.py --page_url http://www.dennyzhang.com --max_load_seconds 5
+##        python ./selenium_load_page.py --page_url https://www.dennyzhang.com --max_load_seconds 5
 ##
 ##   - Test page load: after page loading, save screenshot
-##        python ./selenium_load_page.py --page_url http://www.dennyzhang.com --should_save_screenshot true
+##        python ./selenium_load_page.py --page_url https://www.dennyzhang.com --should_save_screenshot true
 ##
 ## --
 ## Created : <2017-02-24>
@@ -30,50 +30,66 @@ import time
 from selenium import webdriver
 from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 
+sleep_delay = 5
+IGNORE_ERROR_LIST = ["favicon.ico"]
+
 def load_page(page_url, remote_server, max_load_seconds, \
               screenshot_dir, should_save_screenshot):
     load_timeout = 120 # seconds
     is_ok = True
-
     driver = webdriver.Remote(command_executor = remote_server, \
                               desired_capabilities=DesiredCapabilities.CHROME)
 
-    # Cleanup cache
-    driver.delete_all_cookies()
+    try:
+        # Cleanup cache
+        driver.delete_all_cookies()
 
-    driver.set_page_load_timeout(load_timeout)
+        # driver.set_page_load_timeout(load_timeout)
 
-    print("Open page: %s" % (page_url))
-    start_clock = time.clock()
-    p = driver.get(page_url)
-    end_clock = time.clock()
-    elapsed_seconds = ((end_clock - start_clock) * 1000)
-    if elapsed_seconds > max_load_seconds:
-        print("ERROR: page load too slow. It took %f seconds, more than %d" \
-              % (elapsed_seconds, max_load_seconds))
-        is_ok = False
-    else:
-        print("Page load took: %f seconds." % (elapsed_seconds))
+        print("Open page: %s" % (page_url))
+        start_clock = time.clock()
 
-    all_warnings = driver.get_log('browser')
-    critical_errors = []
+        end_clock = time.clock()
+        elapsed_seconds = ((end_clock - start_clock) * 1000 - sleep_delay)
+        if elapsed_seconds > max_load_seconds:
+            print("ERROR: page load is too slow. It took %s seconds, more than %d seconds." \
+                  % ("{:.2f}".format(elapsed_seconds), max_load_seconds))
+            is_ok = False
+        else:
+            print("Page load took: %s seconds." % ("{:.2f}".format(elapsed_seconds)))
 
-    for warning in all_warnings:
-        if warning['level'] == 'SEVERE':
-            critical_errors.append(warning)
+        all_warnings = driver.get_log('browser')
+        critical_errors = []
 
-    if len(critical_errors) != 0:
-        print("ERROR: severe errors have happened when loading the page. Details:\n\t%s" \
-              % "\n\t".join([str(error) for error in critical_errors]))
-        is_ok = False
+        for warning in all_warnings:
+            if warning['level'] == 'SEVERE':
+                has_error = True
+                for ignore_err in IGNORE_ERROR_LIST:
+                    if ignore_err in warning['message']:
+                        has_error = False
+                        break
+                if has_error is True:
+                    critical_errors.append(warning)
 
-    save_screenshot_filepath = "%s/%s-%s.png" % \
-                               (screenshot_dir, datetime.now().strftime('%Y-%m-%d_%H%M%S'), \
-                                page_url.rstrip("/").split("/")[-1])
-    if should_save_screenshot is True:
-        print("Save screenshot to %s" % (save_screenshot_filepath))
-        driver.get_screenshot_as_file(save_screenshot_filepath)
-    driver.close()
+        if len(critical_errors) != 0:
+            print("ERROR: severe errors have happened when loading the page. Details:\n\t%s" \
+                  % "\n\t".join([str(error) for error in critical_errors]))
+            is_ok = False
+
+        save_screenshot_filepath = "%s/%s-%s.png" % \
+                                   (screenshot_dir, datetime.now().strftime('%Y-%m-%d_%H%M%S'), \
+                                    page_url.rstrip("/").split("/")[-1])
+        if should_save_screenshot is True:
+            print("Save screenshot to %s" % (save_screenshot_filepath))
+            driver.get_screenshot_as_file(save_screenshot_filepath)
+    except Exception as e:
+        print("ERROR: get exception: %s" % (e))
+        is_ok = False        
+    finally:
+        driver.close()
+        # quit session
+        driver.quit()
+
     return is_ok
 
 if __name__ == '__main__':
