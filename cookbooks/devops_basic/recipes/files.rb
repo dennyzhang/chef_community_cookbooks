@@ -101,7 +101,7 @@ cookbook_file '/opt/devops/bin/cleanup_old_files.py' do
   cookbook 'devops_library'
 end
 
-%w(examine_hosts_file.py update_hosts_file.py).each do |x|
+%w(examine_hosts_file.py update_hosts_file.py bind_hosts_file.py).each do |x|
   cookbook_file "/usr/sbin/#{x}" do
     source "devops_public/python/hosts_file/#{x}"
     owner 'root'

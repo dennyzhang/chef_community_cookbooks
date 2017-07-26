@@ -1,10 +1,14 @@
 #!/usr/bin/python
 ##-------------------------------------------------------------------
-## File : examine_full_gc_frequency.py
-## Description : If too many full GC has happened recently, raise alerts
+## File : log_pattern_frequency.py
+## Description : If too many pattern of log entries has happened recently, raise alerts
+##
+## Example: log_pattern_frequency.py --logfile /opt/app/app-gc.log --check_pattern "Full GC"
+##                          \--warning_count 10 --critical_count 20
+##
 ## --
 ## Created : <2017-07-25>
-## Updated: Time-stamp: <2017-07-25 18:06:56>
+## Updated: Time-stamp: <2017-07-26 09:18:03>
 ##-------------------------------------------------------------------
 import sys, os
 import argparse
@@ -49,7 +53,7 @@ def count_pattern_in_log_tail(fname, tail_log_count, pattern_string):
     with open(fname,'r') as f:
         message = tail(f, tail_log_count)
         # Escape double quotes for JSON
-        for line in message.spli("\n"):
+        for line in message.split("\n"):
             if pattern_string in line:
                 count = count + 1
     return count
@@ -57,35 +61,36 @@ def count_pattern_in_log_tail(fname, tail_log_count, pattern_string):
 ############################################################################
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
-    parser.add_argument('--gc_logfile', required=True, \
+    parser.add_argument('--logfile', required=True, \
                         help="Tail log file", type=str)
+    parser.add_argument('--check_pattern', required=True, \
+                        help="What pattern to check", type=str)
     parser.add_argument('--tail_log_num', required=False, default=100,\
                         help="Tail last multiple lines of log file", type=int)
-    parser.add_argument('--warning_gc_count', required=False, default=5,\
-                        help="If GC count over than this, but lower than --critical_gc_count, quit with warning", \
+    parser.add_argument('--warning_count', required=False, default=5,\
+                        help="If matched entries more than this, but lower than --critical_count, quit with warning", \
                         type=int)
-    parser.add_argument('--critical_gc_count', required=False, default=10,\
-                        help="If GC count over than this, quit with error", \
+    parser.add_argument('--critical_count', required=False, default=10,\
+                        help="If matched entries more than this, quit with error", \
                         type=int)
     l = parser.parse_args()
-    pattern_string = "Full GC"
 
     try:
-        pattern_count = count_pattern_in_log_tail(l.gc_logfile, l.tail_log_num, pattern_string)
-        if pattern_count >= l.critical_gc_count:
-            print "ERROR: %d full gc has happened in last %d lines of %s|full_gc_count=%d"  \
-                % (pattern_count, l.tail_log_num, l.gc_logfile, pattern_count)
+        pattern_count = count_pattern_in_log_tail(l.logfile, l.tail_log_num, l.check_pattern)
+        if pattern_count >= l.critical_count:
+            print("ERROR: %d full gc has happened in last %d lines of %s|full_count=%d"  \
+                  % (pattern_count, l.tail_log_num, l.logfile, pattern_count))
             sys.exit(SYS_EXIT_CRI)
 
-        if pattern_count >= l.warning_gc_count:
-            print "WARNING: %d full gc has happened in last %d lines of %s|full_gc_count=%d"  \
-                % (pattern_count, l.tail_log_num, l.gc_logfile, pattern_count)
+        if pattern_count >= l.warning_count:
+            print("WARNING: %d full gc has happened in last %d lines of %s|full_count=%d"  \
+                  % (pattern_count, l.tail_log_num, l.logfile, pattern_count))
             sys.exit(SYS_EXIT_WARN)
 
-    print "OK: %d full gc has happened in last %d lines of %s|full_gc_count=%d"  \
-        % (pattern_count, l.tail_log_num, l.gc_logfile, pattern_count)
-    sys.exit(SYS_EXIT_OK)
+        print("OK: %d full gc has happened in last %d lines of %s|full_count=%d"  \
+              % (pattern_count, l.tail_log_num, l.logfile, pattern_count))
+        sys.exit(SYS_EXIT_OK)
     except Exception as e:
-        log_message = "%s\nFailed to tail log: %s" % (log_message, e)
-    
-## File : examine_full_gc_frequency.py ends
+        print("ERROR: Fail to get gc count: %s" % (e))
+        sys.exit(SYS_EXIT_CRI)
+## File : log_pattern_frequency.py ends
