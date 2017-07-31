@@ -1,5 +1,4 @@
 # -*- encoding: utf-8 -*-
-
 #
 # Cookbook Name:: nagios-mdm
 # Recipe:: slack_notification
