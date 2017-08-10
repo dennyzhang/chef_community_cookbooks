@@ -243,6 +243,12 @@ define command {
 	command_line	/usr/lib64/nagios/plugins/check_nrpe -H $HOSTADDRESS$ -c $ARG1$
 }
 
+# check less frequently
+define command {
+	command_name	check_nrpe3
+	command_line	/usr/lib64/nagios/plugins/check_nrpe -H $HOSTADDRESS$ -c $ARG1$ -t 20
+}
+
 # command to process nagios performance data for nagiosgraph
 define command {
   command_name process-service-perfdata-for-nagiosgraph

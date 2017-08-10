@@ -1,14 +1,14 @@
 #!/usr/bin/python
-## File : bind_hosts_file.py
+## File : generate_extra_hosts_file.py
 ## Created : <2017-05-03>
-## Updated: Time-stamp: <2017-07-27 09:35:33>
+## Updated: Time-stamp: <2017-08-02 11:49:01>
 ## Description :
-##    Configure /etc/hosts for a list of nodes.
+##    Generate ip-host binding list for a list of nodes, when internal DNS is missing.
 ##    1. Given a list of ip.
 ##    2. Get the ip-hostname list for each node by ssh
 ##    3. Update /etc/hosts for each node, thus every node to talk with others by hostname
 ## Sample:
-##    python ./bind_hosts_file.py --ip_list_file /tmp/hosts --ssh_username root
+##    python ./generate_extra_hosts_file.py --ip_list_file /tmp/bind_hosts --ssh_username root
 ##                \ --ssh_port 22 --ssh_key_file ~/.ssh/id_rsa
 ## Requirements:
 ##     1. pip install paramiko
@@ -42,41 +42,11 @@ def get_list_from_file(fname):
             l.append(row)
     return l
 
-def get_hostname_by_ssh(server_ip, username, ssh_port, ssh_key_file, key_passphrase):
+def get_hostname_by_ssh(server_ip, ssh_connect_args):
+    [ssh_username, ssh_port, ssh_key_file, key_passphrase] = ssh_connect_args
     ssh_command = "hostname"
     output = ""
     try:
-        ssh = paramiko.SSHClient()
-        ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
-        key = paramiko.RSAKey.from_private_key_file(ssh_key_file, password=key_passphrase)
-        ssh.connect(server_ip, username=username, port=ssh_port, pkey=key)
-        stdin, stdout, stderr = ssh.exec_command(ssh_command)
-        output = "\n".join(stdout.readlines())
-        output = output.rstrip("\n")
-    except:
-        return ("ERROR", "Unexpected on server: %s error: %s" % (server_ip, sys.exc_info()[0]))
-    return ("OK", output)
-
-def get_hostname_ip_dict(server_list, ssh_username, ssh_port, ssh_key_file, key_passphrase):
-    binding_dict = {}
-    # TODO: speed up this process by multi-threading
-    for server_ip in server_list:
-        (status, hostname) = get_hostname_by_ssh(server_ip, ssh_username, ssh_port, ssh_key_file, key_passphrase)
-        binding_dict[server_ip] = hostname
-    return binding_dict
-
-def bind_hosts_file(server_list, hostname_ip_dict, ssh_username, ssh_port, ssh_key_file, key_passphrase):
-    ip_hostname_list = []
-    for hostname in hostname_ip_dict:
-        ip_hostname_list.append("%s %s" % (hostname, hostname_ip_dict[hostname]))
-
-    # TODO: speed up this process by multi-threading
-    ssh_command = ""
-#     ssh_command = "cat > /tmp/hosts << EOF
-# %s
-# EOF && \
-# python update_hosts_file.py --extra_hosts_file /tmp/hosts" % ("\n".join(ip_hostname_list))
-    for server_ip in server_list:
         ssh = paramiko.SSHClient()
         ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
         key = paramiko.RSAKey.from_private_key_file(ssh_key_file, password=key_passphrase)
@@ -84,15 +54,30 @@ def bind_hosts_file(server_list, hostname_ip_dict, ssh_username, ssh_port, ssh_k
         stdin, stdout, stderr = ssh.exec_command(ssh_command)
         output = "\n".join(stdout.readlines())
         output = output.rstrip("\n")
-        # TODO: verify status
+        ssh.close()
+    except:
+        return ("ERROR", "Unexpected on server: %s error: %s\n" % (server_ip, sys.exc_info()[0]))
+    return ("OK", output)
+
+def get_hostname_ip_dict(server_list, ssh_connect_args):
+    binding_dict = {}
+    # TODO: speed up this process by multi-threading
+    for server_ip in server_list:
+        (status, output) = get_hostname_by_ssh(server_ip, ssh_connect_args)
+        if status != "OK":
+            raise Exception("Fail to get hostname for %s: %s" % (server_ip, output))
+        binding_dict[server_ip] = output
+    return binding_dict
 
 ###############################################################
 
 if __name__ == '__main__':
     # get parameters from users
     parser = argparse.ArgumentParser()
-    parser.add_argument('--ip_list_file', required=True, default="", \
+    parser.add_argument('--ip_list_file', required=False, default="/tmp/bind_hosts", \
                         help="File for a list of ip address", type=str)
+    parser.add_argument('--target_hosts_file', required=False, default="/tmp/hosts", \
+                        help="Target host file", type=str)
     parser.add_argument('--ssh_username', required=False, default="root", \
                         help="Which OS user to ssh", type=str)
     parser.add_argument('--ssh_port', required=False, default="22", \
@@ -103,9 +88,15 @@ if __name__ == '__main__':
                         help="Which OS user to ssh", type=str)
 
     l = parser.parse_args()
-    # TODO: improve error handling
+    target_hosts_file = l.target_hosts_file
     server_list = get_list_from_file(l.ip_list_file)
-    binding_dict = get_hostname_ip_dict(server_list, l.ssh_username, l.ssh_port, l.ssh_key_file, l.key_passphrase)
-    bind_hosts_file(server_list, binding_dict, l.ssh_username, l.ssh_port, l.ssh_key_file, l.key_passphrase)
-    # TODO: check status
-## File : bind_hosts_file.py ends
+    ssh_connect_args = [l.ssh_username, l.ssh_port, l.ssh_key_file, l.key_passphrase]
+    binding_dict = get_hostname_ip_dict(server_list, ssh_connect_args)
+
+    print("Generate extra hosts file to %s" % (target_hosts_file))
+    f = open(target_hosts_file, 'w')
+    ip_hostname_list = []
+    for ip in binding_dict:
+        f.write("%s %s\n" % (ip, binding_dict[ip]))
+    f.close()
+## File : generate_extra_hosts_file.py ends

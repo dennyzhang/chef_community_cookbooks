@@ -7,7 +7,7 @@
 ## File : update_hosts_file.py
 ## Author : Denny <denny@dennyzhang.com>
 ## Created : <2017-05-03>
-## Updated: Time-stamp: <2017-07-26 18:52:36>
+## Updated: Time-stamp: <2017-08-08 15:53:54>
 ## Description :
 ##    Load an extra hosts binding into /etc/hosts
 ## Sample:
@@ -18,6 +18,7 @@
 import os, sys
 import argparse
 import socket, datetime
+from shutil import copyfile
 
 import logging
 log_folder = "%s/log" % (os.path.expanduser('~'))
@@ -66,7 +67,11 @@ if __name__ == '__main__':
     skip_current_hostname = l.skip_current_hostname
 
     current_hosts_dict = load_hostsfile_to_dict("/etc/hosts")
-    extra_hosts_dict = load_hostsfile_to_dict(extra_hosts_file)
+    if extra_hosts_file != "":
+        extra_hosts_dict = load_hostsfile_to_dict(extra_hosts_file)
+    else:
+        extra_hosts_dict = {}
+
     has_changed = False
     has_backup = False
 
@@ -80,8 +85,9 @@ if __name__ == '__main__':
                 host_backup_file = "/etc/hosts.%s" % \
                                    (datetime.datetime.utcnow().strftime("%Y-%m-%d_%H%M%S"))
                 logging.info("Backup /etc/hosts to %s" % (host_backup_file))
+                copyfile('/etc/hosts', host_backup_file)
                 has_backup = True
-            open("/etc/hosts", "ab").write("%s %s" % (extra_hosts_dict[hostname]), hostname)
+            open("/etc/hosts", "ab").write("%s %s\n" % (extra_hosts_dict[hostname], hostname))
             logging.error("Append /etc/hosts: (%s:%s)" % (hostname, extra_hosts_dict[hostname]))
             has_changed = True
         else:
