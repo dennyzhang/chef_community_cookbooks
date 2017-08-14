@@ -5,7 +5,7 @@
 ## Description : NRPE Nagios Checks configuration
 ## --
 ## Created : <2014-9-11>
-## Updated: Time-stamp: <2017-07-31 17:58:03>
+## Updated: Time-stamp: <2017-08-13 23:03:21>
 ##-------------------------------------------------------------------
 # NRPE configurations#
 
@@ -21,9 +21,9 @@ command[check_ip_address]=<%= @nagios_plugins %>/check_ip_address.sh
 command[check_out_of_memory]=python <%= @nagios_plugins %>/check_out_of_memory.py --hours_to_check 8
 
 # Monitor Disk capacity
-command[check_disk_rootfs]=<%= @nagios_plugins %>/check_linux_stats.pl -D -w <%= node['nagios3']['disk_warn_threshold'] %> -c <%= node['nagios3']['disk_warn_threshold'] %> -u % -p /
+command[check_disk_rootfs]=<%= @nagios_plugins %>/check_linux_stats.pl -D -w <%= node['nagios3']['disk_warn_threshold'] %> -c <%= node['nagios3']['disk_cri_threshold'] %> -u % -p /
 # monitor disk for all mounted volumes, instead of rootfs only
-command[check_disk]=<%= @nagios_plugins %>/check_linux_stats.pl -D -w <%= node['nagios3']['disk_warn_threshold'] %> -c <%= node['nagios3']['disk_warn_threshold'] %>
+command[check_disk]=<%= @nagios_plugins %>/check_linux_stats.pl -D -w <%= node['nagios3']['disk_warn_threshold'] %> -c <%= node['nagios3']['disk_cri_threshold'] %>
 
 # Misc Common Checks
 command[check_certificate]=<%= @nagios_plugins %>/check_http -H localhost -C 30

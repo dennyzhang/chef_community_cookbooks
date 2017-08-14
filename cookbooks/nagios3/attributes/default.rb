@@ -56,5 +56,5 @@ default['nagios3']['slack_all_channel'] = ''
 default['nagios3']['memory_warn_threshold'] = '80'
 default['nagios3']['memory_cri_threshold'] = '90'
 
-default['nagios3']['disk_warn_threshold'] = '15'
-default['nagios3']['disk_cri_threshold'] = '10'
+default['nagios3']['disk_warn_threshold'] = '60'
+default['nagios3']['disk_cri_threshold'] = '70'
