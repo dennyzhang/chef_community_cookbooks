@@ -5,9 +5,9 @@
 ##   https://raw.githubusercontent.com/DennyZhang/devops_public/master/LICENSE
 ##
 ## File : update_hosts_file.py
-## Author : Denny <denny@dennyzhang.com>
+## Author : Denny <contact@dennyzhang.com>
 ## Created : <2017-05-03>
-## Updated: Time-stamp: <2017-08-17 10:43:55>
+## Updated: Time-stamp: <2017-09-04 18:58:03>
 ## Description :
 ##    Load an extra hosts binding into /etc/hosts
 ## Sample:

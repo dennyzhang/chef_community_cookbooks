@@ -6,11 +6,11 @@
 ##   https://raw.githubusercontent.com/DennyZhang/devops_public/master/LICENSE
 ##
 ## File : git_pull_codedir.py
-## Author : Denny <denny@dennyzhang.com>
+## Author : Denny <contact@dennyzhang.com>
 ## Description :
 ## --
 ## Created : <2017-03-24>
-## Updated: Time-stamp: <2017-04-19 11:54:16>
+## Updated: Time-stamp: <2017-09-04 18:58:03>
 ##-------------------------------------------------------------------
 import os, sys
 import sys

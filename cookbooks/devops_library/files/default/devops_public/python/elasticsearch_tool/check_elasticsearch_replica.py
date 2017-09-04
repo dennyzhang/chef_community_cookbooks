@@ -5,12 +5,12 @@
 ##   https://raw.githubusercontent.com/DennyZhang/devops_public/master/LICENSE
 ##
 ## File : check_elasticsearch_replica.py
-## Author : Denny <denny@dennyzhang.com>
+## Author : Denny <contact@dennyzhang.com>
 ## Description :
 ##    Check all ES indices have more than $min_replica_count replicas
 ## --
 ## Created : <2017-02-24>
-## Updated: Time-stamp: <2017-06-30 23:21:46>
+## Updated: Time-stamp: <2017-09-04 18:58:03>
 ##-------------------------------------------------------------------
 import argparse
 import requests

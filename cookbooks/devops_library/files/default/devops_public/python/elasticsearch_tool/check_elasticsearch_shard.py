@@ -5,13 +5,13 @@
 ##   https://raw.githubusercontent.com/DennyZhang/devops_public/master/LICENSE
 ##
 ## File : check_elasticsearch_shard.py
-## Author : Denny <denny@dennyzhang.com>
+## Author : Denny <contact@dennyzhang.com>
 ## Description :
 ##    Make sure ES indices have enough shards.
 ##    Make sure no same shard(primary, replica) are in the same node, to avoid SPOF
 ## --
 ## Created : <2017-02-24>
-## Updated: Time-stamp: <2017-08-15 16:41:34>
+## Updated: Time-stamp: <2017-09-04 18:58:03>
 ##-------------------------------------------------------------------
 import argparse
 import requests

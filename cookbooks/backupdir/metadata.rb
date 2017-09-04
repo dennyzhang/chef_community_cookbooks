@@ -1,6 +1,6 @@
 name 'backupdir'
 maintainer 'DennyZhang.com'
-maintainer_email 'denny@dennyzhang.com'
+maintainer_email 'contact@dennyzhang.com'
 license 'All rights reserved'
 description 'Backup directories by a crontab and do a remote copy'
 long_description IO.read(File.join(File.dirname(__FILE__), 'README.md'))

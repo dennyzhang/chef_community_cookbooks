@@ -5,14 +5,14 @@
 ## https://raw.githubusercontent.com/DennyZhang/devops_public/tag_v1/LICENSE
 ##
 ## File : local_git_pull.sh
-## Author : Denny <denny@dennyzhang.com>
+## Author : Denny <contact@dennyzhang.com>
 ## Description :
 ##            Crontab to git pull, in order to automatically keep file in sync
 ##            This is especially useful, when your internet is slow or you
 ##            have multiple repo to keep in sync.
 ## --
 ## Created : <2016-04-20>
-## Updated: Time-stamp: <2016-06-24 15:52:56>
+## Updated: Time-stamp: <2017-09-04 18:57:08>
 ##-------------------------------------------------------------------
 function update_git() {
     dir=${1?}

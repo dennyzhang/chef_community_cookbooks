@@ -21,7 +21,7 @@ Attributes List
 
 License & Authors
 -----------------
-- Author:: DennyZhang <denny@dennyzhang.com>
+- Author:: DennyZhang <contact@dennyzhang.com>
 - Copyright:: 2016, http://DennyZhang.com
 
 ```text
