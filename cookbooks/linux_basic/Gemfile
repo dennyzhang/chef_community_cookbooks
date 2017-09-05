@@ -1,8 +1,8 @@
 source 'https://ruby.taobao.org/'
 
 gem 'kitchen-docker'
-gem 'test-kitchen'
 gem 'kitchen-digitalocean'
+gem 'test-kitchen'
 
 gem 'berkshelf'
 gem 'docker'
