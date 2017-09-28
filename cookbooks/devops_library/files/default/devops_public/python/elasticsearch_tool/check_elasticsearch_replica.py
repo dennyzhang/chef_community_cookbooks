@@ -2,7 +2,7 @@
 ##-------------------------------------------------------------------
 ## @copyright 2017 DennyZhang.com
 ## Licensed under MIT
-##   https://raw.githubusercontent.com/DennyZhang/devops_public/master/LICENSE
+##   https://www.dennyzhang.com/wp-content/mit_license.txt
 ##
 ## File : check_elasticsearch_replica.py
 ## Author : Denny <contact@dennyzhang.com>
@@ -10,7 +10,7 @@
 ##    Check all ES indices have more than $min_replica_count replicas
 ## --
 ## Created : <2017-02-24>
-## Updated: Time-stamp: <2017-09-04 18:58:03>
+## Updated: Time-stamp: <2017-09-07 21:37:48>
 ##-------------------------------------------------------------------
 import argparse
 import requests
