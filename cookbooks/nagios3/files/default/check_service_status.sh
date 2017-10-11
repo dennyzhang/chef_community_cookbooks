@@ -5,7 +5,7 @@
 ## Description :
 ## --
 ## Created : <2015-02-24>
-## Updated: Time-stamp: <2017-09-04 18:57:07>
+## Updated: Time-stamp: <2017-09-04 18:59:48>
 ##-------------------------------------------------------------------
 # TODO: move to common library
 service_name=${1?}

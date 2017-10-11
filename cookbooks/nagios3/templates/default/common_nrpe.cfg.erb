@@ -5,13 +5,13 @@
 ## Description : NRPE Nagios Checks configuration
 ## --
 ## Created : <2014-9-11>
-## Updated: Time-stamp: <2017-09-04 18:58:24>
+## Updated: Time-stamp: <2017-10-10 20:07:13>
 ##-------------------------------------------------------------------
 # NRPE configurations#
 
 # Frequent Used Common Checks
 command[check_total_procs]=<%= @nagios_plugins %>/check_procs -w 5500 -c 8000
-command[check_cpu_load]=<%= @nagios_plugins %>/check_linux_stats.pl -C -w 200 -c 600 -s 5
+command[check_cpu_load]=<%= @nagios_plugins %>/check_linux_stats.pl -C -w <%= node['nagios3']['cpu_warn_threshold'] %> -c <%= node['nagios3']['cpu_cri_threshold'] %> -s 5
 command[check_users]=<%= @nagios_plugins %>/check_users -w 10 -c 15
 command[check_zombie_procs]=<%= @nagios_plugins %>/check_procs -w 5 -c 10 -s Z
 command[check_memory]=<%= @nagios_plugins %>/check_linux_stats.pl -M -w <%= node['nagios3']['memory_warn_threshold'] %>,<%= node['nagios3']['memory_warn_threshold'] %> -c <%= node['nagios3']['memory_cri_threshold'] %>,<%= node['nagios3']['memory_cri_threshold'] %>
