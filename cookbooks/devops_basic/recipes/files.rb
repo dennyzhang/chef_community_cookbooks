@@ -1,5 +1,4 @@
 # -*- encoding: utf-8 -*-
-
 #
 # Cookbook Name:: devops_basic
 # Recipe:: files
@@ -93,15 +92,18 @@ cookbook_file '/opt/devops/bin/docker_destroy.sh' do
   cookbook 'devops_library'
 end
 
-cookbook_file '/opt/devops/bin/cleanup_old_files.py' do
-  source 'devops_public/python/cleanup_old_files/cleanup_old_files.py'
+remote_file '/opt/devops/bin/cleanup_old_files.py' do
+  source 'https://raw.githubusercontent.com/DennyZhang/'\
+         'cleanup_old_files/tag_v1/cleanup_old_files.py'
   owner 'root'
   group 'root'
-  mode 0o755
-  cookbook 'devops_library'
+  mode '0755'
+  checksum '87eff40807a7b20a18883e00804111d1a7de840a149f848e58e7f22bbde1e208'
+  retries 3
+  retry_delay 3
 end
 
-%w(examine_hosts_file.py update_hosts_file.py bind_hosts_file.py).each do |x|
+%w(examine_hosts_file.py update_hosts_file.py).each do |x|
   cookbook_file "/usr/sbin/#{x}" do
     source "devops_public/python/hosts_file/#{x}"
     owner 'root'

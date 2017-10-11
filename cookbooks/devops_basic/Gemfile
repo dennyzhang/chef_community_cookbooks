@@ -1,5 +1,4 @@
 source 'https://ruby.taobao.org/'
-
 gem 'kitchen-docker'
 gem 'test-kitchen'
 

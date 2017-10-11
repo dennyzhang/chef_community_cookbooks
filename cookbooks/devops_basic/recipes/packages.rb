@@ -1,5 +1,4 @@
 # -*- encoding: utf-8 -*-
-
 #
 # Cookbook Name:: devops_basic
 # Recipe:: packages
