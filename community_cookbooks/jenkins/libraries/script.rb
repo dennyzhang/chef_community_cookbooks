@@ -1,10 +1,10 @@
 #
-# Cookbook Name:: jenkins
+# Cookbook:: jenkins
 # HWRP:: script
 #
 # Author:: Seth Vargo <sethvargo@gmail.com>
 #
-# Copyright 2014, Chef Software, Inc.
+# Copyright:: 2014-2016, Chef Software, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -20,15 +20,10 @@
 #
 
 require_relative 'command'
-require_relative '_params_validate'
 
 class Chef
   class Resource::JenkinsScript < Resource::JenkinsCommand
-    # Chef attributes
-    provides :jenkins_script
-
-    # Set the resource name
-    self.resource_name = :jenkins_script
+    resource_name :jenkins_script
 
     # Actions
     actions :execute
@@ -38,20 +33,25 @@ end
 
 class Chef
   class Provider::JenkinsScript < Provider::JenkinsCommand
+    use_inline_resources
+    provides :jenkins_script
+
     def load_current_resource
       @current_resource ||= Resource::JenkinsScript.new(new_resource.command)
       super
     end
 
-    action(:execute) do
+    #
+    # This provider supports why-run mode.
+    #
+    def whyrun_supported?
+      true
+    end
+
+    action :execute do
       converge_by("Execute script #{new_resource}") do
         executor.groovy!(new_resource.command)
       end
     end
   end
 end
-
-Chef::Platform.set(
-  resource: :jenkins_script,
-  provider: Chef::Provider::JenkinsScript
-)

@@ -1,15 +1,15 @@
 #
-# Cookbook Name:: jenkins
+# Cookbook:: jenkins
 # Recipe:: _master_war
 #
 # Author: AJ Christensen <aj@junglist.gen.nz>
 # Author: Doug MacEachern <dougm@vmware.com>
 # Author: Fletcher Nichol <fnichol@nichol.ca>
-# Author: Seth Chisamore <schisamo@getchef.com>
+# Author: Seth Chisamore <schisamo@chef.io>
 # Author: Seth Vargo <sethvargo@gmail.com>
 #
-# Copyright 2010, VMware, Inc.
-# Copyright 2012-2014, Chef Software, Inc.
+# Copyright:: 2010-2016, VMware, Inc.
+# Copyright:: 2012-2016, Chef Software, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -27,13 +27,13 @@
 # Create the Jenkins user
 user node['jenkins']['master']['user'] do
   home node['jenkins']['master']['home']
-  system node['jenkins']['master']['use_system_accounts']
+  system node['jenkins']['master']['use_system_accounts'] # ~FC048
 end
 
 # Create the Jenkins group
 group node['jenkins']['master']['group'] do
   members node['jenkins']['master']['user']
-  system node['jenkins']['master']['use_system_accounts']
+  system node['jenkins']['master']['use_system_accounts'] # ~FC048
 end
 
 # Create the home directory

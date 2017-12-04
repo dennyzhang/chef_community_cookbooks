@@ -17,7 +17,7 @@ Recipes
 
 License & Authors
 -----------------
-- Author:: DennyZhang <contact@dennyzhang.com>
+- Author:: DennyZhang <https://www.dennyzhang.com/contact>
 - Copyright:: 2016, http://DennyZhang.com
 
 ```text

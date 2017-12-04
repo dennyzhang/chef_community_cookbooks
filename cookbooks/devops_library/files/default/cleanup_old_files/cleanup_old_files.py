@@ -5,9 +5,9 @@
 ##   https://www.dennyzhang.com/wp-content/mit_license.txt
 ##
 ## File : cleanup_old_files.py
-## Author : Denny <contact@dennyzhang.com>
+## Author : Denny <https://www.dennyzhang.com/contact>
 ## Created : <2017-05-03>
-## Updated: Time-stamp: <2017-09-07 21:36:07>
+## Updated: Time-stamp: <2017-11-13 11:11:45>
 ## Description :
 ##    Remove old files in a safe and organized way
 ##

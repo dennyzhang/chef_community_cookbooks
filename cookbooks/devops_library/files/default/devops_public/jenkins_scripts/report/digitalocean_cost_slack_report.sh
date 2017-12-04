@@ -1,11 +1,11 @@
 #!/bin/bash -e
 ##-------------------------------------------------------------------
 ## File : digitalocean_cost_slack_report.sh
-## Author : DennyZhang.com <contact@dennyzhang.com>
+## Author : DennyZhang.com <https://www.dennyzhang.com/contact>
 ## Description :
 ## --
 ## Created : <2016-12-24>
-## Updated: Time-stamp: <2017-09-04 18:57:08>
+## Updated: Time-stamp: <2017-11-13 11:09:01>
 ##-------------------------------------------------------------------
 
 ################################################################################################

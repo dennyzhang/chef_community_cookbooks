@@ -1,10 +1,10 @@
 #
-# Cookbook Name:: jenkins
+# Cookbook:: jenkins
 # HWRP:: ssh_slave
 #
-# Author:: Seth Chisamore <schisamo@getchef.com>
+# Author:: Seth Chisamore <schisamo@chef.io>
 #
-# Copyright 2013-2014, Chef Software, Inc.
+# Copyright:: 2013-2016, Chef Software, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -19,17 +19,12 @@
 # limitations under the License.
 #
 
-require_relative '_params_validate'
 require_relative 'slave'
 require_relative 'credentials'
 
 class Chef
-  class Resource::JenkinsSSHSlave < Resource::JenkinsSlave
-    # Chef attributes
-    provides :jenkins_ssh_slave
-
-    # Set the resource name
-    self.resource_name = :jenkins_ssh_slave
+  class Resource::JenkinsSshSlave < Resource::JenkinsSlave
+    resource_name :jenkins_ssh_slave
 
     # Actions
     actions :create, :delete, :connect, :disconnect, :online, :offline
@@ -37,16 +32,22 @@ class Chef
 
     # Attributes
     attribute :host,
-      kind_of: String
+              kind_of: String
     attribute :port,
-      kind_of: Integer,
-      default: 22
+              kind_of: Integer,
+              default: 22
     attribute :credentials,
-      kind_of: [Resource::JenkinsCredentials, String]
+              kind_of: [Resource::JenkinsCredentials, String]
     attribute :command_prefix,
-      kind_of: String
+              kind_of: String
     attribute :command_suffix,
-      kind_of: String
+              kind_of: String
+    attribute :launch_timeout,
+              kind_of: Integer
+    attribute :ssh_retries,
+              kind_of: Integer
+    attribute :ssh_wait_retries,
+              kind_of: Integer
 
     #
     # The credentials to SSH into the slave with. Credentials can be any
@@ -60,7 +61,7 @@ class Chef
     #
     def parsed_credentials
       if credentials.is_a?(Resource::JenkinsCredentials)
-        credentials.send(:username)
+        credentials.send(:id)
       else
         credentials.to_s
       end
@@ -69,9 +70,12 @@ class Chef
 end
 
 class Chef
-  class Provider::JenkinsSSHSlave < Provider::JenkinsSlave
+  class Provider::JenkinsSshSlave < Provider::JenkinsSlave
+    use_inline_resources
+    provides :jenkins_ssh_slave
+
     def load_current_resource
-      @current_resource ||= Resource::JenkinsSSHSlave.new(new_resource.name)
+      @current_resource ||= Resource::JenkinsSshSlave.new(new_resource.name)
 
       super
 
@@ -80,12 +84,16 @@ class Chef
         @current_resource.port(current_slave[:port])
         @current_resource.credentials(current_slave[:credentials])
         @current_resource.jvm_options(current_slave[:jvm_options])
+        @current_resource.java_path(current_slave[:java_path])
+        @current_resource.launch_timeout(current_slave[:launch_timeout])
+        @current_resource.ssh_retries(current_slave[:ssh_retries])
+        @current_resource.ssh_wait_retries(current_slave[:ssh_wait_retries])
       end
 
       @current_resource
     end
 
-    protected
+    private
 
     #
     # @see Chef::Resource::JenkinsSlave#launcher_groovy
@@ -101,9 +109,12 @@ class Chef
             #{convert_to_groovy(new_resource.port)},
             credentials,
             #{convert_to_groovy(new_resource.jvm_options)},
-            null,
+            #{convert_to_groovy(new_resource.java_path)},
             #{convert_to_groovy(new_resource.command_prefix)},
-            #{convert_to_groovy(new_resource.command_suffix)}
+            #{convert_to_groovy(new_resource.command_suffix)},
+            #{convert_to_groovy(new_resource.launch_timeout)},
+            #{convert_to_groovy(new_resource.ssh_retries)},
+            #{convert_to_groovy(new_resource.ssh_wait_retries)}
           )
       EOH
     end
@@ -116,19 +127,18 @@ class Chef
         host: 'slave.launcher.host',
         port: 'slave.launcher.port',
         jvm_options: 'slave.launcher.jvmOptions',
+        java_path: 'slave.launcher.javaPath',
         command_prefix: 'slave.launcher.prefixStartSlaveCmd',
         command_suffix: 'slave.launcher.suffixStartSlaveCmd',
+        launch_timeout: 'slave.launcher.launchTimeoutSeconds',
+        ssh_retries: 'slave.launcher.maxNumRetries',
+        ssh_wait_retries: 'slave.launcher.retryWaitTime',
       }
 
-      if new_resource.parsed_credentials.match(UUID_REGEX)
-        map[:credentials] = 'slave.launcher.credentialsId'
-      else
-        map[:credentials] = 'slave.launcher.credentialsId == null ? null : hudson.plugins.sshslaves.SSHLauncher.lookupSystemCredentials(slave.launcher.credentialsId).username'
-      end
+      map[:credentials] = 'slave.launcher.credentialsId'
+
       map
     end
-
-    private
 
     #
     # A Groovy snippet that will set the requested local Groovy variable
@@ -139,18 +149,9 @@ class Chef
     # @return [String]
     #
     def credential_lookup_groovy(groovy_variable_name = 'credentials_id')
-      if new_resource.parsed_credentials.match(UUID_REGEX)
-        "#{groovy_variable_name} = hudson.plugins.sshslaves.SSHLauncher.lookupSystemCredentials(#{convert_to_groovy(new_resource.parsed_credentials)})"
-      else
-        <<-EOH.gsub(/ ^{10}/, '')
-          #{credentials_for_username_groovy(new_resource.parsed_credentials, groovy_variable_name)}
-        EOH
-      end
+      <<-EOH.gsub(/ ^{10}/, '')
+        #{credentials_for_id_groovy(new_resource.parsed_credentials, groovy_variable_name)}
+      EOH
     end
   end
 end
-
-Chef::Platform.set(
-  resource: :jenkins_ssh_slave,
-  provider: Chef::Provider::JenkinsSSHSlave
-)

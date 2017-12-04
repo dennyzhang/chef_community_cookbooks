@@ -1,14 +1,14 @@
 #
-# Cookbook Name:: jenkins
+# Cookbook:: jenkins
 # Attributes:: default
 #
 # Author: Doug MacEachern <dougm@vmware.com>
 # Author: Fletcher Nichol <fnichol@nichol.ca>
-# Author: Seth Chisamore <schisamo@getchef.com>
+# Author: Seth Chisamore <schisamo@chef.io>
 # Author: Seth Vargo <sethvargo@gmail.com>
 #
-# Copyright 2010, VMware, Inc.
-# Copyright 2012-2014, Chef Software, Inc.
+# Copyright:: 2010-2016, VMware, Inc.
+# Copyright:: 2012-2016, Chef Software, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -38,7 +38,7 @@ default['jenkins'].tap do |jenkins|
   #
   # You can override this attribute by setting the full path manually:
   #
-  #   node.set['jenkins']['java'] = '/my/custom/path/to/java6'
+  #   node.normal['jenkins']['java'] = '/my/custom/path/to/java6'
   #
   # Setting this value to +nil+ will break the Internet.
   #

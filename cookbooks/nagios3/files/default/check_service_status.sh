@@ -1,11 +1,11 @@
 #!/bin/bash
 ##-------------------------------------------------------------------
 ## File: check_service_status.sh
-## Author : Denny <contact@dennyzhang.com>
+## Author : Denny <https://www.dennyzhang.com/contact>
 ## Description :
 ## --
 ## Created : <2015-02-24>
-## Updated: Time-stamp: <2017-09-04 18:59:48>
+## Updated: Time-stamp: <2017-11-13 11:08:59>
 ##-------------------------------------------------------------------
 # TODO: move to common library
 service_name=${1?}

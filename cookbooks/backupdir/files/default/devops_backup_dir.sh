@@ -1,11 +1,11 @@
 #!/bin/bash -e
 ##-------------------------------------------------------------------
 ## File : devops_backup_dir.sh
-## Author : Denny <contact@dennyzhang.com>
+## Author : Denny <https://www.dennyzhang.com/contact>
 ## Description : Backup directory and tar it with timestamp
 ## --
 ## Created : <2015-01-22>
-## Updated: Time-stamp: <2017-09-04 18:57:08>
+## Updated: Time-stamp: <2017-11-13 11:09:09>
 ##-------------------------------------------------------------------
 # TDOO: move to common library
 function log() {

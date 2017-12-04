@@ -1,11 +1,11 @@
 #!/bin/bash -e
 ##-------------------------------------------------------------------
 ## File : remote_copy_backupset.sh
-## Author : Denny <contact@dennyzhang.com>
+## Author : Denny <https://www.dennyzhang.com/contact>
 ## Description :
 ## --
 ## Created : <2014-12-05>
-## Updated: Time-stamp: <2017-09-04 18:57:08>
+## Updated: Time-stamp: <2017-11-13 11:09:08>
 ##-------------------------------------------------------------------
 # TDOO: move to common library
 function log() {

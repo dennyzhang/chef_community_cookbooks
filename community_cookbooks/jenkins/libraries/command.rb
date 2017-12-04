@@ -1,10 +1,10 @@
 #
-# Cookbook Name:: jenkins
+# Cookbook:: jenkins
 # HWRP:: command
 #
 # Author:: Seth Vargo <sethvargo@gmail.com>
 #
-# Copyright 2013-2014, Chef Software, Inc.
+# Copyright:: 2013-2016, Chef Software, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -20,16 +20,13 @@
 #
 
 require_relative '_helper'
-require_relative '_params_validate'
 
 class Chef
   class Resource::JenkinsCommand < Resource::LWRPBase
+    resource_name :jenkins_command
+
     # Chef attributes
     identity_attr :command
-    provides :jenkins_command
-
-    # Set the resource name
-    self.resource_name = :jenkins_command
 
     # Actions
     actions :execute
@@ -37,14 +34,17 @@ class Chef
 
     # Attributes
     attribute :command,
-      kind_of: String,
-      name_attribute: true
+              kind_of: String,
+              name_attribute: true
   end
 end
 
 class Chef
   class Provider::JenkinsCommand < Provider::LWRPBase
+    use_inline_resources
     include Jenkins::Helper
+
+    provides :jenkins_command
 
     def load_current_resource
       @current_resource ||= Resource::JenkinsCommand.new(new_resource.command)
@@ -57,15 +57,10 @@ class Chef
       true
     end
 
-    action(:execute) do
+    action :execute do
       converge_by("Execute #{new_resource}") do
         executor.execute!(new_resource.command)
       end
     end
   end
 end
-
-Chef::Platform.set(
-  resource: :jenkins_command,
-  provider: Chef::Provider::JenkinsCommand
-)

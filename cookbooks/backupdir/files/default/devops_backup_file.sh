@@ -1,11 +1,11 @@
 #!/bin/bash -e
 ##-------------------------------------------------------------------
 ## File : devops_backup_file.sh
-## Author : Denny <contact@dennyzhang.com>
+## Author : Denny <https://www.dennyzhang.com/contact>
 ## Description : If given file is changed, do a backup; Otherwise skip
 ## --
 ## Created : <2015-01-22>
-## Updated: Time-stamp: <2017-09-04 18:57:08>
+## Updated: Time-stamp: <2017-11-13 11:09:09>
 ##-------------------------------------------------------------------
 # TDOO: move to common library
 function log() {

@@ -5,11 +5,11 @@
 ## https://raw.githubusercontent.com/DennyZhang/devops_public/tag_v1/LICENSE
 ##
 ## File : setup_jenkins.sh
-## Author : Denny <contact@dennyzhang.com>
+## Author : Denny <https://www.dennyzhang.com/contact>
 ## Description :
 ## --
 ## Created : <2016-04-20>
-## Updated: Time-stamp: <2017-09-04 18:57:08>
+## Updated: Time-stamp: <2017-11-13 11:09:06>
 ##-------------------------------------------------------------------
 function configure_jenkins_port() {
     port=${1?}

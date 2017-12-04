@@ -1,17 +1,17 @@
 #
-# Cookbook Name:: jenkins
+# Cookbook:: jenkins
 # Recipe:: master
 #
 # Author: AJ Christensen <aj@junglist.gen.nz>
 # Author: Dough MacEachern <dougm@vmware.com>
 # Author: Fletcher Nichol <fnichol@nichol.ca>
-# Author: Seth Chisamore <schisamo@getchef.com>
+# Author: Seth Chisamore <schisamo@chef.io>
 # Author: Guilhem Lettron <guilhem.lettron@youscribe.com>
 # Author: Seth Vargo <sethvargo@gmail.com>
 #
-# Copyright 2010, VMWare, Inc.
-# Copyright 2013, Youscribe.
-# Copyright 2012-2014, Chef Software, Inc.
+# Copyright:: 2010-2016, VMWare, Inc.
+# Copyright:: 2013-2016, Youscribe.
+# Copyright:: 2012-2016, Chef Software, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -30,8 +30,8 @@
 begin
   include_recipe "jenkins::_master_#{node['jenkins']['master']['install_method']}"
 rescue Chef::Exceptions::RecipeNotFound
-  raise Chef::Exceptions::RecipeNotFound, "The install method " \
+  raise Chef::Exceptions::RecipeNotFound, 'The install method ' \
     "`#{node['jenkins']['master']['install_method']}' is not supported by " \
-    "this cookbook. Please ensure you have spelled it correctly. If you " \
-    "continue to encounter this error, please file an issue."
+    'this cookbook. Please ensure you have spelled it correctly. If you ' \
+    'continue to encounter this error, please file an issue.'
 end
