@@ -23,6 +23,7 @@ if node['nagios3']['enable_basic_check'] == '1'
         # TODO: customize threshold
         'check_disk_rootfs:check_nrpe2!check_disk_rootfs',
         'check_disk:check_nrpe2!check_disk',
+        'check_disk_io_status:check_nrpe2!check_disk_io_status',
         # TODO: customize threshold
         'check_memory:check_nrpe2!check_memory',
         # TODO: customize threshold

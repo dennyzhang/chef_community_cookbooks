@@ -5,7 +5,7 @@
 ## Description : NRPE Nagios Checks configuration
 ## --
 ## Created : <2014-9-11>
-## Updated: Time-stamp: <2017-10-10 20:07:13>
+## Updated: Time-stamp: <2018-03-14 14:58:20>
 ##-------------------------------------------------------------------
 # NRPE configurations#
 
@@ -24,6 +24,7 @@ command[check_out_of_memory]=python <%= @nagios_plugins %>/check_out_of_memory.p
 command[check_disk_rootfs]=<%= @nagios_plugins %>/check_linux_stats.pl -D -w <%= node['nagios3']['disk_warn_threshold'] %> -c <%= node['nagios3']['disk_cri_threshold'] %> -u % -p /
 # monitor disk for all mounted volumes, instead of rootfs only
 command[check_disk]=<%= @nagios_plugins %>/check_linux_stats.pl -D -w <%= node['nagios3']['disk_warn_threshold'] %> -c <%= node['nagios3']['disk_cri_threshold'] %>
+command[check_disk_io_status]=bash /usr/lib/nagios/plugins/check_all_diskstat.sh -w <%= node['nagios3']['disk_io_warn_threshold'] %> -c <%= node['nagios3']['disk_io_cri_threshold'] %>
 
 # Misc Common Checks
 command[check_certificate]=<%= @nagios_plugins %>/check_http -H localhost -C 30

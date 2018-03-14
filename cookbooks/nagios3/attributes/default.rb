@@ -61,3 +61,6 @@ default['nagios3']['cpu_cri_threshold'] = '600'
 
 default['nagios3']['disk_warn_threshold'] = '40' # 60%
 default['nagios3']['disk_cri_threshold'] = '20' # 80%
+
+default['nagios3']['disk_io_warn_threshold'] = '200,10000,10000'
+default['nagios3']['disk_io_cri_threshold'] = '300,20000,20000'

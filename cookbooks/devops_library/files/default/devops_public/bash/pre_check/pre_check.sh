@@ -10,7 +10,7 @@
 ## Sample:
 ## --
 ## Created : <2016-06-12>
-## Updated: Time-stamp: <2017-09-04 18:54:43>
+## Updated: Time-stamp: <2018-01-29 16:08:48>
 ################################################################################################
 . /etc/profile
 [ -n "$DOWNLOAD_TAG_NAME" ] || export DOWNLOAD_TAG_NAME="tag_v6"
@@ -20,7 +20,7 @@ if [ ! -f /var/lib/devops/refresh_common_library.sh ]; then
     wget -O /var/lib/devops/refresh_common_library.sh "$DOWNLOAD_PREFIX/common_library/refresh_common_library.sh"
     chmod 777 /var/lib/devops/refresh_common_library.sh
 fi
-bash /var/lib/devops/refresh_common_library.sh "2886589901" "/var/lib/devops/devops_common_library.sh" \
+bash /var/lib/devops/refresh_common_library.sh "3536991806" "/var/lib/devops/devops_common_library.sh" \
      "${DOWNLOAD_PREFIX}/common_library/devops_common_library.sh"
 . /var/lib/devops/devops_common_library.sh
 ################################################################################################
@@ -86,6 +86,17 @@ EOF
 ################################################################################
 function shell_exit() {
     errcode=$?
+    if [ $? -eq 0 ]; then
+        log "Backup operation is done"
+        log "########## Backup operation is done #############################"
+        echo "State: DONE Timestamp: $(current_time)" >> "$STATUS_FILE"
+    else
+        log "ERROR: Backup operation fail"
+        log "########## ERROR: Backup operation fail #########################"
+        echo "State: FAILED Timestamp: $(current_time)" >> "$STATUS_FILE"
+        # TODO: send out email
+        exit 1
+    fi
     exit $errcode
 }
 

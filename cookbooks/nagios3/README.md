@@ -69,7 +69,7 @@ And we want to deploy nagios system like: 192.168.1.3 as nagios server, all othe
 
 License & Authors
 -----------------
-- Author:: DennyZhang <https://www.dennyzhang.com/contact>
+- Author:: DennyZhang <contact@dennyzhang.com>
 - Copyright:: 2015, http://DennyZhang.com
 
 ```text

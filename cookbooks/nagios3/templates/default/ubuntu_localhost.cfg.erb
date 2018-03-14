@@ -44,7 +44,7 @@ define host{
 ##        use                             generic-service         ; Name of service template to use
 ##        host_name                       localhost
 ##        service_description             Total Processes
-##		check_command                   check_procs!250!400
+##	    	check_command                   check_procs!250!400
 ##        }
 ##
 ##
@@ -55,6 +55,6 @@ define host{
 ##        use                             generic-service         ; Name of service template to use
 ##        host_name                       localhost
 ##        service_description             Current Load
-##		check_command                   check_cpu_load!5.0!4.0!3.0!10.0!6.0!4.0
+##	    	check_command                   check_cpu_load!5.0!4.0!3.0!10.0!7.0!6.0
 ##        }
 ##

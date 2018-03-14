@@ -9,7 +9,7 @@
 ## Description :
 ## --
 ## Created : <2015-08-05>
-## Updated: Time-stamp: <2017-09-04 18:54:40>
+## Updated: Time-stamp: <2018-02-07 16:26:41>
 ################################################################################################
 ## Purpose: General function to deploy all-in-one env by chef
 ##
@@ -48,7 +48,7 @@ if [ ! -f /var/lib/devops/refresh_common_library.sh ]; then
     wget -O /var/lib/devops/refresh_common_library.sh "$DOWNLOAD_PREFIX/common_library/refresh_common_library.sh"
     chmod 777 /var/lib/devops/refresh_common_library.sh
 fi
-bash /var/lib/devops/refresh_common_library.sh "2886589901" "/var/lib/devops/devops_common_library.sh" \
+bash /var/lib/devops/refresh_common_library.sh "3536991806" "/var/lib/devops/devops_common_library.sh" \
      "${DOWNLOAD_PREFIX}/common_library/devops_common_library.sh"
 . /var/lib/devops/devops_common_library.sh
 ################################################################################################
@@ -97,7 +97,7 @@ if [ -n "$CODE_SH" ]; then
 fi
 
 # Input Parameters check
-check_list_fields "IP" "$ssh_server_ip"
+# check_list_fields "IP" "$ssh_server_ip"
 check_list_fields "TCP_PORT" "$ssh_port"
 enforce_ssh_check "$EXIT_NODE_CONNECT_FAIL" "$ssh_server_ip:$ssh_port" "$ssh_key_file"
 

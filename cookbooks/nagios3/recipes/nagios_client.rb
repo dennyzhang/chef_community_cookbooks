@@ -184,7 +184,7 @@ end
 
 ########################################################################
 # Install plugin
-%w(check_logfiles check_service_status.sh).each do |x|
+%w(check_logfiles check_service_status.sh check_diskstat.sh check_all_diskstat.sh).each do |x|
   cookbook_file "#{node['nagios3']['plugins_dir']}/#{x}" do
     source x
     mode '0755'

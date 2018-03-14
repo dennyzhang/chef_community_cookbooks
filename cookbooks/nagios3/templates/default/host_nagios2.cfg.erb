@@ -19,5 +19,4 @@ define service{
         service_description             <%= @service_check.split(":")[0] %>
         check_command                   <%= @service_check.split(":")[1] %>
         }
-
 <% end -%>
