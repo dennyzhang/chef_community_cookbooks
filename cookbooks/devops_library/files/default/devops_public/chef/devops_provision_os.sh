@@ -11,7 +11,7 @@
 #   bash -e /root/devops_provision_os.sh
 ## --
 ## Created : <2016-04-20>
-## Updated: Time-stamp: <2018-02-27 18:18:47>
+## Updated: Time-stamp: <2017-09-04 18:54:42>
 ################################################################################################
 . /etc/profile
 [ -n "$DOWNLOAD_TAG_NAME" ] || export DOWNLOAD_TAG_NAME="tag_v6"
@@ -67,6 +67,8 @@ install_chef $chef_version
 download_facility "/root/git_update.sh" "${DOWNLOAD_PREFIX}/bash/git_update.sh"
 download_facility "/root/manage_all_services.sh" "${DOWNLOAD_PREFIX}/bash/manage_all_services/manage_all_services.sh"
 download_facility "/root/ufw_add_node_to_cluster.sh" "${DOWNLOAD_PREFIX}/bash/ufw/ufw_add_node_to_cluster.sh"
+download_facility "/usr/sbin/examine_hosts_file.py" "${DOWNLOAD_PREFIX}/python/hosts_file/examine_hosts_file.py"
+download_facility "/usr/sbin/update_hosts_file.py" "${DOWNLOAD_PREFIX}/python/hosts_file/update_hosts_file.py"
 download_facility "/usr/sbin/node_usage.py" "${DOWNLOAD_PREFIX}/python/node_usage/node_usage.py"
 
 # TODO:

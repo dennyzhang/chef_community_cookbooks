@@ -13,7 +13,7 @@
 ## list_os_packages.sh python
 ## --
 ## Created : <2016-06-04>
-## Updated: Time-stamp: <2018-02-27 18:18:47>
+## Updated: Time-stamp: <2017-09-04 18:54:43>
 ################################################################################################
 . /etc/profile
 [ -n "$DOWNLOAD_TAG_NAME" ] || export DOWNLOAD_TAG_NAME="tag_v6"
